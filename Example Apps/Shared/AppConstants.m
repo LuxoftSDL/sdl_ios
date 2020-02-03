@@ -9,10 +9,12 @@
 #import "AppConstants.h"
 
 #pragma mark - SDL Configuration
-NSString * const ExampleAppName = @"SDL Example App";
+NSString * const ExampleAppName1 = @"SDL Example Alpha";
+NSString * const ExampleAppName2 = @"SDL Example Betha";
 NSString * const ExampleAppNameShort = @"SDL";
 NSString * const ExampleAppNameTTS = @"S D L Example App";
-NSString * const ExampleFullAppId = @"123e4567-e89b-12d3-a456-426655440000"; // Dummy App Id
+NSString * const ExampleFullAppId1 = @"123e4567-e89b-12d3-a456-426655440000"; // Dummy App Id
+NSString * const ExampleFullAppId2 = @"321e4567-e89b-12d3-a456-ffffffffffff"; // Dummy App Id
 
 #pragma mark - SDL Textfields
 NSString * const SmartDeviceLinkText = @"SmartDeviceLink (SDL)";
@@ -115,7 +117,8 @@ NSString * const ACWiperStatusMenuName = @"Wiper Status";
 #pragma mark - SDL Image Names
 NSString * const AlertBWIconName = @"alert";
 NSString * const CarBWIconImageName = @"car";
-NSString * const ExampleAppLogoName = @"sdl_logo_green";
+NSString * const ExampleAppLogoName1 = @"sdl_logo_green";
+NSString * const ExampleAppLogoName2 = @"sdl_logo_purple";
 NSString * const MenuBWIconImageName = @"choice_set";
 NSString * const MicrophoneBWIconImageName = @"microphone";
 NSString * const PhoneBWIconImageName = @"phone";

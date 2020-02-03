@@ -1539,6 +1539,7 @@
 		B3E1E9B123E348060082863E /* SDLProxyManager.m in Sources */ = {isa = PBXBuildFile; fileRef = B3E1E9AF23E348060082863E /* SDLProxyManager.m */; };
 		B3F03D4D23E855CD006D042E /* SDLMultiManager.h in Headers */ = {isa = PBXBuildFile; fileRef = B3F03D4B23E855CD006D042E /* SDLMultiManager.h */; };
 		B3F03D4E23E855CD006D042E /* SDLMultiManager.m in Sources */ = {isa = PBXBuildFile; fileRef = B3F03D4C23E855CD006D042E /* SDLMultiManager.m */; };
+		B3F03D5323E85F93006D042E /* ConnectionTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B3F03D5223E85F93006D042E /* ConnectionTableViewController.m */; };
 		DA0C46AD1DCD35080001F2A8 /* SDLRPCParameterNames.m in Sources */ = {isa = PBXBuildFile; fileRef = DA0C46AC1DCD35080001F2A8 /* SDLRPCParameterNames.m */; };
 		DA0C46AF1DCD41E30001F2A8 /* SDLMacros.h in Headers */ = {isa = PBXBuildFile; fileRef = DA0C46AE1DCD41E30001F2A8 /* SDLMacros.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		DA318C1F1DD0F06C00C035AC /* NSMutableDictionary+Store.h in Headers */ = {isa = PBXBuildFile; fileRef = DA318C1D1DD0F06C00C035AC /* NSMutableDictionary+Store.h */; };
@@ -3291,6 +3292,8 @@
 		B3E1E9AF23E348060082863E /* SDLProxyManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SDLProxyManager.m; sourceTree = "<group>"; };
 		B3F03D4B23E855CD006D042E /* SDLMultiManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SDLMultiManager.h; sourceTree = "<group>"; };
 		B3F03D4C23E855CD006D042E /* SDLMultiManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SDLMultiManager.m; sourceTree = "<group>"; };
+		B3F03D5123E85F93006D042E /* ConnectionTableViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ConnectionTableViewController.h; sourceTree = SOURCE_ROOT; };
+		B3F03D5223E85F93006D042E /* ConnectionTableViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ConnectionTableViewController.m; sourceTree = SOURCE_ROOT; };
 		BB3C600D221AEF37007DD4CA /* NSMutableDictionary+StoreSpec.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = "NSMutableDictionary+StoreSpec.m"; path = "DevAPISpecs/NSMutableDictionary+StoreSpec.m"; sourceTree = "<group>"; };
 		DA0C46AC1DCD35080001F2A8 /* SDLRPCParameterNames.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SDLRPCParameterNames.m; sourceTree = "<group>"; };
 		DA0C46AE1DCD41E30001F2A8 /* SDLMacros.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SDLMacros.h; sourceTree = "<group>"; };
@@ -3986,6 +3989,8 @@
 				5D1FF2B421304580000EB9B4 /* ConnectionIAPTableViewController.m */,
 				5D1FF2B321304580000EB9B4 /* ConnectionTCPTableViewController.h */,
 				5D1FF2B621304581000EB9B4 /* ConnectionTCPTableViewController.m */,
+				B3F03D5123E85F93006D042E /* ConnectionTableViewController.h */,
+				B3F03D5223E85F93006D042E /* ConnectionTableViewController.m */,
 			);
 			name = Connection;
 			sourceTree = "<group>";
@@ -6231,6 +6236,7 @@
 		88295677207CF46C00EF056C /* Objective-C */ = {
 			isa = PBXGroup;
 			children = (
+				B3F03D4F23E85F83006D042E /* UI */,
 				5D48329E1A92865900252386 /* SDL */,
 				5D48329A1A8EA31500252386 /* Utilities */,
 				5D0218EB1A8E795700D1BF62 /* UI */,
@@ -6445,6 +6451,22 @@
 				B3F03D4C23E855CD006D042E /* SDLMultiManager.m */,
 			);
 			path = Managers;
+			sourceTree = "<group>";
+		};
+		B3F03D4F23E85F83006D042E /* UI */ = {
+			isa = PBXGroup;
+			children = (
+				B3F03D5023E85F83006D042E /* Connection */,
+			);
+			name = UI;
+			path = "Example Apps/Example ObjC/UI";
+			sourceTree = SOURCE_ROOT;
+		};
+		B3F03D5023E85F83006D042E /* Connection */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Connection;
 			sourceTree = "<group>";
 		};
 		DA1166D71D14601C00438CEA /* Touches */ = {
@@ -7376,6 +7398,7 @@
 				5D1FF2BA21304581000EB9B4 /* ConnectionTCPTableViewController.m in Sources */,
 				5D1FF2B921304581000EB9B4 /* ConnectionContainerViewController.m in Sources */,
 				5D1FF29D21304515000EB9B4 /* RPCPermissionsManager.m in Sources */,
+				B3F03D5323E85F93006D042E /* ConnectionTableViewController.m in Sources */,
 				5D1FF2A121304515000EB9B4 /* VehicleDataManager.m in Sources */,
 				5D1FF29F21304515000EB9B4 /* ProxyManager.m in Sources */,
 				5D1FF2BF21304598000EB9B4 /* ConnectionAnimatedTransition.m in Sources */,

@@ -11,10 +11,12 @@
 NS_ASSUME_NONNULL_BEGIN
 
 #pragma mark - SDL Configuration
-extern NSString * const ExampleAppName;
+extern NSString * const ExampleAppName1;
+extern NSString * const ExampleAppName2;
 extern NSString * const ExampleAppNameShort;
 extern NSString * const ExampleAppNameTTS;
-extern NSString * const ExampleFullAppId;
+extern NSString * const ExampleFullAppId1;
+extern NSString * const ExampleFullAppId2;
 extern BOOL const ExampleAppShouldRestartSDLManagerOnDisconnect;
 
 #pragma mark - SDL Textfields
@@ -118,7 +120,8 @@ extern NSString * const ACWiperStatusMenuName;
 #pragma mark - SDL Image Names
 extern NSString * const AlertBWIconName;
 extern NSString * const CarBWIconImageName;
-extern NSString * const ExampleAppLogoName;
+extern NSString * const ExampleAppLogoName1;
+extern NSString * const ExampleAppLogoName2;
 extern NSString * const MenuBWIconImageName;
 extern NSString * const MicrophoneBWIconImageName;
 extern NSString * const PhoneBWIconImageName;

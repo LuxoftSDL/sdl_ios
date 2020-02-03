@@ -25,6 +25,10 @@ NS_ASSUME_NONNULL_BEGIN
 @property (strong, nonatomic) PerformInteractionManager *performManager;
 @property (strong, nonatomic) ButtonManager *buttonManager;
 @property (nonatomic, copy, nullable) RefreshUIHandler refreshUIHandler;
+
+@property (copy, nonatomic, readwrite) NSString *appName;
+@property (copy, nonatomic, readwrite) NSString *appId;
+@property (copy, nonatomic, readwrite) NSString *iconName;
 @end
 
 
@@ -32,25 +36,20 @@ NS_ASSUME_NONNULL_BEGIN
 
 #pragma mark - Initialization
 
-+ (instancetype)sharedManager {
-    static ProxyManager *sharedManager = nil;
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-        sharedManager = [[ProxyManager alloc] init];
-    });
-    
-    return sharedManager;
+- (instancetype)initWithName:(NSString*)appName identifier:(NSString*)appId iconName:(NSString*)iconName {
+    if ((self = [self init])) {
+        _appName = appName;
+        _appId = appId;
+        _iconName = iconName;
+    }
+    return self;
 }
 
 - (instancetype)init {
-    self = [super init];
-    if (!self) {
-        return nil;
+    if ((self = [super init])) {
+        _state = ProxyStateStopped;
+        _firstHMILevel = SDLHMILevelNone;
     }
-
-    _state = ProxyStateStopped;
-    _firstHMILevel = SDLHMILevelNone;
-
     return self;
 }
 
@@ -96,16 +95,25 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)startWithProxyTransportType:(ProxyTransportType)proxyTransportType {
     [self sdlex_updateProxyState:ProxyStateSearchingForConnection];
 
-    SDLLifecycleConfiguration *lifecycleConfig = proxyTransportType == ProxyTransportTypeIAP ? [self.class sdlex_iapLifecycleConfiguration] : [self.class sdlex_tcpLifecycleConfiguration];
+    SDLLifecycleConfiguration *lifecycleConfig = proxyTransportType == ProxyTransportTypeIAP ?
+        [self sdlex_iapLifecycleConfiguration] :
+        [self sdlex_tcpLifecycleConfiguration];
     [self sdlex_setupConfigurationWithLifecycleConfiguration:lifecycleConfig];
 }
 
-+ (SDLLifecycleConfiguration *)sdlex_iapLifecycleConfiguration {
-    return [self.class sdlex_setLifecycleConfigurationPropertiesOnConfiguration:[SDLLifecycleConfiguration defaultConfigurationWithAppName:ExampleAppName fullAppId:ExampleFullAppId]];
+- (SDLLifecycleConfiguration *)sdlex_iapLifecycleConfiguration {
+    return [self sdlex_setLifecycleConfigurationPropertiesOnConfiguration:[SDLLifecycleConfiguration defaultConfigurationWithAppName:self.appName fullAppId:self.appId]];
 }
 
-+ (SDLLifecycleConfiguration *)sdlex_tcpLifecycleConfiguration {
-    return [self.class sdlex_setLifecycleConfigurationPropertiesOnConfiguration:[SDLLifecycleConfiguration debugConfigurationWithAppName:ExampleAppName fullAppId:ExampleFullAppId ipAddress:[Preferences sharedPreferences].ipAddress port:[Preferences sharedPreferences].port]];
+- (SDLLifecycleConfiguration*)sdlex_tcpLifecycleConfiguration {
+    NSString * host = [Preferences sharedPreferences].ipAddress;
+    const UInt16 port = [Preferences sharedPreferences].port;
+    SDLLifecycleConfiguration *config
+    = [SDLLifecycleConfiguration debugConfigurationWithAppName:self.appName
+                                                     fullAppId:self.appId
+                                                     ipAddress:host
+                                                          port:port];
+    return [self sdlex_setLifecycleConfigurationPropertiesOnConfiguration:config];
 }
 
 - (void)sdlex_setupConfigurationWithLifecycleConfiguration:(SDLLifecycleConfiguration *)lifecycleConfiguration {
@@ -114,19 +122,19 @@ NS_ASSUME_NONNULL_BEGIN
         [self sdlex_startManager];
         return;
     }
-    SDLConfiguration *config = [SDLConfiguration configurationWithLifecycle:lifecycleConfiguration lockScreen:[SDLLockScreenConfiguration enabledConfigurationWithAppIcon:[UIImage imageNamed:ExampleAppLogoName] backgroundColor:nil] logging:[self.class sdlex_logConfiguration] fileManager:[SDLFileManagerConfiguration defaultConfiguration]];
+    SDLConfiguration *config = [SDLConfiguration configurationWithLifecycle:lifecycleConfiguration lockScreen:[SDLLockScreenConfiguration enabledConfigurationWithAppIcon:[UIImage imageNamed:self.iconName] backgroundColor:nil] logging:[self sdlex_logConfiguration] fileManager:[SDLFileManagerConfiguration defaultConfiguration]];
     self.sdlManager = [[SDLManager alloc] initWithConfiguration:config delegate:self];
     [self sdlex_startManager];
 }
 
-+ (SDLLifecycleConfiguration *)sdlex_setLifecycleConfigurationPropertiesOnConfiguration:(SDLLifecycleConfiguration *)config {
-    UIImage *appLogo = [[UIImage imageNamed:ExampleAppLogoName] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+- (SDLLifecycleConfiguration *)sdlex_setLifecycleConfigurationPropertiesOnConfiguration:(SDLLifecycleConfiguration *)config {
+    UIImage *appLogo = [[UIImage imageNamed:self.iconName] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
     SDLArtwork *appIconArt = [SDLArtwork persistentArtworkWithImage:appLogo asImageFormat:SDLArtworkImageFormatPNG];
 
     config.shortAppName = ExampleAppNameShort;
     config.appIcon = appIconArt;
     config.voiceRecognitionCommandNames = @[ExampleAppNameTTS];
-    config.ttsName = [SDLTTSChunk textChunksFromString:ExampleAppName];
+    config.ttsName = [SDLTTSChunk textChunksFromString:self.appName];
     config.language = SDLLanguageEnUs;
     config.languagesSupported = @[SDLLanguageEnUs, SDLLanguageFrCa, SDLLanguageEsMx];
     config.appType = SDLAppHMITypeDefault;
@@ -141,7 +149,7 @@ NS_ASSUME_NONNULL_BEGIN
     return config;
 }
 
-+ (SDLLogConfiguration *)sdlex_logConfiguration {
+- (SDLLogConfiguration *)sdlex_logConfiguration {
     SDLLogConfiguration *logConfig = [SDLLogConfiguration debugConfiguration];
     SDLLogFileModule *sdlExampleModule = [SDLLogFileModule moduleWithName:@"SDL Obj-C Example App" files:[NSSet setWithArray:@[@"ProxyManager", @"AlertManager", @"AudioManager", @"ButtonManager", @"MenuManager", @"PerformInteractionManager", @"RPCPermissionsManager", @"VehicleDataManager"]]];
     logConfig.modules = [logConfig.modules setByAddingObject:sdlExampleModule];
@@ -194,7 +202,7 @@ NS_ASSUME_NONNULL_BEGIN
     screenManager.textField3 = isTextEnabled ? self.vehicleDataManager.vehicleOdometerData : nil;
 
     if ([self sdlex_imageFieldSupported:SDLImageFieldNameGraphic]) {
-        screenManager.primaryGraphic = areImagesVisible ? [SDLArtwork persistentArtworkWithImage:[[UIImage imageNamed:ExampleAppLogoName] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal] asImageFormat:SDLArtworkImageFormatPNG] : nil;
+        screenManager.primaryGraphic = areImagesVisible ? [SDLArtwork persistentArtworkWithImage:[[UIImage imageNamed:self.iconName] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal] asImageFormat:SDLArtworkImageFormatPNG] : nil;
     }
 
     if ([self sdlex_imageFieldSupported:SDLImageFieldNameSecondaryGraphic]) {
@@ -292,7 +300,7 @@ NS_ASSUME_NONNULL_BEGIN
     SDLLifecycleConfigurationUpdate *update = [[SDLLifecycleConfigurationUpdate alloc] init];
 
     if ([language isEqualToEnum:SDLLanguageEnUs]) {
-        update.appName = ExampleAppName;
+        update.appName = self.appName;
     } else if ([language isEqualToString:SDLLanguageEsMx]) {
         update.appName = ExampleAppNameSpanish;
     } else if ([language isEqualToString:SDLLanguageFrCa]) {

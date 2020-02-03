@@ -16,11 +16,9 @@
 @property (weak, nonatomic) IBOutlet UISegmentedControl *connectionTypeSegmentedControl;
 @property (strong, nonatomic) NSArray<UIViewController *> *viewControllers;
 @property (strong, nonatomic) UIViewController *currentViewController;
-
 @property (strong, nonatomic) UIPanGestureRecognizer *panGestureRecognizer;
 
 @end
-
 
 
 @implementation ConnectionContainerViewController

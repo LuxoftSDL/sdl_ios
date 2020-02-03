@@ -21,10 +21,14 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface ProxyManager : NSObject
 
+- (instancetype)initWithName:(NSString*)appName identifier:(NSString*)appId iconName:(NSString*)iconName;
+
 @property (assign, nonatomic, readonly) ProxyState state;
 @property (strong, nonatomic) SDLManager *sdlManager;
+@property (copy, nonatomic, readonly) NSString *appName;
+@property (copy, nonatomic, readonly) NSString *appId;
+@property (copy, nonatomic, readonly) NSString *iconName;
 
-+ (instancetype)sharedManager;
 - (void)startWithProxyTransportType:(ProxyTransportType)proxyTransportType;
 - (void)stopConnection;
 
