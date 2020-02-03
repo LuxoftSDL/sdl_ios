@@ -1537,6 +1537,8 @@
 		B3E1E9AD23E343E40082863E /* SDLTransportManager.m in Sources */ = {isa = PBXBuildFile; fileRef = B3E1E9AB23E343E40082863E /* SDLTransportManager.m */; };
 		B3E1E9B023E348060082863E /* SDLProxyManager.h in Headers */ = {isa = PBXBuildFile; fileRef = B3E1E9AE23E348060082863E /* SDLProxyManager.h */; };
 		B3E1E9B123E348060082863E /* SDLProxyManager.m in Sources */ = {isa = PBXBuildFile; fileRef = B3E1E9AF23E348060082863E /* SDLProxyManager.m */; };
+		B3F03D4D23E855CD006D042E /* SDLMultiManager.h in Headers */ = {isa = PBXBuildFile; fileRef = B3F03D4B23E855CD006D042E /* SDLMultiManager.h */; };
+		B3F03D4E23E855CD006D042E /* SDLMultiManager.m in Sources */ = {isa = PBXBuildFile; fileRef = B3F03D4C23E855CD006D042E /* SDLMultiManager.m */; };
 		DA0C46AD1DCD35080001F2A8 /* SDLRPCParameterNames.m in Sources */ = {isa = PBXBuildFile; fileRef = DA0C46AC1DCD35080001F2A8 /* SDLRPCParameterNames.m */; };
 		DA0C46AF1DCD41E30001F2A8 /* SDLMacros.h in Headers */ = {isa = PBXBuildFile; fileRef = DA0C46AE1DCD41E30001F2A8 /* SDLMacros.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		DA318C1F1DD0F06C00C035AC /* NSMutableDictionary+Store.h in Headers */ = {isa = PBXBuildFile; fileRef = DA318C1D1DD0F06C00C035AC /* NSMutableDictionary+Store.h */; };
@@ -3287,6 +3289,8 @@
 		B3E1E9AB23E343E40082863E /* SDLTransportManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SDLTransportManager.m; sourceTree = "<group>"; };
 		B3E1E9AE23E348060082863E /* SDLProxyManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SDLProxyManager.h; sourceTree = "<group>"; };
 		B3E1E9AF23E348060082863E /* SDLProxyManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SDLProxyManager.m; sourceTree = "<group>"; };
+		B3F03D4B23E855CD006D042E /* SDLMultiManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SDLMultiManager.h; sourceTree = "<group>"; };
+		B3F03D4C23E855CD006D042E /* SDLMultiManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SDLMultiManager.m; sourceTree = "<group>"; };
 		BB3C600D221AEF37007DD4CA /* NSMutableDictionary+StoreSpec.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = "NSMutableDictionary+StoreSpec.m"; path = "DevAPISpecs/NSMutableDictionary+StoreSpec.m"; sourceTree = "<group>"; };
 		DA0C46AC1DCD35080001F2A8 /* SDLRPCParameterNames.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SDLRPCParameterNames.m; sourceTree = "<group>"; };
 		DA0C46AE1DCD41E30001F2A8 /* SDLMacros.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SDLMacros.h; sourceTree = "<group>"; };
@@ -6408,6 +6412,7 @@
 		B349CB1F23E81D3400A31379 /* DeveloperAPI */ = {
 			isa = PBXGroup;
 			children = (
+				B3F03D4A23E85598006D042E /* Managers */,
 				B349CB2023E81D3400A31379 /* Utilities */,
 			);
 			path = DeveloperAPI;
@@ -6431,6 +6436,15 @@
 				B3E1E9AF23E348060082863E /* SDLProxyManager.m */,
 			);
 			path = Proxy;
+			sourceTree = "<group>";
+		};
+		B3F03D4A23E85598006D042E /* Managers */ = {
+			isa = PBXGroup;
+			children = (
+				B3F03D4B23E855CD006D042E /* SDLMultiManager.h */,
+				B3F03D4C23E855CD006D042E /* SDLMultiManager.m */,
+			);
+			path = Managers;
 			sourceTree = "<group>";
 		};
 		DA1166D71D14601C00438CEA /* Touches */ = {
@@ -6864,6 +6878,7 @@
 				5D76E3211D39742300647CFA /* SDLViewControllerPresentable.h in Headers */,
 				5DFFB9151BD7C89700DB3F04 /* SDLConnectionManagerType.h in Headers */,
 				88C37F632204EBF000901DC6 /* SDLAppServiceData.h in Headers */,
+				B3F03D4D23E855CD006D042E /* SDLMultiManager.h in Headers */,
 				5D61FC941A84238C00846EE7 /* SDLDriverDistractionState.h in Headers */,
 				5D61FD571A84238C00846EE7 /* SDLPutFileResponse.h in Headers */,
 				5D61FD411A84238C00846EE7 /* SDLPRNDL.h in Headers */,
@@ -7425,6 +7440,7 @@
 				5D535DC61B72473800CF7760 /* SDLGlobals.m in Sources */,
 				5D61FCAE1A84238C00846EE7 /* SDLFunctionID.m in Sources */,
 				5D61FC421A84238C00846EE7 /* SDLAppHMIType.m in Sources */,
+				B3F03D4E23E855CD006D042E /* SDLMultiManager.m in Sources */,
 				5D61FD421A84238C00846EE7 /* SDLPRNDL.m in Sources */,
 				E9C32B921AB20BA200F283AF /* SDLIAPSession.m in Sources */,
 				880245A520F79C3400ED195B /* SDLFileManagerConfiguration.m in Sources */,
