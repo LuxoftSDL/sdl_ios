@@ -38,7 +38,7 @@ NSTimeInterval ConnectionTimeoutSecs = 30.0;
 - (instancetype)init {
     if (self = [super init]) {
         _receiveBufferSize = DefaultReceiveBufferSize;
-        _sendDataQueue = [[SDLMutableDataQueue alloc] init];
+        _sendDataQueue = [SDLMutableDataQueue new];
     }
     return self;
 }

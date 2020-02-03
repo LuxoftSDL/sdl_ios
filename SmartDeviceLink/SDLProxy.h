@@ -25,12 +25,12 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  *  The protocol that handles sending and receiving messages from Core.
  */
-@property (nullable, strong, nonatomic) SDLProtocol *protocol;
+@property (nullable, strong, nonatomic, readonly) SDLProtocol *protocol;
 
 /**
  *  The transport type used to connect the app to Core.
  */
-@property (nullable, strong, nonatomic) id<SDLTransportType> transport;
+@property (nullable, strong, nonatomic, readonly) id<SDLTransportType> transport;
 
 /**
  *  A set of all subscribers.
@@ -40,44 +40,17 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  *  Closes an open session if no start service ACK message received from Core within a given amount of time.
  */
-@property (strong, nonatomic) SDLTimer *startSessionTimer;
+@property (strong, nonatomic, readonly) SDLTimer *startSessionTimer;
 
 /**
  *  The proxy version number.
  */
 @property (readonly, copy, nonatomic) NSString *proxyVersion;
 
-/**
- *  Convenience init.
- *
- *  @param transport                   The type of network connection
- *  @param delegate                    The subscriber
- *  @param secondaryTransportManager   The secondary transport manager
- *  @return                            A SDLProxy object
- */
-- (id)initWithTransport:(id<SDLTransportType>)transport delegate:(id<SDLProxyListener>)delegate secondaryTransportManager:(nullable SDLSecondaryTransportManager *)secondaryTransportManager;
-
-/**
- *  Creates a SDLProxy object with an iap (USB / Bluetooth) transport network connection.
- *
- *  @param delegate                    The subscriber
- *  @param secondaryTransportManager   The secondary transport manager
- *  @param encryptionLifecycleManager  The encryption life cycle manager
- *  @return                            A SDLProxy object
- */
-+ (SDLProxy *)iapProxyWithListener:(id<SDLProxyListener>)delegate secondaryTransportManager:(nullable SDLSecondaryTransportManager *)secondaryTransportManager encryptionLifecycleManager:(SDLEncryptionLifecycleManager *)encryptionLifecycleManager;
-
-/**
- *  Creates a SDLProxy object with a TCP (WiFi) transport network connection.
- *
- *  @param delegate                    The subscriber
- *  @param ipaddress                   The IP address of Core
- *  @param port                        The port address of Core
- *  @param secondaryTransportManager   The secondary transport manager
- *  @param encryptionLifecycleManager  The encryption life cycle manager
- *  @return                            A SDLProxy object
- */
-+ (SDLProxy *)tcpProxyWithListener:(id<SDLProxyListener>)delegate tcpIPAddress:(NSString *)ipaddress tcpPort:(NSString *)port secondaryTransportManager:(nullable SDLSecondaryTransportManager *)secondaryTransportManager encryptionLifecycleManager:(SDLEncryptionLifecycleManager *)encryptionLifecycleManager;
+///**
+//*  The application unique identifier
+//*/
+//@property (nullable, nonatomic, readonly) NSString *appId;
 
 /**
  *  Adds a delegate.

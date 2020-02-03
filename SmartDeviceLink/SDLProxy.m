@@ -73,42 +73,11 @@ static float DefaultConnectionTimeout = 45.0;
 @implementation SDLProxy
 
 #pragma mark - Object lifecycle
-- (instancetype)initWithTransport:(id<SDLTransportType>)transport delegate:(id<SDLProxyListener>)delegate secondaryTransportManager:(nullable SDLSecondaryTransportManager *)secondaryTransportManager {
-    if (self = [super init]) {
-        SDLLogD(@"Framework Version: %@", self.proxyVersion);
-        _lsm = [[SDLLockScreenStatusManager alloc] init];
-        _mutableProxyListeners = [NSMutableSet setWithObject:delegate];
-        _securityManagers = [NSMutableDictionary dictionary];
+//- (instancetype)initWithTransport:(id<SDLTransportType>)transport delegate:(id<SDLProxyListener>)delegate secondaryTransportManager:(nullable SDLSecondaryTransportManager *)secondaryTransportManager {
+//    return (self = [self initWithTransport:transport delegate:delegate secondaryTransportManager:secondaryTransportManager encryptionLifecycleManager:nil]);
+//}
 
-        _protocol = [[SDLProtocol alloc] init];
-        _transport = transport;
-        _transport.delegate = _protocol;
-
-        [_protocol.protocolDelegateTable addObject:self];
-        _protocol.transport = transport;
-
-        // make sure that secondary transport manager is started prior to starting protocol
-        if (secondaryTransportManager != nil) {
-            [secondaryTransportManager startWithPrimaryProtocol:_protocol];
-        }
-
-        [self.transport connect];
-
-        SDLLogV(@"Proxy transport initialization");
-        
-        NSURLSessionConfiguration* configuration = [NSURLSessionConfiguration defaultSessionConfiguration];
-        configuration.timeoutIntervalForRequest = DefaultConnectionTimeout;
-        configuration.timeoutIntervalForResource = DefaultConnectionTimeout;
-        configuration.requestCachePolicy = NSURLRequestUseProtocolCachePolicy;
-        
-        _urlSession = [NSURLSession sessionWithConfiguration:configuration];
-
-    }
-
-    return self;
-}
-
-- (instancetype)initWithTransport:(id<SDLTransportType>)transport delegate:(id<SDLProxyListener>)delegate secondaryTransportManager:(nullable SDLSecondaryTransportManager *)secondaryTransportManager encryptionLifecycleManager:(SDLEncryptionLifecycleManager *)encryptionLifecycleManager {
+- (instancetype)initWithTransport:(id<SDLTransportType>)transport delegate:(id<SDLProxyListener>)delegate secondaryTransportManager:(nullable SDLSecondaryTransportManager *)secondaryTransportManager encryptionLifecycleManager:(nullable SDLEncryptionLifecycleManager *)encryptionLifecycleManager {
     if (self = [super init]) {
         SDLLogD(@"Framework Version: %@", self.proxyVersion);
         _lsm = [[SDLLockScreenStatusManager alloc] init];
@@ -137,41 +106,9 @@ static float DefaultConnectionTimeout = 45.0;
         configuration.requestCachePolicy = NSURLRequestUseProtocolCachePolicy;
         
         _urlSession = [NSURLSession sessionWithConfiguration:configuration];
-        
     }
     
     return self;
-}
-
-
-+ (SDLProxy *)iapProxyWithListener:(id<SDLProxyListener>)delegate secondaryTransportManager:(nullable SDLSecondaryTransportManager *)secondaryTransportManager {
-    SDLIAPTransport *transport = [[SDLIAPTransport alloc] init];
-    SDLProxy *ret = [[SDLProxy alloc] initWithTransport:transport delegate:delegate secondaryTransportManager:secondaryTransportManager];
-
-    return ret;
-}
-
-+ (SDLProxy *)tcpProxyWithListener:(id<SDLProxyListener>)delegate tcpIPAddress:(NSString *)ipaddress tcpPort:(NSString *)port secondaryTransportManager:(nullable SDLSecondaryTransportManager *)secondaryTransportManager {
-    SDLTCPTransport *transport = [[SDLTCPTransport alloc] initWithHostName:ipaddress portNumber:port];
-
-    SDLProxy *ret = [[SDLProxy alloc] initWithTransport:transport delegate:delegate secondaryTransportManager:secondaryTransportManager];
-
-    return ret;
-}
-
-+ (SDLProxy *)iapProxyWithListener:(id<SDLProxyListener>)delegate secondaryTransportManager:(nullable SDLSecondaryTransportManager *)secondaryTransportManager encryptionLifecycleManager:(SDLEncryptionLifecycleManager *)encryptionLifecycleManager {
-    SDLIAPTransport *transport = [[SDLIAPTransport alloc] init];
-    SDLProxy *ret = [[SDLProxy alloc] initWithTransport:transport delegate:delegate secondaryTransportManager:secondaryTransportManager encryptionLifecycleManager:encryptionLifecycleManager];
-    
-    return ret;
-}
-
-+ (SDLProxy *)tcpProxyWithListener:(id<SDLProxyListener>)delegate tcpIPAddress:(NSString *)ipaddress tcpPort:(NSString *)port secondaryTransportManager:(nullable SDLSecondaryTransportManager *)secondaryTransportManager encryptionLifecycleManager:(SDLEncryptionLifecycleManager *)encryptionLifecycleManager {
-    SDLTCPTransport *transport = [[SDLTCPTransport alloc] initWithHostName:ipaddress portNumber:port];
-    
-    SDLProxy *ret = [[SDLProxy alloc] initWithTransport:transport delegate:delegate secondaryTransportManager:secondaryTransportManager encryptionLifecycleManager:encryptionLifecycleManager];
-
-    return ret;
 }
 
 - (void)dealloc {
@@ -288,7 +225,7 @@ static float DefaultConnectionTimeout = 45.0;
     [self.protocol startServiceWithType:SDLServiceTypeRPC payload:nil];
 
     if (self.startSessionTimer == nil) {
-        self.startSessionTimer = [[SDLTimer alloc] initWithDuration:StartSessionTime repeat:NO];
+        _startSessionTimer = [[SDLTimer alloc] initWithDuration:StartSessionTime repeat:NO];
         __weak typeof(self) weakSelf = self;
         self.startSessionTimer.elapsedBlock = ^{
             SDLLogW(@"Start session timed out");

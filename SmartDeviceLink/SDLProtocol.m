@@ -27,6 +27,7 @@
 #import "SDLSecurityType.h"
 #import "SDLTimer.h"
 #import "SDLVersion.h"
+#import "SDLVersion_ext.h"
 #import "SDLV2ProtocolHeader.h"
 
 NSString *const SDLProtocolSecurityErrorDomain = @"com.sdl.protocol.security";
@@ -47,10 +48,10 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nullable, strong, nonatomic) SDLProtocolReceivedMessageRouter *messageRouter;
 @property (strong, nonatomic) NSMutableDictionary<SDLServiceTypeBox *, SDLProtocolHeader *> *serviceHeaders;
 @property (assign, nonatomic) int32_t hashId;
-@property (nonatomic, strong) SDLEncryptionLifecycleManager *encryptionLifecycleManager;
+@property (nullable, nonatomic, strong) SDLEncryptionLifecycleManager *encryptionLifecycleManager;
 
 // Readonly public properties
-@property (strong, nonatomic, readwrite, nullable) NSString *authToken;
+@property (copy, nonatomic, readwrite, nullable) NSString *authToken;
 
 @end
 
@@ -62,20 +63,10 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma mark - Lifecycle
 
 - (instancetype)init {
-    if (self = [super init]) {
-        _messageID = 0;
-        _hashId = SDLControlFrameInt32NotFound;
-        _prioritizedCollection = [[SDLPrioritizedObjectCollection alloc] init];
-        _protocolDelegateTable = [NSHashTable weakObjectsHashTable];
-        _serviceHeaders = [[NSMutableDictionary alloc] init];
-        _messageRouter = [[SDLProtocolReceivedMessageRouter alloc] init];
-        _messageRouter.delegate = self;
-    }
-
-    return self;
+    return (self = [self initWithEncryptionLifecycleManager:nil]);
 }
 
-- (instancetype)initWithEncryptionLifecycleManager:(SDLEncryptionLifecycleManager *)encryptionLifecycleManager {
+- (instancetype)initWithEncryptionLifecycleManager:(SDLEncryptionLifecycleManager * __nullable)encryptionLifecycleManager {
     if (self = [super init]) {
         _messageID = 0;
         _hashId = SDLControlFrameInt32NotFound;
@@ -99,6 +90,18 @@ NS_ASSUME_NONNULL_BEGIN
     SDLLogD(@"Storing SessionID %i of serviceType %i", header.sessionID, serviceType);
     self.serviceHeaders[@(serviceType)] = [header copy];
     return YES;
+}
+
+- (void)sdl_storeHeader:(SDLProtocolHeader*)header {
+    assert(nil != header);
+    // Store the header of this service away for future use
+    self.serviceHeaders[@(header.serviceType)] = [header copy];
+}
+
+- (void)sdl_removeHeader:(SDLProtocolHeader*)header {
+    assert(nil != header);
+    // Remove the session id
+    [self.serviceHeaders removeObjectForKey:@(header.serviceType)];
 }
 
 - (UInt8)sdl_retrieveSessionIDforServiceType:(SDLServiceType)serviceType {
@@ -516,9 +519,12 @@ NS_ASSUME_NONNULL_BEGIN
                     self.hashId = startServiceACKPayload.hashId;
                 }
 
-                [SDLGlobals sharedGlobals].maxHeadUnitProtocolVersion = (startServiceACKPayload.protocolVersion != nil) ? [SDLVersion versionWithString:startServiceACKPayload.protocolVersion] : [SDLVersion versionWithMajor:startServiceACK.header.version minor:0 patch:0];
-
-                self.authToken = [SDLGlobals.sharedGlobals.maxHeadUnitProtocolVersion isGreaterThanOrEqualToVersion:[[SDLVersion alloc] initWithMajor:5 minor:2 patch:0]] ? startServiceACKPayload.authToken : nil;
+                SDLVersion *thisVersion = (startServiceACKPayload.protocolVersion != nil) ?
+                    [SDLVersion versionWithString:startServiceACKPayload.protocolVersion] :
+                    [SDLVersion version:startServiceACK.header.version:0:0];
+                [SDLGlobals sharedGlobals].maxHeadUnitProtocolVersion = thisVersion;
+                self.authToken = [thisVersion isGreaterThanOrEqualToVersion:[SDLVersion version:5:2:0]] ?
+                    startServiceACKPayload.authToken : nil;
 
                 // TODO: Hash id?
             } break;
@@ -537,7 +543,7 @@ NS_ASSUME_NONNULL_BEGIN
     }
 
     // Store the header of this service away for future use
-    self.serviceHeaders[@(startServiceACK.header.serviceType)] = [startServiceACK.header copy];
+    [self sdl_storeHeader:startServiceACK.header];
 
     // Pass along to all the listeners
     NSArray<id<SDLProtocolListener>> *listeners = [self sdl_getProtocolListeners];
@@ -561,7 +567,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)handleProtocolEndServiceACKMessage:(SDLProtocolMessage *)endServiceACK {
     // Remove the session id
-    [self.serviceHeaders removeObjectForKey:@(endServiceACK.header.serviceType)];
+    [self sdl_removeHeader:endServiceACK.header];
 
     NSArray<id<SDLProtocolListener>> *listeners = [self sdl_getProtocolListeners];
     for (id<SDLProtocolListener> listener in listeners) {

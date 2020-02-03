@@ -518,7 +518,7 @@ static const int TCPPortUnspecified = -1;
     self.secondaryProtocol = protocol;
     self.secondaryTransport = transport;
 
-    // we reuse Session ID acquired from primary transport's protocol
+    // we reuse Session ID acquired from primary transport protocol
     // this is for Register Secondary Transport frame
     [self.secondaryProtocol storeHeader:self.primaryProtocolHandler.primaryRPCHeader forServiceType:SDLServiceTypeControl];
     // this is for video and audio services

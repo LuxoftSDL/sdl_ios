@@ -95,10 +95,22 @@ NSString *const BackgroundTaskTransportName = @"com.sdl.transport.backgroundTask
 @property (copy, nonatomic) SDLBackgroundTaskManager *backgroundTaskManager;
 @property (copy, nonatomic) SDLEncryptionLifecycleManager *encryptionLifecycleManager;
 
+//@property (strong, nonatomic, nullable, readwrite) SDLProxy *proxy;
+
+@end
+
+
+@interface SDLLifecycleManager (ProxyManagement)
+- (void)startupProxy;
+- (void)releaseProxy;
 @end
 
 
 @implementation SDLLifecycleManager
+{
+    SDLProxy * __nullable my_proxy;
+}
+@dynamic proxy;
 
 #pragma mark Lifecycle
 
@@ -128,7 +140,7 @@ NSString *const BackgroundTaskTransportName = @"com.sdl.transport.backgroundTask
     _responseDispatcher = [[SDLResponseDispatcher alloc] initWithNotificationDispatcher:_notificationDispatcher];
     _registerResponse = nil;
 
-    _rpcOperationQueue = [[NSOperationQueue alloc] init];
+    _rpcOperationQueue = [NSOperationQueue new];
     _rpcOperationQueue.name = @"com.sdl.lifecycle.rpcOperation.concurrent";
     _rpcOperationQueue.underlyingQueue = [SDLGlobals sharedGlobals].sdlConcurrentQueue;
 
@@ -231,24 +243,28 @@ NSString *const BackgroundTaskTransportName = @"com.sdl.transport.backgroundTask
     // Start a background task so a session can be established even when the app is backgrounded.
     [self.backgroundTaskManager startBackgroundTask];
 
-    // Start up the internal proxy object
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wdeprecated-declarations"
-    self.secondaryTransportManager = nil;
-    if (self.configuration.lifecycleConfig.tcpDebugMode) {
-        self.proxy = [SDLProxy tcpProxyWithListener:self.notificationDispatcher
-                                       tcpIPAddress:self.configuration.lifecycleConfig.tcpDebugIPAddress
-                                            tcpPort:@(self.configuration.lifecycleConfig.tcpDebugPort).stringValue
-                          secondaryTransportManager:self.secondaryTransportManager
-                         encryptionLifecycleManager:self.encryptionLifecycleManager];
-    } else if (self.configuration.lifecycleConfig.allowedSecondaryTransports == SDLSecondaryTransportsNone) {
-        self.proxy = [SDLProxy iapProxyWithListener:self.notificationDispatcher secondaryTransportManager:nil encryptionLifecycleManager:self.encryptionLifecycleManager];
-    } else {
-        // We reuse our queue to run secondary transport manager's state machine
-        self.secondaryTransportManager = [[SDLSecondaryTransportManager alloc] initWithStreamingProtocolDelegate:self serialQueue:self.lifecycleQueue];
-        self.proxy = [SDLProxy iapProxyWithListener:self.notificationDispatcher secondaryTransportManager:self.secondaryTransportManager encryptionLifecycleManager:self.encryptionLifecycleManager];
-    }
-#pragma clang diagnostic pop
+    [self startupProxy];
+//
+//    // Start up the internal proxy object
+//#pragma clang diagnostic push
+//#pragma clang diagnostic ignored "-Wdeprecated-declarations"
+//    self.secondaryTransportManager = nil;
+//    SDLProxy * nextProxy = nil;
+//    if (self.configuration.lifecycleConfig.tcpDebugMode) {
+//        nextProxy = [SDLProxy tcpProxyWithListener:self.notificationDispatcher
+//                                       tcpIPAddress:self.configuration.lifecycleConfig.tcpDebugIPAddress
+//                                            tcpPort:@(self.configuration.lifecycleConfig.tcpDebugPort).stringValue
+//                          secondaryTransportManager:self.secondaryTransportManager
+//                         encryptionLifecycleManager:self.encryptionLifecycleManager];
+//    } else if (self.configuration.lifecycleConfig.allowedSecondaryTransports == SDLSecondaryTransportsNone) {
+//        nextProxy = [SDLProxy iapProxyWithListener:self.notificationDispatcher secondaryTransportManager:nil encryptionLifecycleManager:self.encryptionLifecycleManager];
+//    } else {
+//        // We reuse our queue to run secondary transport manager's state machine
+//        self.secondaryTransportManager = [[SDLSecondaryTransportManager alloc] initWithStreamingProtocolDelegate:self serialQueue:self.lifecycleQueue];
+//        nextProxy = [SDLProxy iapProxyWithListener:self.notificationDispatcher secondaryTransportManager:self.secondaryTransportManager encryptionLifecycleManager:self.encryptionLifecycleManager];
+//    }
+//    [self setProxy:nextProxy];
+//#pragma clang diagnostic pop
 }
 
 - (void)didEnterStateStopped {
@@ -262,7 +278,7 @@ NSString *const BackgroundTaskTransportName = @"com.sdl.transport.backgroundTask
 - (void)sdl_stopManager:(BOOL)shouldRestart {
     SDLLogV(@"Stopping manager, %@", (shouldRestart ? @"will restart" : @"will not restart"));
 
-    self.proxy = nil;
+    [self releaseProxy];
 
     [self.fileManager stop];
     [self.permissionManager stop];
@@ -896,3 +912,56 @@ NSString *const BackgroundTaskTransportName = @"com.sdl.transport.backgroundTask
 @end
 
 NS_ASSUME_NONNULL_END
+
+#import "SDLProxyManager.h"
+
+@implementation SDLLifecycleManager (ProxyManagement)
+
+//- (void)setProxy:(SDLProxy * __nullable)proxy {
+//    NSLog(@"setProxy: %@", proxy);
+//    my_proxy = proxy;
+//}
+
+- (void)releaseProxy {
+    my_proxy = nil;
+}
+
+- (SDLProxy *)proxy {
+    return my_proxy;
+}
+
+- (void)startupProxy {
+    assert(nil != self.configuration);
+    assert(nil != self.configuration.lifecycleConfig);
+
+    // Start up the internal proxy object
+    #pragma clang diagnostic push
+    #pragma clang diagnostic ignored "-Wdeprecated-declarations"
+
+    self.secondaryTransportManager = nil;
+    SDLProxy * nextProxy = nil;
+    if (self.configuration.lifecycleConfig.tcpDebugMode) {
+        NSString * port = [NSString stringWithFormat:@"%d", (int)self.configuration.lifecycleConfig.tcpDebugPort];
+        nextProxy = [[SDLProxyManager shared] tcpProxyWithListener:self.notificationDispatcher
+                                      tcpIPAddress:self.configuration.lifecycleConfig.tcpDebugIPAddress
+                                           tcpPort:port
+                         secondaryTransportManager:nil
+                        encryptionLifecycleManager:self.encryptionLifecycleManager];
+    } else {
+            if (SDLSecondaryTransportsNone != self.configuration.lifecycleConfig.allowedSecondaryTransports) {
+                // We reuse our queue to run secondary transport manager's state machine
+                self.secondaryTransportManager = [[SDLSecondaryTransportManager alloc] initWithStreamingProtocolDelegate:self serialQueue:self.lifecycleQueue];
+            }
+            nextProxy = [[SDLProxyManager shared] iapProxyWithListener:self.notificationDispatcher
+                             secondaryTransportManager:self.secondaryTransportManager
+                            encryptionLifecycleManager:self.encryptionLifecycleManager];
+    }
+
+
+    my_proxy = nextProxy;
+//        [self setProxy:nextProxy];
+    #pragma clang diagnostic pop
+}
+
+@end
+

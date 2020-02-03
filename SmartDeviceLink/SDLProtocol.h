@@ -53,14 +53,14 @@ extern NSString *const SDLProtocolSecurityErrorDomain;
 @property (nullable, nonatomic, strong) id<SDLSecurityType> securityManager;
 
 /**
- *  The app's id
+ *  The application unique identifier
  */
 @property (nonatomic, copy) NSString *appId;
 
 /**
  *  The auth token, if any, returned with the `StartServiceACK` for the RPC service from the module.
  */
-@property (strong, nonatomic, readonly, nullable) NSString *authToken;
+@property (copy, nonatomic, readonly, nullable) NSString *authToken;
 
 #pragma mark - Init
 /**
@@ -70,7 +70,7 @@ extern NSString *const SDLProtocolSecurityErrorDomain;
  *
  *  @return An instance of SDLProtocol
  */
-- (instancetype)initWithEncryptionLifecycleManager:(SDLEncryptionLifecycleManager *)encryptionLifecycleManager;
+- (instancetype)initWithEncryptionLifecycleManager:(nullable SDLEncryptionLifecycleManager *)encryptionLifecycleManager;
 
 #pragma mark - Sending
 
