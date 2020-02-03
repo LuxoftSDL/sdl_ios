@@ -275,6 +275,10 @@ NSString *const BackgroundTaskTransportName = @"com.sdl.transport.backgroundTask
     [self sdl_stopManager:YES];
 }
 
+- (NSString * __nullable)sdl_appId {
+    return self.configuration.lifecycleConfig.appId;
+}
+
 - (void)sdl_stopManager:(BOOL)shouldRestart {
     SDLLogV(@"Stopping manager, %@", (shouldRestart ? @"will restart" : @"will not restart"));
 
