@@ -8,132 +8,399 @@
 
 #import "AppConstants.h"
 
+@implementation AppConstants
+
 #pragma mark - SDL Configuration
-NSString * const ExampleAppName1 = @"SDL Example Alpha";
-NSString * const ExampleAppName2 = @"SDL Example Betha";
-NSString * const ExampleAppNameShort = @"SDL";
-NSString * const ExampleAppNameTTS = @"S D L Example App";
-NSString * const ExampleFullAppId1 = @"123e4567-e89b-12d3-a456-426655440000"; // Dummy App Id
-NSString * const ExampleFullAppId2 = @"321e4567-e89b-12d3-a456-ffffffffffff"; // Dummy App Id
+- (NSString *)ExampleAppName {
+    return @"SDL Example Alpha";
+}
+
+- (NSString *)ExampleAppNameShort {
+    return @"SDL";
+}
+
+- (NSString *)ExampleAppNameTTS {
+    return @"S D L Example App";
+}
+
+- (NSString *)ExampleFullAppId {
+    return @"-e89b-12d3-a456-426655440000";
+}
 
 #pragma mark - SDL Textfields
-NSString * const SmartDeviceLinkText = @"SmartDeviceLink (SDL)";
-NSString * const ExampleAppText = @"Example App";
+- (NSString *)SmartDeviceLinkText {
+    return @"SmartDeviceLink (SDL)";
+}
+
+- (NSString *)ExampleAppText {
+    return @"Example App";
+}
+
 
 #pragma mark - SDL Soft Buttons
-NSString * const ToggleSoftButton = @"ToggleSoftButton";
-NSString * const ToggleSoftButtonImageOnState = @"ToggleSoftButtonImageOnState";
-NSString * const ToggleSoftButtonImageOffState = @"ToggleSoftButtonImageOffState";
-NSString * const ToggleSoftButtonTextOnState = @"ToggleSoftButtonTextOnState";
-NSString * const ToggleSoftButtonTextOffState = @"ToggleSoftButtonTextOffState";
-NSString * const ToggleSoftButtonTextTextOnText = @"➖";
-NSString * const ToggleSoftButtonTextTextOffText = @"➕";
+- (NSString *)ToggleSoftButton {
+    return @"ToggleSoftButton";
+}
 
-NSString * const AlertSoftButton = @"AlertSoftButton";
-NSString * const AlertSoftButtonImageState = @"AlertSoftButtonImageState";
-NSString * const AlertSoftButtonTextState = @"AlertSoftButtonTextState";
-NSString * const AlertSoftButtonText = @"Tap Me";
+- (NSString *)ToggleSoftButtonImageOnState {
+    return @"ToggleSoftButtonImageOnState";
+}
 
-NSString * const TextVisibleSoftButton = @"TextVisibleSoftButton";
-NSString * const TextVisibleSoftButtonTextOnState = @"TextVisibleSoftButtonTextOnState";
-NSString * const TextVisibleSoftButtonTextOffState = @"TextVisibleSoftButtonTextOffState";
-NSString * const TextVisibleSoftButtonTextOnText = @"➖Text";
-NSString * const TextVisibleSoftButtonTextOffText = @"➕Text";
+- (NSString *)ToggleSoftButtonImageOffState {
+    return @"ToggleSoftButtonImageOffState";
+}
 
-NSString * const ImagesVisibleSoftButton = @"ImagesVisibleSoftButton";
-NSString * const ImagesVisibleSoftButtonImageOnState = @"ImagesVisibleSoftButtonImageOnState";
-NSString * const ImagesVisibleSoftButtonImageOffState = @"ImagesVisibleSoftButtonImageOffState";
-NSString * const ImagesVisibleSoftButtonImageOnText = @"➖Icons";
-NSString * const ImagesVisibleSoftButtonImageOffText = @"➕Icons";
+- (NSString *)ToggleSoftButtonTextOnState {
+    return @"ToggleSoftButtonTextOnState";
+}
+
+- (NSString *)ToggleSoftButtonTextOffState {
+    return @"ToggleSoftButtonTextOffState";
+}
+
+- (NSString *)ToggleSoftButtonTextTextOnText {
+    return @"➖";
+}
+
+- (NSString *)ToggleSoftButtonTextTextOffText {
+    return @"➕";
+}
+
+- (NSString *)AlertSoftButton {
+    return @"AlertSoftButton";
+}
+
+- (NSString *)AlertSoftButtonImageState {
+    return @"AlertSoftButtonImageState";
+}
+
+- (NSString *)AlertSoftButtonTextState {
+    return @"AlertSoftButtonTextState";
+}
+
+- (NSString *)AlertSoftButtonText {
+    return @"Tap Me";
+}
+
+- (NSString *)TextVisibleSoftButton {
+    return @"TextVisibleSoftButton";
+}
+
+- (NSString *)TextVisibleSoftButtonTextOnState {
+    return @"TextVisibleSoftButtonTextOnState";
+}
+
+- (NSString *)TextVisibleSoftButtonTextOffState {
+    return @"TextVisibleSoftButtonTextOffState";
+}
+
+- (NSString *)TextVisibleSoftButtonTextOnText {
+    return @"➖Text";
+}
+
+- (NSString *)TextVisibleSoftButtonTextOffText {
+    return @"➕Text";
+}
+
+
+- (NSString *)ImagesVisibleSoftButton {
+    return @"ImagesVisibleSoftButton";
+}
+
+- (NSString *)ImagesVisibleSoftButtonImageOnState {
+    return @"ImagesVisibleSoftButtonImageOnState";
+}
+
+- (NSString *)ImagesVisibleSoftButtonImageOffState {
+    return @"ImagesVisibleSoftButtonImageOffState";
+}
+
+- (NSString *)ImagesVisibleSoftButtonImageOnText {
+    return @"➖Icons";
+}
+
+- (NSString *)ImagesVisibleSoftButtonImageOffText {
+    return @"➕Icons";
+}
+
 
 #pragma mark - Alert
 NSString * const AlertOKButtonText = @"OK";
 
 #pragma mark - SDL Text-To-Speech
-NSString * const TTSGoodJob = @"Good Job";
-NSString * const TTSYouMissed = @"You Missed";
+- (NSString *)TTSGoodJob {
+    return @"Good Job";
+}
+
+- (NSString *)TTSYouMissed {
+    return @"You Missed";
+}
+
 
 #pragma mark - SDL Voice Commands
-NSString * const VCStart = @"Start";
-NSString * const VCStop = @"Stop";
+- (NSString *)VCStart {
+    return @"Start";
+}
+
+- (NSString *)VCStop {
+    return @"Stop";
+}
+
 
 #pragma mark - SDL Perform Interaction Choice Set Menu
-NSString * const PICSInitialText = @"Perform Interaction Choice Set Menu Example";
-NSString * const PICSInitialPrompt = @"Select an item from the menu";
-NSString * const PICSHelpPrompt = @"Select a menu row using your voice or by tapping on the screen";
-NSString * const PICSTimeoutPrompt = @"Closing the menu";
-NSString * const PICSFirstChoice = @"First Choice";
-NSString * const PICSSecondChoice = @"Second Choice";
-NSString * const PICSThirdChoice = @"Third Choice";
+- (NSString *)PICSInitialText {
+    return @"Perform Interaction Choice Set Menu Example";
+}
+
+- (NSString *)PICSInitialPrompt {
+    return @"Select an item from the menu";
+}
+
+- (NSString *)PICSHelpPrompt {
+    return @"Select a menu row using your voice or by tapping on the screen";
+}
+
+- (NSString *)PICSTimeoutPrompt {
+    return @"Closing the menu";
+}
+
+- (NSString *)PICSFirstChoice {
+    return @"First Choice";
+}
+
+- (NSString *)PICSSecondChoice {
+    return @"Second Choice";
+}
+
+- (NSString *)PICSThirdChoice {
+    return @"Third Choice";
+}
+
 
 #pragma mark - SDL Perform Interaction Choice Set Menu VR Commands
+
 NSString * const VCPICSFirstChoice = @"First";
 NSString * const VCPICSecondChoice = @"Second";
-NSString * const VCPICSThirdChoice = @"Third";
+NSString * const VCPICSThirdChoice = @"Dritte";
 
 #pragma mark - SDL Add Command Menu
-NSString * const ACSpeakAppNameMenuName = @"Speak App Name";
-NSString * const ACShowChoiceSetMenuName = @"Show Perform Interaction Choice Set";
-NSString * const ACGetVehicleDataMenuName = @"Get Vehicle Speed";
-NSString * const ACGetAllVehicleDataMenuName = @"Get All Vehicle Data";
-NSString * const ACRecordInCarMicrophoneAudioMenuName = @"Record In-Car Microphone Audio";
-NSString * const ACDialPhoneNumberMenuName = @"Dial Phone Number";
-NSString * const ACSubmenuMenuName = @"Submenu";
-NSString * const ACSubmenuItemMenuName = @"Item";
-NSString * const ACSubmenuTemplateMenuName = @"Change Template";
-NSString * const ACSliderMenuName = @"Show Slider";
-NSString * const ACScrollableMessageMenuName = @"Show Scrollable Message";
+- (NSString *)ACSpeakAppNameMenuName {
+    return @"Speak App Name";
+}
 
-NSString * const ACAccelerationPedalPositionMenuName = @"Acceleration Pedal Position";
-NSString * const ACAirbagStatusMenuName = @"Airbag Status";
-NSString * const ACBeltStatusMenuName = @"Belt Status";
-NSString * const ACBodyInformationMenuName = @"Body Information";
-NSString * const ACClusterModeStatusMenuName = @"Cluster Mode Status";
-NSString * const ACDeviceStatusMenuName = @"Device Status";
-NSString * const ACDriverBrakingMenuName = @"Driver Braking";
-NSString * const ACECallInfoMenuName = @"eCall Info";
-NSString * const ACElectronicParkBrakeStatus = @"Electronic Parking Brake Status";
-NSString * const ACEmergencyEventMenuName = @"Emergency Event";
-NSString * const ACEngineOilLifeMenuName = @"Engine Oil Life";
-NSString * const ACEngineTorqueMenuName = @"Engine Torque";
-NSString * const ACExternalTemperatureMenuName = @"External Temperature";
-NSString * const ACFuelLevelMenuName = @"Fuel Level";
-NSString * const ACFuelLevelStateMenuName = @"Fuel Level State";
-NSString * const ACFuelRangeMenuName = @"Fuel Range";
-NSString * const ACGPSMenuName = @"GPS";
-NSString * const ACHeadLampStatusMenuName = @"Head Lamp Status";
-NSString * const ACInstantFuelConsumptionMenuName = @"Instant Fuel Consumption";
-NSString * const ACMyKeyMenuName = @"MyKey";
-NSString * const ACOdometerMenuName = @"Odometer";
-NSString * const ACPRNDLMenuName = @"PRNDL";
-NSString * const ACRPMMenuName = @"RPM";
-NSString * const ACSpeedMenuName = @"Speed";
-NSString * const ACSteeringWheelAngleMenuName = @"Steering Wheel Angle";
-NSString * const ACTirePressureMenuName = @"Tire Pressure";
-NSString * const ACTurnSignalMenuName = @"Turn Signal";
-NSString * const ACVINMenuName = @"VIN";
-NSString * const ACWiperStatusMenuName = @"Wiper Status";
+- (NSString *)ACShowChoiceSetMenuName {
+    return @"Show Perform Interaction Choice Set";
+}
+
+- (NSString *)ACGetVehicleDataMenuName {
+    return @"Get Vehicle Speed";
+}
+
+- (NSString *)ACGetAllVehicleDataMenuName {
+    return @"Get All Vehicle Data";
+}
+
+- (NSString *)ACRecordInCarMicrophoneAudioMenuName {
+    return @"Record In-Car Microphone Audio";
+}
+
+- (NSString *)ACDialPhoneNumberMenuName {
+    return @"Dial Phone Number";
+}
+
+- (NSString *)ACSubmenuMenuName {
+    return @"Submenu";
+}
+
+- (NSString *)ACSubmenuItemMenuName {
+    return @"Item";
+}
+
+- (NSString *)ACSubmenuTemplateMenuName {
+    return @"Change Template";
+}
+
+- (NSString *)ACSliderMenuName {
+    return @"Show Slider";
+}
+
+- (NSString *)ACScrollableMessageMenuName {
+    return @"Show Scrollable Message";
+}
+
+
+- (NSString *)ACAccelerationPedalPositionMenuName {
+    return @"Acceleration Pedal Position";
+}
+
+- (NSString *)ACAirbagStatusMenuName {
+    return @"Airbag Status";
+}
+
+- (NSString *)ACBeltStatusMenuName {
+    return @"Belt Status";
+}
+
+- (NSString *)ACBodyInformationMenuName {
+    return @"Body Information";
+}
+
+- (NSString *)ACClusterModeStatusMenuName {
+    return @"Cluster Mode Status";
+}
+
+- (NSString *)ACDeviceStatusMenuName {
+    return @"Device Status";
+}
+
+- (NSString *)ACDriverBrakingMenuName {
+    return @"Driver Braking";
+}
+
+- (NSString *)ACECallInfoMenuName {
+    return @"eCall Info";
+}
+
+- (NSString *)ACElectronicParkBrakeStatus {
+    return @"Electronic Parking Brake Status";
+}
+
+- (NSString *)ACEmergencyEventMenuName {
+    return @"Emergency Event";
+}
+
+- (NSString *)ACEngineOilLifeMenuName {
+    return @"Engine Oil Life";
+}
+
+- (NSString *)ACEngineTorqueMenuName {
+    return @"Engine Torque";
+}
+
+- (NSString *)ACExternalTemperatureMenuName {
+    return @"External Temperature";
+}
+
+- (NSString *)ACFuelLevelMenuName {
+    return @"Fuel Level";
+}
+
+- (NSString *)ACFuelLevelStateMenuName {
+    return @"Fuel Level State";
+}
+
+- (NSString *)ACFuelRangeMenuName {
+    return @"Fuel Range";
+}
+
+- (NSString *)ACGPSMenuName {
+    return @"GPS";
+}
+
+- (NSString *)ACHeadLampStatusMenuName {
+    return @"Head Lamp Status";
+}
+
+- (NSString *)ACInstantFuelConsumptionMenuName {
+    return @"Instant Fuel Consumption";
+}
+
+- (NSString *)ACMyKeyMenuName {
+    return @"MyKey";
+}
+
+- (NSString *)ACOdometerMenuName {
+    return @"Odometer";
+}
+
+- (NSString *)ACPRNDLMenuName {
+    return @"PRNDL";
+}
+
+- (NSString *)ACRPMMenuName {
+    return @"RPM";
+}
+
+- (NSString *)ACSpeedMenuName {
+    return @"Speed";
+}
+
+- (NSString *)ACSteeringWheelAngleMenuName {
+    return @"Steering Wheel Angle";
+}
+
+- (NSString *)ACTirePressureMenuName {
+    return @"Tire Pressure";
+}
+
+- (NSString *)ACTurnSignalMenuName {
+    return @"Turn Signal";
+}
+
+- (NSString *)ACVINMenuName {
+    return @"VIN";
+}
+
+- (NSString *)ACWiperStatusMenuName {
+    return @"Wiper Status";
+}
+
 
 #pragma mark - SDL Image Names
-NSString * const AlertBWIconName = @"alert";
-NSString * const CarBWIconImageName = @"car";
-NSString * const ExampleAppLogoName1 = @"sdl_logo_green";
-NSString * const ExampleAppLogoName2 = @"sdl_logo_purple";
-NSString * const MenuBWIconImageName = @"choice_set";
-NSString * const MicrophoneBWIconImageName = @"microphone";
-NSString * const PhoneBWIconImageName = @"phone";
-NSString * const SpeakBWIconImageName = @"speak";
-NSString * const ToggleOffBWIconName = @"toggle_off";
-NSString * const ToggleOnBWIconName = @"toggle_on";
+- (NSString *)AlertBWIconName {
+    return @"alert";
+}
+
+- (NSString *)CarBWIconImageName {
+    return @"car";
+}
+
+- (NSString *)ExampleAppLogoName {
+    return @"sdl_logo_green";
+}
+
+- (NSString *)MenuBWIconImageName {
+    return @"choice_set";
+}
+
+- (NSString *)MicrophoneBWIconImageName {
+    return @"microphone";
+}
+
+- (NSString *)PhoneBWIconImageName {
+    return @"phone";
+}
+
+- (NSString *)SpeakBWIconImageName {
+    return @"speak";
+}
+
+- (NSString *)ToggleOffBWIconName {
+    return @"toggle_off";
+}
+
+- (NSString *)ToggleOnBWIconName {
+    return @"toggle_on";
+}
+
 
 #pragma mark - SDL App Name in Different Languages
-NSString * const ExampleAppNameSpanish = @"SDL Aplicación de ejemplo";
-NSString * const ExampleAppNameFrench = @"SDL Exemple App";
+- (NSString *)ExampleAppNameSpanish {
+    return @"SDL Aplicación de ejemplo (sp)";
+}
+
+- (NSString *)ExampleAppNameFrench {
+    return @"SDL Exemple App (fr)";
+}
+
 
 #pragma mark - SDL Vehicle Data
-NSString * const VehicleDataOdometerName = @"Odometer";
-NSString * const VehicleDataSpeedName = @"Speed";
+- (NSString *)VehicleDataOdometerName {
+    return @"Odometer";
+}
 
-@implementation AppConstants
+- (NSString *)VehicleDataSpeedName {
+    return @"Speed";
+}
 
 @end

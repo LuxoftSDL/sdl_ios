@@ -12,13 +12,18 @@
 @class SDLManager;
 @class SDLMenuCell;
 @class SDLVoiceCommand;
+@class AppConstants;
+@class VehicleDataManager;
 
 NS_ASSUME_NONNULL_BEGIN
 
 @interface MenuManager : NSObject
 
-+ (NSArray<SDLMenuCell *> *)allMenuItemsWithManager:(SDLManager *)manager performManager:(PerformInteractionManager *)performManager;
-+ (NSArray<SDLVoiceCommand *> *)allVoiceMenuItemsWithManager:(SDLManager *)manager;
+- (instancetype)initWithAppConst:(AppConstants *)appConst
+              vehicleDataManager:(VehicleDataManager *)vehicleDataManager;
+
+- (NSArray<SDLMenuCell *> *)allMenuItemsWithManager:(SDLManager *)manager performManager:(PerformInteractionManager *)performManager;
+- (NSArray<SDLVoiceCommand *> *)allVoiceMenuItemsWithManager:(SDLManager *)manager;
 
 @end
 

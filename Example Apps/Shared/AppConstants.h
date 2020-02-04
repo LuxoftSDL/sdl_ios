@@ -10,64 +10,65 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-#pragma mark - SDL Configuration
-extern NSString * const ExampleAppName1;
-extern NSString * const ExampleAppName2;
-extern NSString * const ExampleAppNameShort;
-extern NSString * const ExampleAppNameTTS;
-extern NSString * const ExampleFullAppId1;
-extern NSString * const ExampleFullAppId2;
 extern BOOL const ExampleAppShouldRestartSDLManagerOnDisconnect;
 
+@interface AppConstants : NSObject
+
+#pragma mark - SDL Configuration
+@property (nonatomic, readonly) NSString * ExampleAppName;
+@property (nonatomic, readonly) NSString * ExampleAppNameShort;
+@property (nonatomic, readonly) NSString * ExampleAppNameTTS;
+@property (nonatomic, readonly) NSString * ExampleFullAppId;
+
 #pragma mark - SDL Textfields
-extern NSString * const SmartDeviceLinkText;
-extern NSString * const ExampleAppText;
+@property (nonatomic, readonly) NSString * SmartDeviceLinkText;
+@property (nonatomic, readonly) NSString * ExampleAppText;
 
 #pragma mark - SDL Soft Buttons
-extern NSString * const ToggleSoftButton;
-extern NSString * const ToggleSoftButtonImageOnState;
-extern NSString * const ToggleSoftButtonImageOffState;
-extern NSString * const ToggleSoftButtonTextOnState;
-extern NSString * const ToggleSoftButtonTextOffState;
-extern NSString * const ToggleSoftButtonTextTextOnText;
-extern NSString * const ToggleSoftButtonTextTextOffText;
+@property (nonatomic, readonly) NSString * ToggleSoftButton;
+@property (nonatomic, readonly) NSString * ToggleSoftButtonImageOnState;
+@property (nonatomic, readonly) NSString * ToggleSoftButtonImageOffState;
+@property (nonatomic, readonly) NSString * ToggleSoftButtonTextOnState;
+@property (nonatomic, readonly) NSString * ToggleSoftButtonTextOffState;
+@property (nonatomic, readonly) NSString * ToggleSoftButtonTextTextOnText;
+@property (nonatomic, readonly) NSString * ToggleSoftButtonTextTextOffText;
 
-extern NSString * const AlertSoftButton;
-extern NSString * const AlertSoftButtonImageState;
-extern NSString * const AlertSoftButtonTextState;
-extern NSString * const AlertSoftButtonText;
+@property (nonatomic, readonly) NSString * AlertSoftButton;
+@property (nonatomic, readonly) NSString * AlertSoftButtonImageState;
+@property (nonatomic, readonly) NSString * AlertSoftButtonTextState;
+@property (nonatomic, readonly) NSString * AlertSoftButtonText;
 
-extern NSString * const TextVisibleSoftButton;
-extern NSString * const TextVisibleSoftButtonTextOnState;
-extern NSString * const TextVisibleSoftButtonTextOffState;
-extern NSString * const TextVisibleSoftButtonTextOnText;
-extern NSString * const TextVisibleSoftButtonTextOffText;
+@property (nonatomic, readonly) NSString * TextVisibleSoftButton;
+@property (nonatomic, readonly) NSString * TextVisibleSoftButtonTextOnState;
+@property (nonatomic, readonly) NSString * TextVisibleSoftButtonTextOffState;
+@property (nonatomic, readonly) NSString * TextVisibleSoftButtonTextOnText;
+@property (nonatomic, readonly) NSString * TextVisibleSoftButtonTextOffText;
 
-extern NSString * const ImagesVisibleSoftButton;
-extern NSString * const ImagesVisibleSoftButtonImageOnState;
-extern NSString * const ImagesVisibleSoftButtonImageOffState;
-extern NSString * const ImagesVisibleSoftButtonImageOnText;
-extern NSString * const ImagesVisibleSoftButtonImageOffText;
+@property (nonatomic, readonly) NSString * ImagesVisibleSoftButton;
+@property (nonatomic, readonly) NSString * ImagesVisibleSoftButtonImageOnState;
+@property (nonatomic, readonly) NSString * ImagesVisibleSoftButtonImageOffState;
+@property (nonatomic, readonly) NSString * ImagesVisibleSoftButtonImageOnText;
+@property (nonatomic, readonly) NSString * ImagesVisibleSoftButtonImageOffText;
 
 #pragma mark - Alert
 extern NSString * const AlertOKButtonText;
 
 #pragma mark - SDL Text-To-Speech
-extern NSString * const TTSGoodJob;
-extern NSString * const TTSYouMissed;
+@property (nonatomic, readonly) NSString * TTSGoodJob;
+@property (nonatomic, readonly) NSString * TTSYouMissed;
 
 #pragma mark - SDL Voice Commands
-extern NSString * const VCStart;
-extern NSString * const VCStop;
+@property (nonatomic, readonly) NSString * VCStart;
+@property (nonatomic, readonly) NSString * VCStop;
 
 #pragma mark - SDL Perform Interaction Choice Set Menu
-extern NSString * const PICSInitialText;
-extern NSString * const PICSInitialPrompt;
-extern NSString * const PICSHelpPrompt;
-extern NSString * const PICSTimeoutPrompt;
-extern NSString * const PICSFirstChoice;
-extern NSString * const PICSSecondChoice;
-extern NSString * const PICSThirdChoice;
+@property (nonatomic, readonly) NSString * PICSInitialText;
+@property (nonatomic, readonly) NSString * PICSInitialPrompt;
+@property (nonatomic, readonly) NSString * PICSHelpPrompt;
+@property (nonatomic, readonly) NSString * PICSTimeoutPrompt;
+@property (nonatomic, readonly) NSString * PICSFirstChoice;
+@property (nonatomic, readonly) NSString * PICSSecondChoice;
+@property (nonatomic, readonly) NSString * PICSThirdChoice;
 
 #pragma mark - SDL Perform Interaction Choice Set Menu VR Commands
 extern NSString  * const VCPICSFirstChoice;
@@ -75,69 +76,66 @@ extern NSString  * const VCPICSecondChoice;
 extern NSString  * const VCPICSThirdChoice;
 
 #pragma mark - SDL Add Command Menu
-extern NSString * const ACSpeakAppNameMenuName;
-extern NSString * const ACShowChoiceSetMenuName;
-extern NSString * const ACGetVehicleDataMenuName;
-extern NSString * const ACGetAllVehicleDataMenuName;
-extern NSString * const ACRecordInCarMicrophoneAudioMenuName;
-extern NSString * const ACDialPhoneNumberMenuName;
-extern NSString * const ACSubmenuMenuName;
-extern NSString * const ACSubmenuItemMenuName;
-extern NSString * const ACSubmenuTemplateMenuName;
-extern NSString * const ACSliderMenuName;
-extern NSString * const ACScrollableMessageMenuName;
+@property (nonatomic, readonly) NSString * ACSpeakAppNameMenuName;
+@property (nonatomic, readonly) NSString * ACShowChoiceSetMenuName;
+@property (nonatomic, readonly) NSString * ACGetVehicleDataMenuName;
+@property (nonatomic, readonly) NSString * ACGetAllVehicleDataMenuName;
+@property (nonatomic, readonly) NSString * ACRecordInCarMicrophoneAudioMenuName;
+@property (nonatomic, readonly) NSString * ACDialPhoneNumberMenuName;
+@property (nonatomic, readonly) NSString * ACSubmenuMenuName;
+@property (nonatomic, readonly) NSString * ACSubmenuItemMenuName;
+@property (nonatomic, readonly) NSString * ACSubmenuTemplateMenuName;
+@property (nonatomic, readonly) NSString * ACSliderMenuName;
+@property (nonatomic, readonly) NSString * ACScrollableMessageMenuName;
 
-extern NSString * const ACAccelerationPedalPositionMenuName;
-extern NSString * const ACAirbagStatusMenuName;
-extern NSString * const ACBeltStatusMenuName;
-extern NSString * const ACBodyInformationMenuName;
-extern NSString * const ACClusterModeStatusMenuName;
-extern NSString * const ACDeviceStatusMenuName;
-extern NSString * const ACDriverBrakingMenuName;
-extern NSString * const ACECallInfoMenuName;
-extern NSString * const ACElectronicParkBrakeStatus;
-extern NSString * const ACEmergencyEventMenuName;
-extern NSString * const ACEngineOilLifeMenuName;
-extern NSString * const ACEngineTorqueMenuName;
-extern NSString * const ACExternalTemperatureMenuName;
-extern NSString * const ACFuelLevelMenuName;
-extern NSString * const ACFuelLevelStateMenuName;
-extern NSString * const ACFuelRangeMenuName;
-extern NSString * const ACGPSMenuName;
-extern NSString * const ACHeadLampStatusMenuName;
-extern NSString * const ACInstantFuelConsumptionMenuName;
-extern NSString * const ACMyKeyMenuName;
-extern NSString * const ACOdometerMenuName;
-extern NSString * const ACPRNDLMenuName;
-extern NSString * const ACRPMMenuName;
-extern NSString * const ACSpeedMenuName;
-extern NSString * const ACSteeringWheelAngleMenuName;
-extern NSString * const ACTirePressureMenuName;
-extern NSString * const ACTurnSignalMenuName;
-extern NSString * const ACVINMenuName;
-extern NSString * const ACWiperStatusMenuName;
+@property (nonatomic, readonly) NSString * ACAccelerationPedalPositionMenuName;
+@property (nonatomic, readonly) NSString * ACAirbagStatusMenuName;
+@property (nonatomic, readonly) NSString * ACBeltStatusMenuName;
+@property (nonatomic, readonly) NSString * ACBodyInformationMenuName;
+@property (nonatomic, readonly) NSString * ACClusterModeStatusMenuName;
+@property (nonatomic, readonly) NSString * ACDeviceStatusMenuName;
+@property (nonatomic, readonly) NSString * ACDriverBrakingMenuName;
+@property (nonatomic, readonly) NSString * ACECallInfoMenuName;
+@property (nonatomic, readonly) NSString * ACElectronicParkBrakeStatus;
+@property (nonatomic, readonly) NSString * ACEmergencyEventMenuName;
+@property (nonatomic, readonly) NSString * ACEngineOilLifeMenuName;
+@property (nonatomic, readonly) NSString * ACEngineTorqueMenuName;
+@property (nonatomic, readonly) NSString * ACExternalTemperatureMenuName;
+@property (nonatomic, readonly) NSString * ACFuelLevelMenuName;
+@property (nonatomic, readonly) NSString * ACFuelLevelStateMenuName;
+@property (nonatomic, readonly) NSString * ACFuelRangeMenuName;
+@property (nonatomic, readonly) NSString * ACGPSMenuName;
+@property (nonatomic, readonly) NSString * ACHeadLampStatusMenuName;
+@property (nonatomic, readonly) NSString * ACInstantFuelConsumptionMenuName;
+@property (nonatomic, readonly) NSString * ACMyKeyMenuName;
+@property (nonatomic, readonly) NSString * ACOdometerMenuName;
+@property (nonatomic, readonly) NSString * ACPRNDLMenuName;
+@property (nonatomic, readonly) NSString * ACRPMMenuName;
+@property (nonatomic, readonly) NSString * ACSpeedMenuName;
+@property (nonatomic, readonly) NSString * ACSteeringWheelAngleMenuName;
+@property (nonatomic, readonly) NSString * ACTirePressureMenuName;
+@property (nonatomic, readonly) NSString * ACTurnSignalMenuName;
+@property (nonatomic, readonly) NSString * ACVINMenuName;
+@property (nonatomic, readonly) NSString * ACWiperStatusMenuName;
 
 #pragma mark - SDL Image Names
-extern NSString * const AlertBWIconName;
-extern NSString * const CarBWIconImageName;
-extern NSString * const ExampleAppLogoName1;
-extern NSString * const ExampleAppLogoName2;
-extern NSString * const MenuBWIconImageName;
-extern NSString * const MicrophoneBWIconImageName;
-extern NSString * const PhoneBWIconImageName;
-extern NSString * const SpeakBWIconImageName;
-extern NSString * const ToggleOffBWIconName;
-extern NSString * const ToggleOnBWIconName;
+@property (nonatomic, readonly) NSString * AlertBWIconName;
+@property (nonatomic, readonly) NSString * CarBWIconImageName;
+@property (nonatomic, readonly) NSString * ExampleAppLogoName;
+@property (nonatomic, readonly) NSString * MenuBWIconImageName;
+@property (nonatomic, readonly) NSString * MicrophoneBWIconImageName;
+@property (nonatomic, readonly) NSString * PhoneBWIconImageName;
+@property (nonatomic, readonly) NSString * SpeakBWIconImageName;
+@property (nonatomic, readonly) NSString * ToggleOffBWIconName;
+@property (nonatomic, readonly) NSString * ToggleOnBWIconName;
 
 #pragma mark - SDL App Name in Different Languages
-extern NSString * const ExampleAppNameSpanish;
-extern NSString * const ExampleAppNameFrench;
+@property (nonatomic, readonly) NSString * ExampleAppNameSpanish;
+@property (nonatomic, readonly) NSString * ExampleAppNameFrench;
 
 #pragma mark - SDL Vehicle Data
-extern NSString * const VehicleDataOdometerName;
-extern NSString * const VehicleDataSpeedName;
-
-@interface AppConstants : NSObject
+@property (nonatomic, readonly) NSString * VehicleDataOdometerName;
+@property (nonatomic, readonly) NSString * VehicleDataSpeedName;
 
 @end
 

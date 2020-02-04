@@ -10,6 +10,7 @@
 
 @class SDLManager;
 @class SDLSoftButtonObject;
+@class AppConstants;
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -22,7 +23,9 @@ typedef void(^RefreshUIHandler)(void);
 @property (assign, nonatomic, getter=areImagesEnabled, readonly) BOOL imagesEnabled;
 
 - (instancetype)init NS_UNAVAILABLE;
-- (instancetype)initWithManager:(SDLManager *)manager refreshUIHandler:(RefreshUIHandler)refreshUIHandler;
+- (instancetype)initWithManager:(SDLManager *)manager
+                       appConst:(AppConstants *)appConst
+               refreshUIHandler:(RefreshUIHandler)refreshUIHandler;
 
 - (NSArray<SDLSoftButtonObject *> *)allScreenSoftButtons;
 

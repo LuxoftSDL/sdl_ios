@@ -5,6 +5,7 @@
 #import <Foundation/Foundation.h>
 
 @class SDLManager;
+@class AppConstants;
 
 typedef NS_ENUM(NSUInteger, ProxyTransportType) {
     ProxyTransportTypeTCP,
@@ -21,7 +22,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface ProxyManager : NSObject
 
-- (instancetype)initWithName:(NSString*)appName identifier:(NSString*)appId iconName:(NSString*)iconName;
+- (instancetype)initWithConstants:(AppConstants *)appConst;
 
 @property (assign, nonatomic, readonly) ProxyState state;
 @property (strong, nonatomic) SDLManager *sdlManager;

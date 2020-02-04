@@ -26,11 +26,11 @@
 
 #pragma mark - IBActions
 
-- (IBAction)connectButtonWasPressed:(UIButton *)sender {
+- (IBAction)connectAlphaAction:(UIButton *)sender {
     [Preferences sharedPreferences].ipAddress = self.ipAddressTextField.text;
     [Preferences sharedPreferences].port = self.portTextField.text.integerValue;
 
-    [super connectButtonWasPressed:sender];
+    [super connectAlphaAction:sender];
 }
 
 

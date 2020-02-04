@@ -20,6 +20,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (strong, nonatomic) SDLManager *sdlManager;
 @property (copy, nonatomic, readwrite) NSString *vehicleOdometerData;
 @property (copy, nonatomic, nullable) RefreshUIHandler refreshUIHandler;
+@property (strong, nonatomic) AppConstants *appConst;
 
 @end
 
@@ -27,13 +28,16 @@ NS_ASSUME_NONNULL_BEGIN
 
 #pragma mark - Lifecycle
 
-- (instancetype)initWithManager:(SDLManager *)manager refreshUIHandler:(RefreshUIHandler)refreshUIHandler {
+- (instancetype)initWithManager:(SDLManager *)manager
+                       appConst:(AppConstants *)appConst
+               refreshUIHandler:(RefreshUIHandler)refreshUIHandler {
     self = [super init];
     if (!self) {
         return nil;
     }
 
     _sdlManager = manager;
+    _appConst = appConst;
     _refreshUIHandler = refreshUIHandler;
     _vehicleOdometerData = @"";
 
@@ -61,7 +65,7 @@ NS_ASSUME_NONNULL_BEGIN
         SDLGetVehicleDataResponse* getVehicleDataResponse = (SDLGetVehicleDataResponse *)response;
         SDLResult resultCode = getVehicleDataResponse.resultCode;
 
-        NSMutableString *message = [NSMutableString stringWithFormat:@"%@: ", VehicleDataOdometerName];
+        NSMutableString *message = [NSMutableString stringWithFormat:@"%@: ", self.appConst.VehicleDataOdometerName];
         if ([resultCode isEqualToEnum:SDLResultSuccess]) {
             SDLLogD(@"Subscribed to vehicle odometer data");
             [message appendString:@"Subscribed"];
@@ -112,7 +116,7 @@ NS_ASSUME_NONNULL_BEGIN
     }
 
     SDLOnVehicleData *onVehicleData = (SDLOnVehicleData *)notification.notification;
-    self.vehicleOdometerData = [NSString stringWithFormat:@"%@: %@ km", VehicleDataOdometerName, onVehicleData.odometer];
+    self.vehicleOdometerData = [NSString stringWithFormat:@"%@: %@ km", self.appConst.VehicleDataOdometerName, onVehicleData.odometer];
 
     if (!self.refreshUIHandler) { return; }
     self.refreshUIHandler();
@@ -122,7 +126,7 @@ NS_ASSUME_NONNULL_BEGIN
  *  Resets the odometer data
  */
 - (void)sdlex_resetOdometer {
-    self.vehicleOdometerData = [NSString stringWithFormat:@"%@: Unsubscribed", VehicleDataOdometerName];
+    self.vehicleOdometerData = [NSString stringWithFormat:@"%@: Unsubscribed", self.appConst.VehicleDataOdometerName];
 }
 
 #pragma mark - Get Vehicle Data
@@ -134,7 +138,7 @@ NS_ASSUME_NONNULL_BEGIN
  *  @param triggerSource Whether the menu item was selected by voice or touch
  *  @param vehicleDataType The vehicle data to look for
  */
-+ (void)getAllVehicleDataWithManager:(SDLManager *)manager triggerSource:(SDLTriggerSource)triggerSource vehicleDataType:(NSString *)vehicleDataType {
+- (void)getAllVehicleDataWithManager:(SDLManager *)manager triggerSource:(SDLTriggerSource)triggerSource vehicleDataType:(NSString *)vehicleDataType {
     SDLLogD(@"Checking if app has permission to access vehicle data...");
     if (![manager.permissionManager isRPCAllowed:@"GetVehicleData"]) {
         [manager sendRequest:[AlertManager alertWithMessageAndCloseButton:@"This app does not have the required permissions to access vehicle data" textField2:nil iconName:nil]];
@@ -188,62 +192,62 @@ NS_ASSUME_NONNULL_BEGIN
     }];
 }
 
-+ (NSString *)sdlex_vehicleDataDescription:(SDLGetVehicleDataResponse *)vehicleData vehicleDataType:(NSString *)vehicleDataType {
+- (NSString *)sdlex_vehicleDataDescription:(SDLGetVehicleDataResponse *)vehicleData vehicleDataType:(NSString *)vehicleDataType {
     NSString *vehicleDataDescription = nil;
 
-    if ([vehicleDataType isEqualToString:ACAccelerationPedalPositionMenuName]) {
+    if ([vehicleDataType isEqualToString:self.appConst.ACAccelerationPedalPositionMenuName]) {
         vehicleDataDescription = vehicleData.accPedalPosition.description;
-    } else if ([vehicleDataType isEqualToString:ACAirbagStatusMenuName]) {
+    } else if ([vehicleDataType isEqualToString:self.appConst.ACAirbagStatusMenuName]) {
         vehicleDataDescription = vehicleData.airbagStatus.description;
-    } else if ([vehicleDataType isEqualToString:ACBeltStatusMenuName]) {
+    } else if ([vehicleDataType isEqualToString:self.appConst.ACBeltStatusMenuName]) {
         vehicleDataDescription = vehicleData.beltStatus.description;
-    } else if ([vehicleDataType isEqualToString:ACBodyInformationMenuName]) {
+    } else if ([vehicleDataType isEqualToString:self.appConst.ACBodyInformationMenuName]) {
         vehicleDataDescription = vehicleData.bodyInformation.description;
-    } else if ([vehicleDataType isEqualToString:ACClusterModeStatusMenuName]) {
+    } else if ([vehicleDataType isEqualToString:self.appConst.ACClusterModeStatusMenuName]) {
         vehicleDataDescription = vehicleData.clusterModeStatus.description;
-    } else if ([vehicleDataType isEqualToString:ACDeviceStatusMenuName]) {
+    } else if ([vehicleDataType isEqualToString:self.appConst.ACDeviceStatusMenuName]) {
         vehicleDataDescription = vehicleData.deviceStatus.description;
-    } else if ([vehicleDataType isEqualToString:ACDriverBrakingMenuName]) {
+    } else if ([vehicleDataType isEqualToString:self.appConst.ACDriverBrakingMenuName]) {
         vehicleDataDescription = vehicleData.driverBraking.description;
-    } else if ([vehicleDataType isEqualToString:ACECallInfoMenuName]) {
+    } else if ([vehicleDataType isEqualToString:self.appConst.ACECallInfoMenuName]) {
         vehicleDataDescription = vehicleData.eCallInfo.description;
-    } else if ([vehicleDataType isEqualToEnum:ACElectronicParkBrakeStatus]) {
+    } else if ([vehicleDataType isEqualToEnum:self.appConst.ACElectronicParkBrakeStatus]) {
         vehicleDataDescription = vehicleData.electronicParkBrakeStatus.description;
-    } else if ([vehicleDataType isEqualToString:ACEmergencyEventMenuName]) {
+    } else if ([vehicleDataType isEqualToString:self.appConst.ACEmergencyEventMenuName]) {
         vehicleDataDescription = vehicleData.emergencyEvent.description;
-    } else if ([vehicleDataType isEqualToString:ACEngineOilLifeMenuName]) {
+    } else if ([vehicleDataType isEqualToString:self.appConst.ACEngineOilLifeMenuName]) {
         vehicleDataDescription = vehicleData.engineOilLife.description;
-    } else if ([vehicleDataType isEqualToString:ACEngineTorqueMenuName]) {
+    } else if ([vehicleDataType isEqualToString:self.appConst.ACEngineTorqueMenuName]) {
         vehicleDataDescription = vehicleData.engineTorque.description;
-    } else if ([vehicleDataType isEqualToString:ACExternalTemperatureMenuName]) {
+    } else if ([vehicleDataType isEqualToString:self.appConst.ACExternalTemperatureMenuName]) {
         vehicleDataDescription = vehicleData.externalTemperature.description;
-    } else if ([vehicleDataType isEqualToString:ACFuelLevelMenuName]) {
+    } else if ([vehicleDataType isEqualToString:self.appConst.ACFuelLevelMenuName]) {
         vehicleDataDescription = vehicleData.fuelLevel.description;
-    } else if ([vehicleDataType isEqualToString:ACFuelLevelStateMenuName]) {
+    } else if ([vehicleDataType isEqualToString:self.appConst.ACFuelLevelStateMenuName]) {
         vehicleDataDescription = vehicleData.fuelLevel_State.description;
-    } else if ([vehicleDataType isEqualToString:ACFuelRangeMenuName]) {
+    } else if ([vehicleDataType isEqualToString:self.appConst.ACFuelRangeMenuName]) {
         vehicleDataDescription = vehicleData.fuelRange.description;
-    } else if ([vehicleDataType isEqualToString:ACGPSMenuName]) {
+    } else if ([vehicleDataType isEqualToString:self.appConst.ACGPSMenuName]) {
         vehicleDataDescription = vehicleData.gps.description;
-    } else if ([vehicleDataType isEqualToString:ACHeadLampStatusMenuName]) {
+    } else if ([vehicleDataType isEqualToString:self.appConst.ACHeadLampStatusMenuName]) {
         vehicleDataDescription = vehicleData.headLampStatus.description;
-    } else if ([vehicleDataType isEqualToString:ACInstantFuelConsumptionMenuName]) {
+    } else if ([vehicleDataType isEqualToString:self.appConst.ACInstantFuelConsumptionMenuName]) {
         vehicleDataDescription = vehicleData.instantFuelConsumption.description;
-    } else if ([vehicleDataType isEqualToString:ACMyKeyMenuName]) {
+    } else if ([vehicleDataType isEqualToString:self.appConst.ACMyKeyMenuName]) {
         vehicleDataDescription = vehicleData.myKey.description;
-    } else if ([vehicleDataType isEqualToString:ACOdometerMenuName]) {
+    } else if ([vehicleDataType isEqualToString:self.appConst.ACOdometerMenuName]) {
         vehicleDataDescription = vehicleData.odometer.description;
-    } else if ([vehicleDataType isEqualToString:ACPRNDLMenuName]) {
+    } else if ([vehicleDataType isEqualToString:self.appConst.ACPRNDLMenuName]) {
         vehicleDataDescription = vehicleData.prndl.description;
-    } else if ([vehicleDataType isEqualToString:ACSpeedMenuName]) {
+    } else if ([vehicleDataType isEqualToString:self.appConst.ACSpeedMenuName]) {
         vehicleDataDescription = vehicleData.speed.description;
-    } else if ([vehicleDataType isEqualToString:ACSteeringWheelAngleMenuName]) {
+    } else if ([vehicleDataType isEqualToString:self.appConst.ACSteeringWheelAngleMenuName]) {
         vehicleDataDescription = vehicleData.steeringWheelAngle.description;
-    } else if ([vehicleDataType isEqualToString:ACTirePressureMenuName]) {
+    } else if ([vehicleDataType isEqualToString:self.appConst.ACTirePressureMenuName]) {
         vehicleDataDescription = vehicleData.tirePressure.description;
-    } else if ([vehicleDataType isEqualToString:ACTurnSignalMenuName]) {
+    } else if ([vehicleDataType isEqualToString:self.appConst.ACTurnSignalMenuName]) {
         vehicleDataDescription = vehicleData.turnSignal.description;
-    } else if ([vehicleDataType isEqualToString: ACVINMenuName]) {
+    } else if ([vehicleDataType isEqualToString:self.appConst.ACVINMenuName]) {
         vehicleDataDescription = vehicleData.vin.description;
     }
 
@@ -258,7 +262,7 @@ NS_ASSUME_NONNULL_BEGIN
  *  @param manager      The SDL manager
  *  @param phoneNumber  A phone number to dial
  */
-+ (void)checkPhoneCallCapabilityWithManager:(SDLManager *)manager phoneNumber:(NSString *)phoneNumber {
+- (void)checkPhoneCallCapabilityWithManager:(SDLManager *)manager phoneNumber:(NSString *)phoneNumber {
     SDLLogD(@"Checking phone call capability");
     [manager.systemCapabilityManager updateCapabilityType:SDLSystemCapabilityTypePhoneCall completionHandler:^(NSError * _Nullable error, SDLSystemCapabilityManager * _Nonnull systemCapabilityManager) {
         if (!systemCapabilityManager.phoneCapability) {
@@ -281,7 +285,7 @@ NS_ASSUME_NONNULL_BEGIN
  *  @param phoneNumber  A phone number to dial
  *  @param manager      The SDL manager
  */
-+ (void)sdlex_dialPhoneNumber:(NSString *)phoneNumber manager:(SDLManager *)manager {
+- (void)sdlex_dialPhoneNumber:(NSString *)phoneNumber manager:(SDLManager *)manager {
     SDLDialNumber *dialNumber = [[SDLDialNumber alloc] initWithNumber:phoneNumber];
     [manager sendRequest:dialNumber withResponseHandler:^(__kindof SDLRPCRequest * _Nullable request, __kindof SDLRPCResponse * _Nullable response, NSError * _Nullable error) {
         if (!response.resultCode) { return; }

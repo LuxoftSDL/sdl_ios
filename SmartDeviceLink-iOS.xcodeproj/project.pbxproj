@@ -1531,6 +1531,13 @@
 		9FE2471522D77AD500F8D2FC /* SDLWindowType.h in Headers */ = {isa = PBXBuildFile; fileRef = 9FE2471322D77AD500F8D2FC /* SDLWindowType.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		9FE2471622D77AD500F8D2FC /* SDLWindowType.m in Sources */ = {isa = PBXBuildFile; fileRef = 9FE2471422D77AD500F8D2FC /* SDLWindowType.m */; };
 		9FE2471922D77AED00F8D2FC /* SDLPredefinedWindows.h in Headers */ = {isa = PBXBuildFile; fileRef = 9FE2471722D77AED00F8D2FC /* SDLPredefinedWindows.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		B307109F23E97DE800320C73 /* ApplicationAlpha.m in Sources */ = {isa = PBXBuildFile; fileRef = B307109E23E97DE800320C73 /* ApplicationAlpha.m */; };
+		B30710A523E97E6900320C73 /* ApplicationBeta.m in Sources */ = {isa = PBXBuildFile; fileRef = B30710A423E97E6900320C73 /* ApplicationBeta.m */; };
+		B30710A823E97E8800320C73 /* ApplicationGamma.m in Sources */ = {isa = PBXBuildFile; fileRef = B30710A723E97E8800320C73 /* ApplicationGamma.m */; };
+		B30710AB23E98FAC00320C73 /* AppConstantsAlpha.m in Sources */ = {isa = PBXBuildFile; fileRef = B30710AA23E98FAC00320C73 /* AppConstantsAlpha.m */; };
+		B30710AE23E98FC100320C73 /* AppConstantsBeta.m in Sources */ = {isa = PBXBuildFile; fileRef = B30710AD23E98FC100320C73 /* AppConstantsBeta.m */; };
+		B30710B123E98FCE00320C73 /* AppConstantsGamma.m in Sources */ = {isa = PBXBuildFile; fileRef = B30710B023E98FCE00320C73 /* AppConstantsGamma.m */; };
+		B30710B523E991C000320C73 /* ItemManager.m in Sources */ = {isa = PBXBuildFile; fileRef = B30710B423E991C000320C73 /* ItemManager.m */; };
 		B349CB2323E81D3400A31379 /* SDLVersion_ext.m in Sources */ = {isa = PBXBuildFile; fileRef = B349CB2123E81D3400A31379 /* SDLVersion_ext.m */; };
 		B349CB2423E81D3400A31379 /* SDLVersion_ext.h in Headers */ = {isa = PBXBuildFile; fileRef = B349CB2223E81D3400A31379 /* SDLVersion_ext.h */; };
 		B3E1E9AC23E343E40082863E /* SDLTransportManager.h in Headers */ = {isa = PBXBuildFile; fileRef = B3E1E9AA23E343E40082863E /* SDLTransportManager.h */; };
@@ -3285,6 +3292,20 @@
 		9FE2471322D77AD500F8D2FC /* SDLWindowType.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SDLWindowType.h; sourceTree = "<group>"; };
 		9FE2471422D77AD500F8D2FC /* SDLWindowType.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SDLWindowType.m; sourceTree = "<group>"; };
 		9FE2471722D77AED00F8D2FC /* SDLPredefinedWindows.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SDLPredefinedWindows.h; sourceTree = "<group>"; };
+		B307109D23E97DE800320C73 /* ApplicationAlpha.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ApplicationAlpha.h; sourceTree = "<group>"; };
+		B307109E23E97DE800320C73 /* ApplicationAlpha.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ApplicationAlpha.m; sourceTree = "<group>"; };
+		B30710A323E97E6900320C73 /* ApplicationBeta.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ApplicationBeta.h; sourceTree = "<group>"; };
+		B30710A423E97E6900320C73 /* ApplicationBeta.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ApplicationBeta.m; sourceTree = "<group>"; };
+		B30710A623E97E8800320C73 /* ApplicationGamma.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ApplicationGamma.h; sourceTree = "<group>"; };
+		B30710A723E97E8800320C73 /* ApplicationGamma.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ApplicationGamma.m; sourceTree = "<group>"; };
+		B30710A923E98FAC00320C73 /* AppConstantsAlpha.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppConstantsAlpha.h; sourceTree = "<group>"; };
+		B30710AA23E98FAC00320C73 /* AppConstantsAlpha.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppConstantsAlpha.m; sourceTree = "<group>"; };
+		B30710AC23E98FC100320C73 /* AppConstantsBeta.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppConstantsBeta.h; sourceTree = "<group>"; };
+		B30710AD23E98FC100320C73 /* AppConstantsBeta.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppConstantsBeta.m; sourceTree = "<group>"; };
+		B30710AF23E98FCE00320C73 /* AppConstantsGamma.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppConstantsGamma.h; sourceTree = "<group>"; };
+		B30710B023E98FCE00320C73 /* AppConstantsGamma.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppConstantsGamma.m; sourceTree = "<group>"; };
+		B30710B323E991C000320C73 /* ItemManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ItemManager.h; sourceTree = "<group>"; };
+		B30710B423E991C000320C73 /* ItemManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ItemManager.m; sourceTree = "<group>"; };
 		B349CB2123E81D3400A31379 /* SDLVersion_ext.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SDLVersion_ext.m; sourceTree = "<group>"; };
 		B349CB2223E81D3400A31379 /* SDLVersion_ext.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SDLVersion_ext.h; sourceTree = "<group>"; };
 		B3E1E9AA23E343E40082863E /* SDLTransportManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SDLTransportManager.h; sourceTree = "<group>"; };
@@ -6238,6 +6259,7 @@
 		88295677207CF46C00EF056C /* Objective-C */ = {
 			isa = PBXGroup;
 			children = (
+				B30710B223E9919A00320C73 /* SDL */,
 				B3F03D4F23E85F83006D042E /* UI */,
 				5D48329E1A92865900252386 /* SDL */,
 				5D48329A1A8EA31500252386 /* Utilities */,
@@ -6417,6 +6439,35 @@
 			path = Notifications;
 			sourceTree = "<group>";
 		};
+		B307109C23E97DB000320C73 /* SDLApplication */ = {
+			isa = PBXGroup;
+			children = (
+				B307109D23E97DE800320C73 /* ApplicationAlpha.h */,
+				B307109E23E97DE800320C73 /* ApplicationAlpha.m */,
+				B30710A323E97E6900320C73 /* ApplicationBeta.h */,
+				B30710A423E97E6900320C73 /* ApplicationBeta.m */,
+				B30710A623E97E8800320C73 /* ApplicationGamma.h */,
+				B30710A723E97E8800320C73 /* ApplicationGamma.m */,
+				B30710A923E98FAC00320C73 /* AppConstantsAlpha.h */,
+				B30710AA23E98FAC00320C73 /* AppConstantsAlpha.m */,
+				B30710AC23E98FC100320C73 /* AppConstantsBeta.h */,
+				B30710AD23E98FC100320C73 /* AppConstantsBeta.m */,
+				B30710AF23E98FCE00320C73 /* AppConstantsGamma.h */,
+				B30710B023E98FCE00320C73 /* AppConstantsGamma.m */,
+			);
+			path = SDLApplication;
+			sourceTree = "<group>";
+		};
+		B30710B223E9919A00320C73 /* SDL */ = {
+			isa = PBXGroup;
+			children = (
+				B30710B323E991C000320C73 /* ItemManager.h */,
+				B30710B423E991C000320C73 /* ItemManager.m */,
+			);
+			name = SDL;
+			path = "Example Apps/Example ObjC/SDL";
+			sourceTree = SOURCE_ROOT;
+		};
 		B349CB1F23E81D3400A31379 /* DeveloperAPI */ = {
 			isa = PBXGroup;
 			children = (
@@ -6459,6 +6510,7 @@
 		B3F03D4F23E85F83006D042E /* UI */ = {
 			isa = PBXGroup;
 			children = (
+				B307109C23E97DB000320C73 /* SDLApplication */,
 				B3F03D5023E85F83006D042E /* Connection */,
 			);
 			name = UI;
@@ -7410,21 +7462,28 @@
 				5D1FF2BA21304581000EB9B4 /* ConnectionTCPTableViewController.m in Sources */,
 				5D1FF2B921304581000EB9B4 /* ConnectionContainerViewController.m in Sources */,
 				5D1FF29D21304515000EB9B4 /* RPCPermissionsManager.m in Sources */,
+				B30710A823E97E8800320C73 /* ApplicationGamma.m in Sources */,
 				B3F03D5323E85F93006D042E /* ConnectionTableViewController.m in Sources */,
 				5D1FF2A121304515000EB9B4 /* VehicleDataManager.m in Sources */,
 				5D1FF29F21304515000EB9B4 /* ProxyManager.m in Sources */,
+				B307109F23E97DE800320C73 /* ApplicationAlpha.m in Sources */,
+				B30710A523E97E6900320C73 /* ApplicationBeta.m in Sources */,
+				B30710B523E991C000320C73 /* ItemManager.m in Sources */,
 				5D1FF2BF21304598000EB9B4 /* ConnectionAnimatedTransition.m in Sources */,
 				5D1FF2A721304531000EB9B4 /* Preferences.m in Sources */,
 				5D1FF2CC2130464E000EB9B4 /* main.m in Sources */,
 				5D1FF2C021304598000EB9B4 /* ConnectionTransitionContext.m in Sources */,
 				5D1FF2A221304515000EB9B4 /* ButtonManager.m in Sources */,
+				B30710AE23E98FC100320C73 /* AppConstantsBeta.m in Sources */,
 				5D1FF2A021304515000EB9B4 /* AudioManager.m in Sources */,
 				5D1FF29E21304515000EB9B4 /* MenuManager.m in Sources */,
+				B30710AB23E98FAC00320C73 /* AppConstantsAlpha.m in Sources */,
 				5D1FF2C3213045EB000EB9B4 /* AppConstants.m in Sources */,
 				5D1FF2B821304581000EB9B4 /* ConnectionIAPTableViewController.m in Sources */,
 				5D1FF29C21304515000EB9B4 /* PerformInteractionManager.m in Sources */,
 				5D1FF2A821304531000EB9B4 /* TextValidator.m in Sources */,
 				5D1FF28D213044F9000EB9B4 /* AlertManager.m in Sources */,
+				B30710B123E98FCE00320C73 /* AppConstantsGamma.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

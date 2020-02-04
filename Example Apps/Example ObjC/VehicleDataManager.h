@@ -21,13 +21,15 @@ typedef void(^RefreshUIHandler)(void);
 @property (copy, nonatomic, readonly) NSString *vehicleOdometerData;
 
 - (instancetype)init NS_UNAVAILABLE;
-- (instancetype)initWithManager:(SDLManager *)manager refreshUIHandler:(RefreshUIHandler)refreshUIHandler;
+- (instancetype)initWithManager:(SDLManager *)manager
+                       appConst:(AppConstants *)appConst
+               refreshUIHandler:(RefreshUIHandler)refreshUIHandler;
 
 - (void)subscribeToVehicleOdometer;
 - (void)unsubscribeToVehicleOdometer;
 
-+ (void)getAllVehicleDataWithManager:(SDLManager *)manager triggerSource:(SDLTriggerSource)triggerSource vehicleDataType:(NSString *)vehicleDataType;
-+ (void)checkPhoneCallCapabilityWithManager:(SDLManager *)manager phoneNumber:(NSString *)phoneNumber;
+- (void)getAllVehicleDataWithManager:(SDLManager *)manager triggerSource:(SDLTriggerSource)triggerSource vehicleDataType:(NSString *)vehicleDataType;
+- (void)checkPhoneCallCapabilityWithManager:(SDLManager *)manager phoneNumber:(NSString *)phoneNumber;
 
 
 @end

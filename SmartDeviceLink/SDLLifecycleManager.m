@@ -205,7 +205,7 @@ NSString *const BackgroundTaskTransportName = @"com.sdl.transport.backgroundTask
         return;
     }
 
-    SDLLogD(@"Starting lifecycle manager");
+    SDLLogD(@"Starting lifecycle manager %@", self.appId);
     self.readyHandler = [readyHandler copy];
 
     [self sdl_transitionToState:SDLLifecycleStateStarted];
@@ -213,7 +213,7 @@ NSString *const BackgroundTaskTransportName = @"com.sdl.transport.backgroundTask
 
 - (void)stop {
     dispatch_sync(_lifecycleQueue, ^{
-        SDLLogD(@"Lifecycle manager stopped");
+        SDLLogD(@"Lifecycle manager stopped %@", self.appId);
         if ([self.lifecycleStateMachine isCurrentState:SDLLifecycleStateReady]) {
             [self sdl_transitionToState:SDLLifecycleStateUnregistering];
         } else {
@@ -292,7 +292,7 @@ NSString *const BackgroundTaskTransportName = @"com.sdl.transport.backgroundTask
 }
 
 - (void)sdl_stopManager:(BOOL)shouldRestart {
-    SDLLogV(@"Stopping manager, %@", (shouldRestart ? @"will restart" : @"will not restart"));
+    SDLLogV(@"Stopping manager, %@, %@", (shouldRestart ? @"will restart" : @"will not restart"), self.appId);
 
     [self releaseProxy];
 
@@ -341,16 +341,16 @@ NSString *const BackgroundTaskTransportName = @"com.sdl.transport.backgroundTask
     if ([self.lifecycleState isEqualToString:SDLLifecycleStateReconnecting]) { return; }
 
     // If we have security managers, add them to the proxy
-    NSString *appId = self.configuration.lifecycleConfig.fullAppId ? self.configuration.lifecycleConfig.fullAppId : self.configuration.lifecycleConfig.appId;
+    NSString *appId = [self appId];
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wdeprecated-declarations"
     if (self.configuration.streamingMediaConfig.securityManagers != nil) {
-        SDLLogD(@"Adding security managers from streamingMedia configuration");
+        SDLLogD(@"Adding security managers from streamingMedia configuration %@", appId);
         [self.proxy addSecurityManagers:self.configuration.streamingMediaConfig.securityManagers forAppId:appId];
     }
 #pragma clang diagnostic pop
     if (self.configuration.encryptionConfig.securityManagers != nil) {
-        SDLLogD(@"Adding security managers from encryption configuration");
+        SDLLogD(@"Adding security managers from encryption configuration %@", appId);
         [self.proxy addSecurityManagers:self.configuration.encryptionConfig.securityManagers forAppId:appId];
     }
 
@@ -371,7 +371,7 @@ NSString *const BackgroundTaskTransportName = @"com.sdl.transport.backgroundTask
       withResponseHandler:^(__kindof SDLRPCRequest *_Nullable request, __kindof SDLRPCResponse *_Nullable response, NSError *_Nullable error) {
         // If the success BOOL is NO or we received an error at this point, we failed. Call the ready handler and transition to the DISCONNECTED state.
         if (error != nil || ![response.success boolValue]) {
-            SDLLogE(@"Failed to register the app. Error: %@, Response: %@", error, response);
+            SDLLogE(@"Failed to register the app %@. Error: %@, Response: %@", appId, error, response);
             if (weakSelf.readyHandler) {
                 weakSelf.readyHandler(NO, error);
             }
@@ -413,7 +413,7 @@ NSString *const BackgroundTaskTransportName = @"com.sdl.transport.backgroundTask
 - (void)didEnterStateUpdatingConfiguration {
     // We can expect that the delegate has implemented the update method and the actual language is a supported language
     SDLLanguage actualLanguage = self.registerResponse.language;
-    SDLLogD(@"Updating configuration due to language mismatch. New langugage: %@", actualLanguage);
+    SDLLogD(@"Updating configuration due to language mismatch. New langugage: %@, %@", actualLanguage, self.appId);
 
     SDLLifecycleConfigurationUpdate *configUpdate = [self.delegate managerShouldUpdateLifecycleToLanguage:actualLanguage];
 
@@ -444,7 +444,7 @@ NSString *const BackgroundTaskTransportName = @"com.sdl.transport.backgroundTask
                 return;
             }
 
-            SDLLogD(@"Successfully updated language with change registration. Request sent: %@", request);
+            SDLLogD(@"Successfully updated language with change registration. Request sent: %@, %@", request, self.appId);
         }];
     }
     
@@ -456,14 +456,15 @@ NSString *const BackgroundTaskTransportName = @"com.sdl.transport.backgroundTask
 
     // Make sure there's at least one group_enter until we have synchronously run through all the startup calls
     dispatch_group_enter(managerGroup);
-    SDLLogD(@"Setting up assistant managers");
+    SDLLogD(@"Setting up assistant managers %@", self.appId);
     [self.lockScreenManager start];
     [self.systemCapabilityManager start];
 
+    NSString *appId = [self appId];
     dispatch_group_enter(managerGroup);
     [self.fileManager startWithCompletionHandler:^(BOOL success, NSError *_Nullable error) {
         if (!success) {
-            SDLLogW(@"File manager was unable to start; error: %@", error);
+            SDLLogW(@"File manager was unable to start; error: %@, %@", error, appId);
         }
 
         dispatch_group_leave(managerGroup);
@@ -472,7 +473,7 @@ NSString *const BackgroundTaskTransportName = @"com.sdl.transport.backgroundTask
     dispatch_group_enter(managerGroup);
     [self.permissionManager startWithCompletionHandler:^(BOOL success, NSError *_Nullable error) {
         if (!success) {
-            SDLLogW(@"Permission manager was unable to start; error: %@", error);
+            SDLLogW(@"Permission manager was unable to start; error: %@, %@", error, appId);
         }
 
         dispatch_group_leave(managerGroup);
@@ -491,7 +492,7 @@ NSString *const BackgroundTaskTransportName = @"com.sdl.transport.backgroundTask
     dispatch_group_enter(managerGroup);
     [self.screenManager startWithCompletionHandler:^(NSError * _Nullable error) {
         if (error != nil) {
-            SDLLogW(@"Screen Manager was unable to start; error: %@", error);
+            SDLLogW(@"Screen Manager was unable to start; error: %@, %@", error, appId);
         }
 
         dispatch_group_leave(managerGroup);
@@ -572,7 +573,7 @@ NSString *const BackgroundTaskTransportName = @"com.sdl.transport.backgroundTask
     [self sdl_sendRequest:unregisterRequest
       withResponseHandler:^(__kindof SDLRPCRequest *_Nullable request, __kindof SDLRPCResponse *_Nullable response, NSError *_Nullable error) {
         if (error != nil || ![response.success boolValue]) {
-            SDLLogE(@"SDL Error unregistering, we are going to hard disconnect: %@, response: %@", error, response);
+            SDLLogE(@"SDL Error unregistering, we are going to hard disconnect: %@, response: %@; %@", error, response, weakSelf.appId);
         }
 
         [weakSelf sdl_transitionToState:SDLLifecycleStateStopped];
@@ -592,13 +593,14 @@ NSString *const BackgroundTaskTransportName = @"com.sdl.transport.backgroundTask
     }
 #pragma clang diagnostic pop
 
+    NSString *appId = self.appId;
     [self.fileManager uploadFile:appIcon completionHandler:^(BOOL success, NSUInteger bytesAvailable, NSError *_Nullable error) {
         // These errors could be recoverable (particularly "cannot overwrite"), so we'll still attempt to set the app icon
         if (error != nil) {
             if (error.code == SDLFileManagerErrorCannotOverwrite) {
-                SDLLogW(@"Failed to upload app icon: A file with this name already exists on the system");
+                SDLLogW(@"Failed to upload app icon: A file with this name already exists on the system, %@", appId);
             } else {
-                SDLLogW(@"Unexpected error uploading app icon: %@", error);
+                SDLLogW(@"Unexpected error uploading app icon: %@, %@", error, appId);
                 completion();
                 return;
             }
@@ -611,7 +613,7 @@ NSString *const BackgroundTaskTransportName = @"com.sdl.transport.backgroundTask
         [self sdl_sendRequest:setAppIcon
           withResponseHandler:^(__kindof SDLRPCRequest *_Nullable request, __kindof SDLRPCResponse *_Nullable response, NSError *_Nullable error) {
             if (error != nil) {
-                SDLLogW(@"Error setting up app icon: %@", error);
+                SDLLogW(@"Error setting up app icon: %@, %@", error, appId);
             }
 
             // We've succeeded or failed
@@ -677,7 +679,7 @@ NSString *const BackgroundTaskTransportName = @"com.sdl.transport.backgroundTask
 
 - (void)sendConnectionRequest:(__kindof SDLRPCRequest *)request withResponseHandler:(nullable SDLResponseHandler)handler {
     if (![self.lifecycleStateMachine isCurrentState:SDLLifecycleStateReady]) {
-        SDLLogW(@"Manager not ready, request not sent (%@)", request);
+        SDLLogW(@"Manager not ready, request not sent (%@), %@", request, self.appId);
         if (handler) {
             handler(request, nil, [NSError sdl_lifecycle_notReadyError]);
         }
@@ -690,7 +692,7 @@ NSString *const BackgroundTaskTransportName = @"com.sdl.transport.backgroundTask
     }
     
     if (request.isPayloadProtected && !self.encryptionLifecycleManager.isEncryptionReady) {
-        SDLLogW(@"Encryption Manager not ready, request not sent (%@)", request);
+        SDLLogW(@"Encryption Manager not ready, request not sent (%@), %@", request, self.appId);
         if (handler) {
             handler(request, nil, [NSError sdl_encryption_lifecycle_notReadyError]);
         }
@@ -713,7 +715,7 @@ NSString *const BackgroundTaskTransportName = @"com.sdl.transport.backgroundTask
     // If, for some reason, the request is nil we should error out.
     if (!request) {
         NSError *error = [NSError sdl_lifecycle_rpcErrorWithDescription:@"Nil Request Sent" andReason:@"A nil RPC request was passed and cannot be sent."];
-        SDLLogW(@"%@", error);
+        SDLLogW(@"%@, %@", error, self.appId);
         if (handler) {
             handler(nil, nil, error);
         }
@@ -787,7 +789,7 @@ NSString *const BackgroundTaskTransportName = @"com.sdl.transport.backgroundTask
 
 - (void)transportDidConnect {
     if (![self.lifecycleStateMachine isCurrentState:SDLLifecycleStateReady]) {
-        SDLLogD(@"Transport connected");
+        SDLLogD(@"Transport connected, %@", self.appId);
 
         dispatch_async(self.lifecycleQueue, ^{
             [self sdl_transitionToState:SDLLifecycleStateConnected];
@@ -796,7 +798,7 @@ NSString *const BackgroundTaskTransportName = @"com.sdl.transport.backgroundTask
 }
 
 - (void)transportDidDisconnect {
-    SDLLogD(@"Transport Disconnected");
+    SDLLogD(@"Transport Disconnected, %@", self.appId);
 
     dispatch_async(self.lifecycleQueue, ^{
         if (self.lifecycleState == SDLLifecycleStateUnregistering || self.lifecycleState == SDLLifecycleStateStopped) {
@@ -834,15 +836,15 @@ NSString *const BackgroundTaskTransportName = @"com.sdl.transport.backgroundTask
     self.systemContext = hmiStatusNotification.systemContext;
 
     if (![oldHMILevel isEqualToEnum:self.hmiLevel]) {
-        SDLLogD(@"HMI level changed from %@ to %@", oldHMILevel, self.hmiLevel);
+        SDLLogD(@"HMI level changed from %@ to %@; %@", oldHMILevel, self.hmiLevel, self.appId);
     }
 
     if (![oldStreamingState isEqualToEnum:self.audioStreamingState]) {
-        SDLLogD(@"Audio streaming state changed from %@ to %@", oldStreamingState, self.audioStreamingState);
+        SDLLogD(@"Audio streaming state changed from %@ to %@; %@", oldStreamingState, self.audioStreamingState, self.appId);
     }
 
     if (![oldSystemContext isEqualToEnum:self.systemContext]) {
-        SDLLogD(@"System context changed from %@ to %@", oldSystemContext, self.systemContext);
+        SDLLogD(@"System context changed from %@ to %@; %@", oldSystemContext, self.systemContext, self.appId);
     }
 
     if ([self.lifecycleStateMachine isCurrentState:SDLLifecycleStateSettingUpHMI]) {
@@ -883,7 +885,7 @@ NSString *const BackgroundTaskTransportName = @"com.sdl.transport.backgroundTask
     }
 
     SDLOnAppInterfaceUnregistered *appUnregisteredNotification = notification.notification;
-    SDLLogE(@"Remote Device forced unregistration for reason: %@", appUnregisteredNotification.reason);
+    SDLLogE(@"Remote Device forced unregistration for reason: %@; %@", appUnregisteredNotification.reason, self.appId);
 
     if ([self.lifecycleStateMachine isCurrentState:SDLLifecycleStateUnregistering]) {
         [self sdl_transitionToState:SDLLifecycleStateStopped];
@@ -923,6 +925,12 @@ NSString *const BackgroundTaskTransportName = @"com.sdl.transport.backgroundTask
     if (newProtocol != nil) {
         [self.streamManager startVideoWithProtocol:newProtocol];
     }
+}
+
+- (NSString *)appId {
+    return self.configuration.lifecycleConfig.fullAppId ?
+        self.configuration.lifecycleConfig.fullAppId :
+        self.configuration.lifecycleConfig.appId;
 }
 
 @end

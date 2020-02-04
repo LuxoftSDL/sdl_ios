@@ -8,16 +8,26 @@
 
 #import <UIKit/UIKit.h>
 
-@class ProxyManager;
+@class ApplicationAlpha;
+@class ApplicationBeta;
+@class ApplicationGamma;
 
 @interface ConnectionTableViewController : UITableViewController
 
-@property (weak, nonatomic) IBOutlet UIButton *connectButton;
-@property (weak, nonatomic) IBOutlet UITableViewCell *connectTableViewCell;
+@property (weak, nonatomic) IBOutlet UIButton *connectButtonAlpha;
+@property (weak, nonatomic) IBOutlet UIButton *connectButtonBeta;
+@property (weak, nonatomic) IBOutlet UIButton *connectButtonGamma;
 
-@property (strong, nonatomic) ProxyManager * proxyManager1;
-@property (strong, nonatomic) ProxyManager * proxyManager2;
+@property (weak, nonatomic) IBOutlet UITableViewCell *connectTableViewCellAlpha;
+@property (weak, nonatomic) IBOutlet UITableViewCell *connectTableViewCellBeta;
+@property (weak, nonatomic) IBOutlet UITableViewCell *connectTableViewCellGamma;
 
-- (IBAction)connectButtonWasPressed:(UIButton *)sender;
+@property (strong, nonatomic) ApplicationAlpha * appAlpha;
+@property (strong, nonatomic) ApplicationBeta * appBeta;
+@property (strong, nonatomic) ApplicationGamma * appGamma;
+
+- (IBAction)connectAlphaAction:(UIButton *)sender;
+- (IBAction)connectBetaAction:(UIButton *)sender;
+- (IBAction)connectGammaAction:(UIButton *)sender;
 
 @end

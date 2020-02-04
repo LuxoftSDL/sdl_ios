@@ -29,6 +29,8 @@ NS_ASSUME_NONNULL_BEGIN
 @property (copy, nonatomic, readwrite) NSString *appName;
 @property (copy, nonatomic, readwrite) NSString *appId;
 @property (copy, nonatomic, readwrite) NSString *iconName;
+
+@property (strong, nonatomic) AppConstants *appConst;
 @end
 
 
@@ -36,16 +38,18 @@ NS_ASSUME_NONNULL_BEGIN
 
 #pragma mark - Initialization
 
-- (instancetype)initWithName:(NSString*)appName identifier:(NSString*)appId iconName:(NSString*)iconName {
-    if ((self = [self init])) {
-        _appName = appName;
-        _appId = appId;
-        _iconName = iconName;
+- (instancetype)initWithConstants:(AppConstants*)appConst {
+    assert(nil != appConst);
+    if ((self = [self initInternal])) {
+        _appConst = appConst;
+        _appName = appConst.ExampleAppName;
+        _appId = appConst.ExampleFullAppId;
+        _iconName = appConst.ExampleAppLogoName;
     }
     return self;
 }
 
-- (instancetype)init {
+- (instancetype)initInternal {
     if ((self = [super init])) {
         _state = ProxyStateStopped;
         _firstHMILevel = SDLHMILevelNone;
@@ -62,9 +66,14 @@ NS_ASSUME_NONNULL_BEGIN
             return;
         }
 
-        self.vehicleDataManager = [[VehicleDataManager alloc] initWithManager:self.sdlManager refreshUIHandler:self.refreshUIHandler];
-        self.performManager = [[PerformInteractionManager alloc] initWithManager:self.sdlManager];
-        self.buttonManager = [[ButtonManager alloc] initWithManager:self.sdlManager refreshUIHandler:self.refreshUIHandler];
+        weakSelf.vehicleDataManager = [[VehicleDataManager alloc] initWithManager:self.sdlManager
+                                                                     appConst:self.appConst
+                                                             refreshUIHandler:self.refreshUIHandler];
+        weakSelf.performManager = [[PerformInteractionManager alloc] initWithManager:self.sdlManager
+                                                                        appConst:self.appConst];
+        weakSelf.buttonManager = [[ButtonManager alloc] initWithManager:self.sdlManager
+                                                           appConst:self.appConst
+                                                   refreshUIHandler:self.refreshUIHandler];
 
         [weakSelf sdlex_updateProxyState:ProxyStateConnected];
         [RPCPermissionsManager setupPermissionsCallbacksWithManager:weakSelf.sdlManager];
@@ -131,9 +140,9 @@ NS_ASSUME_NONNULL_BEGIN
     UIImage *appLogo = [[UIImage imageNamed:self.iconName] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
     SDLArtwork *appIconArt = [SDLArtwork persistentArtworkWithImage:appLogo asImageFormat:SDLArtworkImageFormatPNG];
 
-    config.shortAppName = ExampleAppNameShort;
+    config.shortAppName = self.appConst.ExampleAppNameShort;
     config.appIcon = appIconArt;
-    config.voiceRecognitionCommandNames = @[ExampleAppNameTTS];
+    config.voiceRecognitionCommandNames = @[self.appConst.ExampleAppNameTTS];
     config.ttsName = [SDLTTSChunk textChunksFromString:self.appName];
     config.language = SDLLanguageEnUs;
     config.languagesSupported = @[SDLLanguageEnUs, SDLLanguageFrCa, SDLLanguageEsMx];
@@ -151,7 +160,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (SDLLogConfiguration *)sdlex_logConfiguration {
     SDLLogConfiguration *logConfig = [SDLLogConfiguration debugConfiguration];
-    SDLLogFileModule *sdlExampleModule = [SDLLogFileModule moduleWithName:@"SDL Obj-C Example App" files:[NSSet setWithArray:@[@"ProxyManager", @"AlertManager", @"AudioManager", @"ButtonManager", @"MenuManager", @"PerformInteractionManager", @"RPCPermissionsManager", @"VehicleDataManager"]]];
+    NSSet *files = [NSSet setWithArray:@[@"ProxyManager", @"AlertManager", @"AudioManager", @"ButtonManager", @"MenuManager", @"PerformInteractionManager", @"RPCPermissionsManager", @"VehicleDataManager"]];
+    SDLLogFileModule *sdlExampleModule = [SDLLogFileModule moduleWithName:self.appName
+                                                                    files:files];
     logConfig.modules = [logConfig.modules setByAddingObject:sdlExampleModule];
     logConfig.targets = [logConfig.targets setByAddingObject:[SDLLogTargetFile logger]];
     logConfig.globalLogLevel = SDLLogLevelDebug;
@@ -162,8 +173,9 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma mark - Screen UI Helpers
 
 - (void)sdlex_createMenus {
-    self.sdlManager.screenManager.menu = [MenuManager allMenuItemsWithManager:self.sdlManager performManager:self.performManager];
-    self.sdlManager.screenManager.voiceCommands = [MenuManager allVoiceMenuItemsWithManager:self.sdlManager];
+    MenuManager *menuMgr = [[MenuManager alloc] initWithAppConst:self.appConst vehicleDataManager:self.vehicleDataManager];
+    self.sdlManager.screenManager.menu = [menuMgr allMenuItemsWithManager:self.sdlManager performManager:self.performManager];
+    self.sdlManager.screenManager.voiceCommands = [menuMgr allVoiceMenuItemsWithManager:self.sdlManager];
 }
 
 - (void)sdlex_showInitialData {
@@ -197,8 +209,8 @@ NS_ASSUME_NONNULL_BEGIN
     [screenManager beginUpdates];
     screenManager.textAlignment = SDLTextAlignmentLeft;
     screenManager.title = isTextEnabled ? @"Home" : nil;
-    screenManager.textField1 = isTextEnabled ? SmartDeviceLinkText : nil;
-    screenManager.textField2 = isTextEnabled ? [NSString stringWithFormat:@"Obj-C %@", ExampleAppText] : nil;
+    screenManager.textField1 = isTextEnabled ? self.appConst.SmartDeviceLinkText : nil;
+    screenManager.textField2 = isTextEnabled ? [NSString stringWithFormat:@"Obj-C %@", self.appConst.ExampleAppText] : nil;
     screenManager.textField3 = isTextEnabled ? self.vehicleDataManager.vehicleOdometerData : nil;
 
     if ([self sdlex_imageFieldSupported:SDLImageFieldNameGraphic]) {
@@ -206,7 +218,7 @@ NS_ASSUME_NONNULL_BEGIN
     }
 
     if ([self sdlex_imageFieldSupported:SDLImageFieldNameSecondaryGraphic]) {
-        screenManager.secondaryGraphic = areImagesVisible ? [SDLArtwork persistentArtworkWithImage:[UIImage imageNamed:CarBWIconImageName] asImageFormat:SDLArtworkImageFormatPNG] : nil;
+        screenManager.secondaryGraphic = areImagesVisible ? [SDLArtwork persistentArtworkWithImage:[UIImage imageNamed:self.appConst.CarBWIconImageName] asImageFormat:SDLArtworkImageFormatPNG] : nil;
     }
 
     [screenManager endUpdatesWithCompletionHandler:^(NSError * _Nullable error) {
@@ -302,9 +314,9 @@ NS_ASSUME_NONNULL_BEGIN
     if ([language isEqualToEnum:SDLLanguageEnUs]) {
         update.appName = self.appName;
     } else if ([language isEqualToString:SDLLanguageEsMx]) {
-        update.appName = ExampleAppNameSpanish;
+        update.appName = self.appConst.ExampleAppNameSpanish;
     } else if ([language isEqualToString:SDLLanguageFrCa]) {
-        update.appName = ExampleAppNameFrench;
+        update.appName = self.appConst.ExampleAppNameFrench;
     } else {
         return nil;
     }

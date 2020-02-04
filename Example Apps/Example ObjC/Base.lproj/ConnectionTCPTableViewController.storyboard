@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="15400" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="l5Q-ZP-1BO">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="15505" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="l5Q-ZP-1BO">
     <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15404"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15510"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -78,11 +78,11 @@
                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="tailTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="t37-4W-6F4">
                                                     <rect key="frame" x="16" y="0.0" width="343" height="44"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="23"/>
-                                                    <state key="normal" title="Connect">
+                                                    <state key="normal" title="Connect 1">
                                                         <color key="titleShadowColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     </state>
                                                     <connections>
-                                                        <action selector="connectButtonWasPressed:" destination="l5Q-ZP-1BO" eventType="touchUpInside" id="tgb-10-M4m"/>
+                                                        <action selector="connectAlphaAction:" destination="l5Q-ZP-1BO" eventType="touchUpInside" id="rQA-MZ-Lcp"/>
                                                     </connections>
                                                 </button>
                                             </subviews>
@@ -91,6 +91,58 @@
                                                 <constraint firstItem="t37-4W-6F4" firstAttribute="leading" secondItem="uI9-fK-205" secondAttribute="leadingMargin" id="cc3-uk-9fL"/>
                                                 <constraint firstAttribute="bottom" secondItem="t37-4W-6F4" secondAttribute="bottom" id="hnD-4g-xvT"/>
                                                 <constraint firstAttribute="trailingMargin" secondItem="t37-4W-6F4" secondAttribute="trailing" id="j4p-fi-0LP"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="XxD-84-M8U">
+                                        <rect key="frame" x="0.0" y="219.5" width="375" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="XxD-84-M8U" id="iab-zm-oy3">
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="tailTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="a0c-h4-yJh">
+                                                    <rect key="frame" x="16" y="0.0" width="343" height="44"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="23"/>
+                                                    <state key="normal" title="Connect 2">
+                                                        <color key="titleShadowColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                    </state>
+                                                    <connections>
+                                                        <action selector="connectBetaAction:" destination="l5Q-ZP-1BO" eventType="touchUpInside" id="lcy-0y-LVq"/>
+                                                    </connections>
+                                                </button>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstAttribute="trailingMargin" secondItem="a0c-h4-yJh" secondAttribute="trailing" id="4OU-57-8Ax"/>
+                                                <constraint firstItem="a0c-h4-yJh" firstAttribute="leading" secondItem="iab-zm-oy3" secondAttribute="leadingMargin" id="Ca3-oZ-rxV"/>
+                                                <constraint firstItem="a0c-h4-yJh" firstAttribute="top" secondItem="iab-zm-oy3" secondAttribute="top" id="Ima-EQ-wyw"/>
+                                                <constraint firstAttribute="bottom" secondItem="a0c-h4-yJh" secondAttribute="bottom" id="eqq-ka-vXs"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="RRi-bZ-BPF">
+                                        <rect key="frame" x="0.0" y="263.5" width="375" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="RRi-bZ-BPF" id="Sxq-Tt-z1A">
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="tailTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Xav-RH-994">
+                                                    <rect key="frame" x="16" y="0.0" width="343" height="44"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="23"/>
+                                                    <state key="normal" title="Connect 3">
+                                                        <color key="titleShadowColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                    </state>
+                                                    <connections>
+                                                        <action selector="connectGammaAction:" destination="l5Q-ZP-1BO" eventType="touchUpInside" id="LDm-NF-HQx"/>
+                                                    </connections>
+                                                </button>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstItem="Xav-RH-994" firstAttribute="leading" secondItem="Sxq-Tt-z1A" secondAttribute="leadingMargin" id="KVA-RP-ZD8"/>
+                                                <constraint firstAttribute="bottom" secondItem="Xav-RH-994" secondAttribute="bottom" id="ZhW-ev-iI8"/>
+                                                <constraint firstItem="Xav-RH-994" firstAttribute="top" secondItem="Sxq-Tt-z1A" secondAttribute="top" id="cbU-cH-g1K"/>
+                                                <constraint firstAttribute="trailingMargin" secondItem="Xav-RH-994" secondAttribute="trailing" id="iYX-j1-lVg"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                     </tableViewCell>
@@ -114,8 +166,12 @@
                         </segmentedControl>
                     </navigationItem>
                     <connections>
-                        <outlet property="connectButton" destination="t37-4W-6F4" id="f6v-Q4-ggs"/>
-                        <outlet property="connectTableViewCell" destination="ybX-Eh-Hbx" id="hyh-CW-oXx"/>
+                        <outlet property="connectButtonAlpha" destination="t37-4W-6F4" id="SrV-xH-sx1"/>
+                        <outlet property="connectButtonBeta" destination="a0c-h4-yJh" id="Fyq-GE-1AZ"/>
+                        <outlet property="connectButtonGamma" destination="Xav-RH-994" id="shB-Z3-uaG"/>
+                        <outlet property="connectTableViewCellAlpha" destination="ybX-Eh-Hbx" id="yNs-Ue-QLl"/>
+                        <outlet property="connectTableViewCellBeta" destination="XxD-84-M8U" id="Dbv-sJ-r46"/>
+                        <outlet property="connectTableViewCellGamma" destination="RRi-bZ-BPF" id="Ofl-eB-qf2"/>
                         <outlet property="ipAddressTextField" destination="xqM-s4-9RV" id="daz-uN-Rxa"/>
                         <outlet property="portTextField" destination="hsI-ld-8xY" id="5pF-XP-Xh3"/>
                     </connections>
