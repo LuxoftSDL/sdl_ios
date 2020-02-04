@@ -32,6 +32,7 @@ SDLStateMachineTransitionFormat const SDLStateMachineTransitionFormatDidEnter = 
 @interface SDLStateMachine ()
 
 @property (copy, nonatomic, readwrite) SDLState *currentState;
+@property (nullable, strong, nonatomic) NSNotificationCenter *notificationCenter;
 
 @end
 
@@ -39,6 +40,11 @@ SDLStateMachineTransitionFormat const SDLStateMachineTransitionFormatDidEnter = 
 @implementation SDLStateMachine
 
 - (instancetype)initWithTarget:(id)target initialState:(SDLState *)initialState states:(NSDictionary<SDLState *, SDLAllowableStateTransitions *> *)states {
+    return [self initWithTarget:target initialState:initialState states:states notificationCenter:[NSNotificationCenter defaultCenter]];
+}
+
+- (instancetype)initWithTarget:(id)target initialState:(SDLState *)initialState states:(NSDictionary<SDLState *, SDLAllowableStateTransitions *> *)states notificationCenter:(NSNotificationCenter *)notificationCenter {
+    assert(nil != notificationCenter);
     self = [super init];
 
     if (!self) {
@@ -50,11 +56,21 @@ SDLStateMachineTransitionFormat const SDLStateMachineTransitionFormatDidEnter = 
         @throw [NSException exceptionWithName:NSInternalInconsistencyException reason:reasonMessage userInfo:nil];
     }
 
+    _notificationCenter = notificationCenter;
     _target = target;
     _states = states;
     _currentState = initialState;
 
     return self;
+}
+
+- (void)shutDown {
+    [self.notificationCenter removeObserver:self];
+    self.notificationCenter = nil;
+}
+
+- (void)dealloc {
+    [self shutDown];
 }
 
 - (void)transitionToState:(SDLState *)state {
@@ -96,7 +112,7 @@ SDLStateMachineTransitionFormat const SDLStateMachineTransitionFormatDidEnter = 
     self.currentState = state;
 
     // Post state transition calls
-    [[NSNotificationCenter defaultCenter] postNotificationName:self.transitionNotificationName object:self userInfo:@{SDLStateMachineNotificationInfoKeyOldState: oldState, SDLStateMachineNotificationInfoKeyNewState: state}];
+    [self.notificationCenter postNotificationName:self.transitionNotificationName object:self userInfo:@{SDLStateMachineNotificationInfoKeyOldState: oldState, SDLStateMachineNotificationInfoKeyNewState: state}];
     if ([self.target respondsToSelector:didTransition]) {
         [self.target performSelector:didTransition];
     }

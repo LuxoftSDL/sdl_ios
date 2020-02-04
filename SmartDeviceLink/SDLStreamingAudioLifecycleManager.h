@@ -69,7 +69,13 @@ NS_ASSUME_NONNULL_BEGIN
  @param encryptionConfiguration The encryption configuration with security managers
  @return A new streaming manager
  */
-- (instancetype)initWithConnectionManager:(id<SDLConnectionManagerType>)connectionManager streamingConfiguration:(SDLStreamingMediaConfiguration *)streamingConfiguration encryptionConfiguration:(SDLEncryptionConfiguration *)encryptionConfiguration NS_DESIGNATED_INITIALIZER;
+- (instancetype)initWithConnectionManager:(id<SDLConnectionManagerType>)connectionManager
+                   streamingConfiguration:(SDLStreamingMediaConfiguration *)streamingConfiguration
+                  encryptionConfiguration:(SDLEncryptionConfiguration *)encryptionConfiguration
+                       notificationCenter:(NSNotificationCenter *)notificationCenter
+NS_DESIGNATED_INITIALIZER;
+
+- (void)shutDown;
 
 /**
  *  Start the manager with a completion block that will be called when startup completes. This is used internally. To use an SDLStreamingMediaManager, you should use the manager found on `SDLManager`.

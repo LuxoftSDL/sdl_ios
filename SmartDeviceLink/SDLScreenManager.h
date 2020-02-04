@@ -183,7 +183,7 @@ If set to `SDLDynamicMenuUpdatesModeForceOff`, menu updates will work the legacy
  @param systemCapabilityManager The system capability manager object for reading window capabilities
  @return The screen manager
  */
-- (instancetype)initWithConnectionManager:(id<SDLConnectionManagerType>)connectionManager fileManager:(SDLFileManager *)fileManager systemCapabilityManager:(SDLSystemCapabilityManager *)systemCapabilityManager;
+- (instancetype)initWithConnectionManager:(id<SDLConnectionManagerType>)connectionManager fileManager:(SDLFileManager *)fileManager systemCapabilityManager:(SDLSystemCapabilityManager *)systemCapabilityManager notificationCenter:(NSNotificationCenter *)notificationCenter;
 
 /**
  Starts the manager and all sub-managers

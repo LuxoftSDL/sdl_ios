@@ -61,14 +61,21 @@ NS_ASSUME_NONNULL_BEGIN
 @property (assign, nonatomic) BOOL waitingOnHMILevelUpdateToUpdate;
 @property (assign, nonatomic) BOOL isDirty;
 
+@property (weak, nonatomic, nullable) NSNotificationCenter *notificationCenter;
+
 @end
 
 @implementation SDLTextAndGraphicManager
 
-- (instancetype)initWithConnectionManager:(id<SDLConnectionManagerType>)connectionManager fileManager:(SDLFileManager *)fileManager systemCapabilityManager:(SDLSystemCapabilityManager *)systemCapabilityManager {
+- (instancetype)initWithConnectionManager:(id<SDLConnectionManagerType>)connectionManager
+                              fileManager:(SDLFileManager *)fileManager
+                  systemCapabilityManager:(SDLSystemCapabilityManager *)systemCapabilityManager
+                       notificationCenter:(NSNotificationCenter *)notificationCenter {
+    assert(nil != notificationCenter);
     self = [super init];
     if (!self) { return nil; }
 
+    _notificationCenter = notificationCenter;
     _connectionManager = connectionManager;
     _fileManager = fileManager;
     _systemCapabilityManager = systemCapabilityManager;
@@ -81,9 +88,18 @@ NS_ASSUME_NONNULL_BEGIN
     _waitingOnHMILevelUpdateToUpdate = NO;
     _isDirty = NO;
 
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(sdl_hmiStatusNotification:) name:SDLDidChangeHMIStatusNotification object:nil];
+    [self.notificationCenter addObserver:self selector:@selector(sdl_hmiStatusNotification:) name:SDLDidChangeHMIStatusNotification object:nil];
 
     return self;
+}
+
+- (void)shutDown {
+    [self.notificationCenter removeObserver:self];
+    self.notificationCenter = nil;
+}
+
+- (void)dealloc {
+    [self shutDown];
 }
 
 - (void)start {

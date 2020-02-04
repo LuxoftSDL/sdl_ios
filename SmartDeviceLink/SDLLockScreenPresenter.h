@@ -20,6 +20,10 @@ NS_ASSUME_NONNULL_BEGIN
 /// The view controller to be presented as a lockscreen
 @property (strong, nonatomic, nullable) UIViewController *lockViewController;
 
++ (instancetype)presenterWithNotificationCenter:(NSNotificationCenter *)notificationCenter;
+
+- (void)shutDown;
+
 @end
 
 NS_ASSUME_NONNULL_END

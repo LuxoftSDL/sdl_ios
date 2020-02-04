@@ -27,6 +27,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (strong, nonatomic) NSMutableArray<SDLPermissionFilter *> *filters;
 @property (copy, nonatomic, nullable) SDLHMILevel currentHMILevel;
 @property (assign, nonatomic) BOOL requiresEncryption;
+@property (weak, nonatomic, nullable) NSNotificationCenter *notificationCenter;
 
 @end
 
@@ -35,21 +36,32 @@ NS_ASSUME_NONNULL_BEGIN
 
 #pragma mark - Lifecycle
 
-- (instancetype)init {
+- (instancetype)initWithNotificationCenter:(NSNotificationCenter *)notificationCenter {
+    assert(nil != notificationCenter);
     self = [super init];
     if (!self) {
         return nil;
     }
 
+    _notificationCenter = notificationCenter;
     _currentHMILevel = nil;
     _permissions = [NSMutableDictionary<SDLPermissionRPCName, SDLPermissionItem *> dictionary];
     _filters = [NSMutableArray<SDLPermissionFilter *> array];
 
     // Set up SDL status notifications
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(sdl_permissionsDidChange:) name:SDLDidChangePermissionsNotification object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(sdl_hmiLevelDidChange:) name:SDLDidChangeHMIStatusNotification object:nil];
+    [self.notificationCenter addObserver:self selector:@selector(sdl_permissionsDidChange:) name:SDLDidChangePermissionsNotification object:nil];
+    [self.notificationCenter addObserver:self selector:@selector(sdl_hmiLevelDidChange:) name:SDLDidChangeHMIStatusNotification object:nil];
 
     return self;
+}
+
+- (void)shutDown {
+    [self.notificationCenter removeObserver:self];
+    self.notificationCenter = nil;
+}
+
+- (void)dealloc {
+    [self shutDown];
 }
 
 - (void)startWithCompletionHandler:(void (^)(BOOL, NSError *_Nullable))completionHandler {

@@ -63,7 +63,12 @@ typedef void(^SDLTextAndGraphicUpdateCompletionHandler)(NSError *__nullable erro
 
  @return A new SDLTextAndImageManager
  */
-- (instancetype)initWithConnectionManager:(id<SDLConnectionManagerType>)connectionManager fileManager:(SDLFileManager *)fileManager systemCapabilityManager:(SDLSystemCapabilityManager *)systemCapabilityManager;
+- (instancetype)initWithConnectionManager:(id<SDLConnectionManagerType>)connectionManager
+                              fileManager:(SDLFileManager *)fileManager
+                  systemCapabilityManager:(SDLSystemCapabilityManager *)systemCapabilityManager
+                       notificationCenter:(NSNotificationCenter *)notificationCenter;
+
+- (void)shutDown;
 
 /// Starts the manager. This method is used internally.
 - (void)start;

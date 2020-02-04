@@ -76,6 +76,10 @@ extern SDLStateMachineTransitionFormat const SDLStateMachineTransitionFormatDidE
  */
 - (instancetype)initWithTarget:(id)target initialState:(SDLState *)initialState states:(NSDictionary<SDLState *, SDLAllowableStateTransitions *> *)states;
 
+- (instancetype)initWithTarget:(id)target initialState:(SDLState *)initialState states:(NSDictionary<SDLState *, SDLAllowableStateTransitions *> *)states notificationCenter:(NSNotificationCenter *)notificationCenter;
+
+- (void)shutDown;
+
 /**
  *  Transition to another state when called. If the current state is not allowed to transition to the new state, an exception will occur. If the state machine is already in the called state, no action will occur.
  *

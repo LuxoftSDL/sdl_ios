@@ -1540,6 +1540,7 @@
 		B3F03D4D23E855CD006D042E /* SDLMultiManager.h in Headers */ = {isa = PBXBuildFile; fileRef = B3F03D4B23E855CD006D042E /* SDLMultiManager.h */; };
 		B3F03D4E23E855CD006D042E /* SDLMultiManager.m in Sources */ = {isa = PBXBuildFile; fileRef = B3F03D4C23E855CD006D042E /* SDLMultiManager.m */; };
 		B3F03D5323E85F93006D042E /* ConnectionTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B3F03D5223E85F93006D042E /* ConnectionTableViewController.m */; };
+		B3F03D5723E8783E006D042E /* SDLNotificationDispatcherProtocol.h in Headers */ = {isa = PBXBuildFile; fileRef = B3F03D5523E8783E006D042E /* SDLNotificationDispatcherProtocol.h */; };
 		DA0C46AD1DCD35080001F2A8 /* SDLRPCParameterNames.m in Sources */ = {isa = PBXBuildFile; fileRef = DA0C46AC1DCD35080001F2A8 /* SDLRPCParameterNames.m */; };
 		DA0C46AF1DCD41E30001F2A8 /* SDLMacros.h in Headers */ = {isa = PBXBuildFile; fileRef = DA0C46AE1DCD41E30001F2A8 /* SDLMacros.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		DA318C1F1DD0F06C00C035AC /* NSMutableDictionary+Store.h in Headers */ = {isa = PBXBuildFile; fileRef = DA318C1D1DD0F06C00C035AC /* NSMutableDictionary+Store.h */; };
@@ -3294,6 +3295,7 @@
 		B3F03D4C23E855CD006D042E /* SDLMultiManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SDLMultiManager.m; sourceTree = "<group>"; };
 		B3F03D5123E85F93006D042E /* ConnectionTableViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ConnectionTableViewController.h; sourceTree = SOURCE_ROOT; };
 		B3F03D5223E85F93006D042E /* ConnectionTableViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ConnectionTableViewController.m; sourceTree = SOURCE_ROOT; };
+		B3F03D5523E8783E006D042E /* SDLNotificationDispatcherProtocol.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SDLNotificationDispatcherProtocol.h; sourceTree = "<group>"; };
 		BB3C600D221AEF37007DD4CA /* NSMutableDictionary+StoreSpec.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = "NSMutableDictionary+StoreSpec.m"; path = "DevAPISpecs/NSMutableDictionary+StoreSpec.m"; sourceTree = "<group>"; };
 		DA0C46AC1DCD35080001F2A8 /* SDLRPCParameterNames.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SDLRPCParameterNames.m; sourceTree = "<group>"; };
 		DA0C46AE1DCD41E30001F2A8 /* SDLMacros.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SDLMacros.h; sourceTree = "<group>"; };
@@ -6418,6 +6420,7 @@
 		B349CB1F23E81D3400A31379 /* DeveloperAPI */ = {
 			isa = PBXGroup;
 			children = (
+				B3F03D5423E87800006D042E /* Dispatchers */,
 				B3F03D4A23E85598006D042E /* Managers */,
 				B349CB2023E81D3400A31379 /* Utilities */,
 			);
@@ -6467,6 +6470,14 @@
 			children = (
 			);
 			path = Connection;
+			sourceTree = "<group>";
+		};
+		B3F03D5423E87800006D042E /* Dispatchers */ = {
+			isa = PBXGroup;
+			children = (
+				B3F03D5523E8783E006D042E /* SDLNotificationDispatcherProtocol.h */,
+			);
+			path = Dispatchers;
 			sourceTree = "<group>";
 		};
 		DA1166D71D14601C00438CEA /* Touches */ = {
@@ -6821,6 +6832,7 @@
 				EED5C9FE1F4D18D100F04000 /* SDLH264Packetizer.h in Headers */,
 				5D61FD7D1A84238C00846EE7 /* SDLScrollableMessageResponse.h in Headers */,
 				5D61FD431A84238C00846EE7 /* SDLProtocol.h in Headers */,
+				B3F03D5723E8783E006D042E /* SDLNotificationDispatcherProtocol.h in Headers */,
 				5D8B17531AC9E11B006A6E1C /* SDLDialNumberResponse.h in Headers */,
 				5DEF695B1FD6F82D004B8C2F /* SDLStreamingAudioManagerType.h in Headers */,
 				5D61FC921A84238C00846EE7 /* SDLDisplayType.h in Headers */,

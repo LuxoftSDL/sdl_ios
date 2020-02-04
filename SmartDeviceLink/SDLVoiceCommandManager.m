@@ -42,6 +42,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (assign, nonatomic) UInt32 lastVoiceCommandId;
 @property (copy, nonatomic) NSArray<SDLVoiceCommand *> *oldVoiceCommands;
+@property (weak, nonatomic, nullable) NSNotificationCenter *notificationCenter;
 
 @end
 
@@ -49,27 +50,38 @@ UInt32 const VoiceCommandIdMin = 1900000000;
 
 @implementation SDLVoiceCommandManager
 
-- (instancetype)init {
+- (instancetype)initWithNotificationCenter:(NSNotificationCenter *)notificationCenter {
+    assert(nil != notificationCenter);
     self = [super init];
     if (!self) { return nil; }
 
+    _notificationCenter = notificationCenter;
     _lastVoiceCommandId = VoiceCommandIdMin;
     _voiceCommands = @[];
     _oldVoiceCommands = @[];
 
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(sdl_hmiStatusNotification:) name:SDLDidChangeHMIStatusNotification object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(sdl_commandNotification:) name:SDLDidReceiveCommandNotification object:nil];
+    [self.notificationCenter addObserver:self selector:@selector(sdl_hmiStatusNotification:) name:SDLDidChangeHMIStatusNotification object:nil];
+    [self.notificationCenter addObserver:self selector:@selector(sdl_commandNotification:) name:SDLDidReceiveCommandNotification object:nil];
 
     return self;
 }
 
-- (instancetype)initWithConnectionManager:(id<SDLConnectionManagerType>)connectionManager {
-    self = [self init];
+- (instancetype)initWithConnectionManager:(id<SDLConnectionManagerType>)connectionManager notificationCenter:(NSNotificationCenter *)notificationCenter {
+    self = [self initWithNotificationCenter:notificationCenter];
     if (!self) { return nil; }
 
     _connectionManager = connectionManager;
 
     return self;
+}
+
+- (void)shutDown {
+    [self.notificationCenter removeObserver:self];
+    self.notificationCenter = nil;
+}
+
+- (void)dealloc {
+    [self shutDown];
 }
 
 - (void)stop {

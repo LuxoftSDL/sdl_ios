@@ -31,6 +31,8 @@ NS_ASSUME_NONNULL_BEGIN
 @interface SDLManager ()
 
 @property (strong, nonatomic) SDLLifecycleManager *lifecycleManager;
+// note: the notificationCenter is strong here and weak in all other places
+@property (strong, nonatomic, nullable) NSNotificationCenter *notificationCenter;
 
 @end
 
@@ -51,7 +53,8 @@ NS_ASSUME_NONNULL_BEGIN
         return nil;
     }
 
-    _lifecycleManager = [[SDLLifecycleManager alloc] initWithConfiguration:configuration delegate:delegate];
+    _notificationCenter = [NSNotificationCenter new];
+    _lifecycleManager = [[SDLLifecycleManager alloc] initWithConfiguration:configuration delegate:delegate notificationCenter:_notificationCenter];
 
     return self;
 }
@@ -151,19 +154,19 @@ NS_ASSUME_NONNULL_BEGIN
 
 #pragma mark - RPC Subscriptions
 
-- (id)subscribeToRPC:(SDLNotificationName)rpcName withBlock:(SDLRPCUpdatedBlock)block {
-    return [[NSNotificationCenter defaultCenter] addObserverForName:rpcName object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification * _Nonnull note) {
+- (id<NSObject>)subscribeToRPC:(SDLNotificationName)rpcName withBlock:(SDLRPCUpdatedBlock)block {
+    return [self.notificationCenter addObserverForName:rpcName object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification * _Nonnull note) {
         SDLRPCMessage *message = note.userInfo[SDLNotificationUserInfoObject];
         block(message);
     }];
 }
 
 - (void)subscribeToRPC:(SDLNotificationName)rpcName withObserver:(id)observer selector:(SEL)selector {
-    [[NSNotificationCenter defaultCenter] addObserver:observer selector:selector name:rpcName object:nil];
+    [self.notificationCenter addObserver:observer selector:selector name:rpcName object:nil];
 }
 
 - (void)unsubscribeFromRPC:(SDLNotificationName)rpcName withObserver:(id)observer {
-    [[NSNotificationCenter defaultCenter] removeObserver:observer name:rpcName object:nil];
+    [self.notificationCenter removeObserver:observer name:rpcName object:nil];
 }
 
 @end

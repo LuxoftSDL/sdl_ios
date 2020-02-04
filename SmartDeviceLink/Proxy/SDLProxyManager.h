@@ -15,7 +15,6 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-
 @interface SDLProxyManager : NSObject
 
 + (instancetype)shared;
@@ -30,8 +29,12 @@ NS_ASSUME_NONNULL_BEGIN
  *  @param encryptionLifecycleManager  The encryption life cycle manager
  *  @return                            A SDLProxy object
  */
-- (SDLProxy *)tcpProxyWithListener:(id<SDLProxyListener>)delegate tcpIPAddress:(NSString *)ipaddress tcpPort:(NSString *)port secondaryTransportManager:(nullable SDLSecondaryTransportManager *)secondaryTransportManager encryptionLifecycleManager:(nullable SDLEncryptionLifecycleManager *)encryptionLifecycleManager;
-
+- (SDLProxy *)tcpProxyWithListener:(id<SDLProxyListener>)delegate
+                      tcpIPAddress:(NSString *)ipaddress
+                           tcpPort:(NSString *)port
+         secondaryTransportManager:(nullable SDLSecondaryTransportManager *)secondaryTransportManager
+        encryptionLifecycleManager:(nullable SDLEncryptionLifecycleManager *)encryptionLifecycleManager
+                notificationCenter:(NSNotificationCenter *)notificationCenter;
 /**
  *  Creates a SDLProxy object with an iap (USB / Bluetooth) transport network connection.
  *
@@ -40,8 +43,10 @@ NS_ASSUME_NONNULL_BEGIN
  *  @param encryptionLifecycleManager  The encryption life cycle manager
  *  @return                            A SDLProxy object
  */
-- (SDLProxy *)iapProxyWithListener:(id<SDLProxyListener>)delegate secondaryTransportManager:(nullable SDLSecondaryTransportManager *)secondaryTransportManager encryptionLifecycleManager:(nullable SDLEncryptionLifecycleManager *)encryptionLifecycleManager;
-
+- (SDLProxy *)iapProxyWithListener:(id<SDLProxyListener>)delegate
+         secondaryTransportManager:(nullable SDLSecondaryTransportManager *)secondaryTransportManager
+        encryptionLifecycleManager:(nullable SDLEncryptionLifecycleManager *)encryptionLifecycleManager
+                notificationCenter:(NSNotificationCenter *)notificationCenter;
 
 @end
 

@@ -17,12 +17,22 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+@interface SDLNotificationDispatcher ()
+// SDLNotificationDispatcherProtocol implementation
+@property (strong, nullable, nonatomic) NSNotificationCenter *notificationCenter;
+@end
+
+
 @implementation SDLNotificationDispatcher
 
 - (instancetype)init {
-    self = [super init];
-    if (!self) { return nil; }
+    return [self initWithNotificationCenter:[NSNotificationCenter new]];
+}
 
+- (instancetype)initWithNotificationCenter:(NSNotificationCenter*)notificationCenter {
+    if ((self = [super init])) {
+        _notificationCenter = notificationCenter;
+    }
     return self;
 }
 
@@ -33,28 +43,28 @@ NS_ASSUME_NONNULL_BEGIN
     }
 
     // Runs on `com.sdl.rpcProcessingQueue`
-    [[NSNotificationCenter defaultCenter] postNotificationName:name object:self userInfo:userInfo];
+    [self.notificationCenter postNotificationName:name object:self userInfo:userInfo];
 }
 
 - (void)postRPCRequestNotification:(NSString *)name request:(__kindof SDLRPCRequest *)request {
     SDLRPCRequestNotification *notification = [[SDLRPCRequestNotification alloc] initWithName:name object:self rpcRequest:request];
 
     // Runs on `com.sdl.rpcProcessingQueue`
-    [[NSNotificationCenter defaultCenter] postNotification:notification];
+    [self.notificationCenter postNotification:notification];
 }
 
 - (void)postRPCResponseNotification:(NSString *)name response:(__kindof SDLRPCResponse *)response {
     SDLRPCResponseNotification *notification = [[SDLRPCResponseNotification alloc] initWithName:name object:self rpcResponse:response];
 
     // Runs on `com.sdl.rpcProcessingQueue`
-    [[NSNotificationCenter defaultCenter] postNotification:notification];
+    [self.notificationCenter postNotification:notification];
 }
 
 - (void)postRPCNotificationNotification:(NSString *)name notification:(__kindof SDLRPCNotification *)rpcNotification {
     SDLRPCNotificationNotification *notification = [[SDLRPCNotificationNotification alloc] initWithName:name object:self rpcNotification:rpcNotification];
 
     // Runs on `com.sdl.rpcProcessingQueue`
-    [[NSNotificationCenter defaultCenter] postNotification:notification];
+    [self.notificationCenter postNotification:notification];
 }
 
 #pragma mark - SDLProxyListener Delegate Methods

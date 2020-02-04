@@ -226,7 +226,10 @@ typedef void (^SDLCapabilityUpdateHandler)(SDLSystemCapability *capability);
 
  @return An instance of SDLSystemCapabilityManager
  */
-- (instancetype)initWithConnectionManager:(id<SDLConnectionManagerType>)manager NS_DESIGNATED_INITIALIZER;
+- (instancetype)initWithConnectionManager:(id<SDLConnectionManagerType>)manager
+                       notificationCenter:(NSNotificationCenter *)notificationCenter NS_DESIGNATED_INITIALIZER;
+
+- (void)shutDown;
 
 /**
  Starts the manager. This method is used internally.

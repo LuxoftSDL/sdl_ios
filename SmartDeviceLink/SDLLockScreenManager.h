@@ -11,6 +11,7 @@
 @class SDLLockScreenConfiguration;
 @class SDLLockScreenViewController;
 @protocol SDLViewControllerPresentable;
+@protocol SDLNotificationDispatcherProtocol;
 
 
 NS_ASSUME_NONNULL_BEGIN
@@ -55,13 +56,17 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  *  Create a new instance of `SDLLockScreenManager`.
  *
- *  @param config     The config to set up the manager.
+ *  @param configuration The config to set up the manager.
  *  @param dispatcher The notification dispatcher used to watch only for SDL notifications from it.
  *  @param presenter  The presenter which will handle actually presenting the lock screen view controller.
  *
  *  @return An instance of `SDLLockScreenManager`.
  */
-- (instancetype)initWithConfiguration:(SDLLockScreenConfiguration *)config notificationDispatcher:(nullable id)dispatcher presenter:(id<SDLViewControllerPresentable>)presenter;
+- (instancetype)initWithConfiguration:(SDLLockScreenConfiguration *)configuration
+               notificationDispatcher:(nullable id<SDLNotificationDispatcherProtocol>)dispatcher
+                            presenter:(id<SDLViewControllerPresentable>)presenter;
+
+- (void)shutDown;
 
 /**
  *  Start the manager. This is used internally.

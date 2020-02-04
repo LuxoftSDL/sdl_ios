@@ -202,7 +202,7 @@ typedef void (^SDLRPCUpdatedBlock) (__kindof SDLRPCMessage *message);
  * @param block The block that will be called every time an RPC of the name and type specified is received.
  * @return An object that can be passed to `unsubscribeFromRPC:ofType:withObserver:` to unsubscribe the block.
  */
-- (id)subscribeToRPC:(SDLNotificationName)rpcName withBlock:(SDLRPCUpdatedBlock)block NS_SWIFT_NAME(subscribe(to:block:));
+- (id<NSObject>)subscribeToRPC:(SDLNotificationName)rpcName withBlock:(SDLRPCUpdatedBlock)block NS_SWIFT_NAME(subscribe(to:block:));
 
 /**
  * Subscribe to callbacks about a particular RPC request, notification, or response with a selector callback.

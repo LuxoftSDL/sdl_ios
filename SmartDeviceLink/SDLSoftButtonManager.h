@@ -51,7 +51,9 @@ typedef void(^SDLSoftButtonUpdateCompletionHandler)(NSError *__nullable error);
  @param systemCapabilityManager The system capability manager object for reading window capabilities
  @return A new instance of a soft button manager
  */
-- (instancetype)initWithConnectionManager:(id<SDLConnectionManagerType>)connectionManager fileManager:(SDLFileManager *)fileManager systemCapabilityManager:(SDLSystemCapabilityManager *)systemCapabilityManager;
+- (instancetype)initWithConnectionManager:(id<SDLConnectionManagerType>)connectionManager fileManager:(SDLFileManager *)fileManager systemCapabilityManager:(SDLSystemCapabilityManager *)systemCapabilityManager notificationCenter:(NSNotificationCenter *)notificationCenter;
+
+- (void)shutDown;
 
 /// Starts the manager. This method is used internally.
 - (void)start;

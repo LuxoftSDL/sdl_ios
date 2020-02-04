@@ -34,7 +34,10 @@ NS_ASSUME_NONNULL_BEGIN
  @param connectionManager Object of a class that implements ConnectionManagerType. This is used for RPC communication.
  @param videoScaleManager The scale manager that scales from the display screen coordinate system to the app's viewport coordinate system
  */
-- (instancetype)initWithViewController:(UIViewController *)viewController connectionManager:(id<SDLConnectionManagerType>)connectionManager videoScaleManager:(SDLStreamingVideoScaleManager *)videoScaleManager;
+- (instancetype)initWithViewController:(UIViewController *)viewController
+                     connectionManager:(id<SDLConnectionManagerType>)connectionManager
+                     videoScaleManager:(SDLStreamingVideoScaleManager *)videoScaleManager
+                    notificationCenter:(NSNotificationCenter *)notificationCenter;
 
 /**
  updateInterfaceLayout crawls through the view hierarchy, updates and keep tracks of views to be reported through Haptic RPC. This function is automatically called when SDLDidUpdateProjectionView notification is sent by the application.

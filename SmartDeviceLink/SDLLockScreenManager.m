@@ -18,6 +18,7 @@
 #import "SDLOnDriverDistraction.h"
 #import "SDLRPCNotificationNotification.h"
 #import "SDLViewControllerPresentable.h"
+#import "SDLNotificationDispatcherProtocol.h"
 
 
 NS_ASSUME_NONNULL_BEGIN
@@ -36,13 +37,16 @@ NS_ASSUME_NONNULL_BEGIN
 @property (strong, nonatomic, nullable) SDLOnDriverDistraction *lastDriverDistractionNotification;
 @property (assign, nonatomic, readwrite, getter=isLockScreenDismissable) BOOL lockScreenDismissable;
 @property (assign, nonatomic) BOOL lockScreenDismissedByUser;
+@property (weak, nonatomic, nullable) NSNotificationCenter *notificationCenter;
 
 @end
 
 
 @implementation SDLLockScreenManager
 
-- (instancetype)initWithConfiguration:(SDLLockScreenConfiguration *)config notificationDispatcher:(nullable id)dispatcher presenter:(id<SDLViewControllerPresentable>)presenter {
+- (instancetype)initWithConfiguration:(SDLLockScreenConfiguration *)config
+               notificationDispatcher:(nullable id<SDLNotificationDispatcherProtocol>)dispatcher
+                            presenter:(id<SDLViewControllerPresentable>)presenter {
     self = [super init];
     if (!self) {
         return nil;
@@ -53,13 +57,24 @@ NS_ASSUME_NONNULL_BEGIN
     _config = config;
     _presenter = presenter;
     _lockScreenDismissedByUser = NO;
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(sdl_lockScreenStatusDidChange:) name:SDLDidChangeLockScreenStatusNotification object:dispatcher];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(sdl_lockScreenIconReceived:) name:SDLDidReceiveLockScreenIcon object:dispatcher];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(sdl_appDidBecomeActive:) name:UIApplicationDidBecomeActiveNotification object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(sdl_driverDistractionStateDidChange:) name:SDLDidChangeDriverDistractionStateNotification object:dispatcher];
+    _notificationCenter = dispatcher.notificationCenter;
+    assert(nil != self.notificationCenter);
+
+    [self.notificationCenter addObserver:self selector:@selector(sdl_lockScreenStatusDidChange:) name:SDLDidChangeLockScreenStatusNotification object:dispatcher];
+    [self.notificationCenter addObserver:self selector:@selector(sdl_lockScreenIconReceived:) name:SDLDidReceiveLockScreenIcon object:dispatcher];
+    [self.notificationCenter addObserver:self selector:@selector(sdl_appDidBecomeActive:) name:UIApplicationDidBecomeActiveNotification object:nil];
+    [self.notificationCenter addObserver:self selector:@selector(sdl_driverDistractionStateDidChange:) name:SDLDidChangeDriverDistractionStateNotification object:dispatcher];
 
     return self;
+}
+
+- (void)shutDown {
+    [self.notificationCenter removeObserver:self];
+    self.notificationCenter = nil;
+}
+
+- (void)dealloc {
+    [self shutDown];
 }
 
 - (void)start {

@@ -14,22 +14,6 @@
 #import "SDLTCPTransport.h"
 #import "SDLIAPTransport.h"
 
-@interface SDLProxy (internal)
-/**
- *  Convenience init.
- *
- *  @param transport                   The type of network connection
- *  @param delegate                    The subscriber
- *  @param secondaryTransportManager   The secondary transport manager
- *  @return                            A SDLProxy object
- */
-- (instancetype)initWithTransport:(id<SDLTransportType>)transport delegate:(id<SDLProxyListener>)delegate secondaryTransportManager:(nullable SDLSecondaryTransportManager *)secondaryTransportManager;
-
-- (instancetype)initWithTransport:(id<SDLTransportType>)transport delegate:(id<SDLProxyListener>)delegate secondaryTransportManager:(nullable SDLSecondaryTransportManager *)secondaryTransportManager encryptionLifecycleManager:(nullable SDLEncryptionLifecycleManager *)encryptionLifecycleManager;
-
-@end
-
-
 @implementation SDLProxyManager
 
 static SDLProxyManager * sharedInstance = nil;
@@ -42,31 +26,35 @@ static SDLProxyManager * sharedInstance = nil;
     return sharedInstance;
 }
 
-- (SDLProxy *)tcpProxyWithListener:(id<SDLProxyListener>)listener tcpIPAddress:(NSString *)ipaddress tcpPort:(NSString *)port secondaryTransportManager:(nullable SDLSecondaryTransportManager *)secondaryTransportManager {
-    return [self tcpProxyWithListener:listener tcpIPAddress:ipaddress tcpPort:port secondaryTransportManager:secondaryTransportManager encryptionLifecycleManager:nil];
-}
-
-- (SDLProxy *)tcpProxyWithListener:(id<SDLProxyListener>)delegate tcpIPAddress:(NSString *)ipaddress tcpPort:(NSString *)port secondaryTransportManager:(nullable SDLSecondaryTransportManager *)secondaryTransportManager encryptionLifecycleManager:(nullable SDLEncryptionLifecycleManager *)encryptionLifecycleManager {
+- (SDLProxy *)tcpProxyWithListener:(id<SDLProxyListener>)delegate
+                      tcpIPAddress:(NSString *)ipaddress
+                           tcpPort:(NSString *)port
+         secondaryTransportManager:(nullable SDLSecondaryTransportManager *)secondaryTransportManager
+        encryptionLifecycleManager:(nullable SDLEncryptionLifecycleManager *)encryptionLifecycleManager
+                notificationCenter:(NSNotificationCenter *)notificationCenter {
     SDLTCPTransport *transport = [[SDLTCPTransport alloc] initWithHostName:ipaddress portNumber:port];
 
     assert(nil != transport);
 
-    SDLProxy *proxy = [[SDLProxy alloc] initWithTransport:transport delegate:delegate secondaryTransportManager:secondaryTransportManager encryptionLifecycleManager:encryptionLifecycleManager];
-
+    SDLProxy *proxy = [[SDLProxy alloc] initWithTransport:transport
+                                                 delegate:delegate
+                                secondaryTransportManager:secondaryTransportManager
+                               encryptionLifecycleManager:encryptionLifecycleManager];
     return proxy;
 }
 
-- (SDLProxy *)iapProxyWithListener:(id<SDLProxyListener>)delegate secondaryTransportManager:(nullable SDLSecondaryTransportManager *)secondaryTransportManager {
-    SDLIAPTransport *transport = [[SDLIAPTransport alloc] init];
-    SDLProxy *proxy = [[SDLProxy alloc] initWithTransport:transport delegate:delegate secondaryTransportManager:secondaryTransportManager];
+- (SDLProxy *)iapProxyWithListener:(id<SDLProxyListener>)delegate
+         secondaryTransportManager:(nullable SDLSecondaryTransportManager *)secondaryTransportManager
+        encryptionLifecycleManager:(nullable SDLEncryptionLifecycleManager *)encryptionLifecycleManager
+                notificationCenter:(NSNotificationCenter *)notificationCenter {
+    SDLIAPTransport *transport = [SDLIAPTransport new];
 
-    return proxy;
-}
+    assert(nil != transport);
 
-- (SDLProxy *)iapProxyWithListener:(id<SDLProxyListener>)delegate secondaryTransportManager:(nullable SDLSecondaryTransportManager *)secondaryTransportManager encryptionLifecycleManager:(nullable SDLEncryptionLifecycleManager *)encryptionLifecycleManager {
-    SDLIAPTransport *transport = [[SDLIAPTransport alloc] init];
-    SDLProxy *proxy = [[SDLProxy alloc] initWithTransport:transport delegate:delegate secondaryTransportManager:secondaryTransportManager encryptionLifecycleManager:encryptionLifecycleManager];
-
+    SDLProxy *proxy = [[SDLProxy alloc] initWithTransport:transport
+                                                 delegate:delegate
+                                secondaryTransportManager:secondaryTransportManager
+                               encryptionLifecycleManager:encryptionLifecycleManager];
     return proxy;
 }
 

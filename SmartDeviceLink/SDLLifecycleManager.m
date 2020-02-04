@@ -96,6 +96,7 @@ NSString *const BackgroundTaskTransportName = @"com.sdl.transport.backgroundTask
 @property (copy, nonatomic) SDLEncryptionLifecycleManager *encryptionLifecycleManager;
 
 //@property (strong, nonatomic, nullable, readwrite) SDLProxy *proxy;
+@property (weak, nonatomic, nullable) NSNotificationCenter *notificationCenter;
 
 @end
 
@@ -115,10 +116,11 @@ NSString *const BackgroundTaskTransportName = @"com.sdl.transport.backgroundTask
 #pragma mark Lifecycle
 
 - (instancetype)init {
-    return [self initWithConfiguration:[SDLConfiguration configurationWithLifecycle:[SDLLifecycleConfiguration defaultConfigurationWithAppName:@"SDL APP" fullAppId:@"001"] lockScreen:[SDLLockScreenConfiguration disabledConfiguration] logging:[SDLLogConfiguration defaultConfiguration] fileManager:[SDLFileManagerConfiguration defaultConfiguration]] delegate:nil];
+    return [self initWithConfiguration:[SDLConfiguration configurationWithLifecycle:[SDLLifecycleConfiguration defaultConfigurationWithAppName:@"SDL APP" fullAppId:@"001"] lockScreen:[SDLLockScreenConfiguration disabledConfiguration] logging:[SDLLogConfiguration defaultConfiguration] fileManager:[SDLFileManagerConfiguration defaultConfiguration]] delegate:nil notificationCenter:[NSNotificationCenter defaultCenter]];
 }
 
-- (instancetype)initWithConfiguration:(SDLConfiguration *)configuration delegate:(nullable id<SDLManagerDelegate>)delegate {
+- (instancetype)initWithConfiguration:(SDLConfiguration *)configuration delegate:(nullable id<SDLManagerDelegate>)delegate notificationCenter:(NSNotificationCenter *)notificationCenter {
+    assert(nil != notificationCenter);
     self = [super init];
     if (!self) {
         return nil;
@@ -126,6 +128,7 @@ NSString *const BackgroundTaskTransportName = @"com.sdl.transport.backgroundTask
 
     SDLLogV(@"Initializing Lifecycle Manager");
 
+    _notificationCenter = notificationCenter;
     // Dependencies
     _configuration = [configuration copy];
     _delegate = delegate;
@@ -134,9 +137,9 @@ NSString *const BackgroundTaskTransportName = @"com.sdl.transport.backgroundTask
     [SDLLogManager setConfiguration:_configuration.loggingConfig];
 
     // Private properties
-    _lifecycleStateMachine = [[SDLStateMachine alloc] initWithTarget:self initialState:SDLLifecycleStateStopped states:[self.class sdl_stateTransitionDictionary]];
+    _lifecycleStateMachine = [[SDLStateMachine alloc] initWithTarget:self initialState:SDLLifecycleStateStopped states:[self.class sdl_stateTransitionDictionary] notificationCenter:self.notificationCenter];
     _lastCorrelationId = 0;
-    _notificationDispatcher = [[SDLNotificationDispatcher alloc] init];
+    _notificationDispatcher = [[SDLNotificationDispatcher alloc] initWithNotificationCenter:self.notificationCenter];
     _responseDispatcher = [[SDLResponseDispatcher alloc] initWithNotificationDispatcher:_notificationDispatcher];
     _registerResponse = nil;
 
@@ -152,33 +155,42 @@ NSString *const BackgroundTaskTransportName = @"com.sdl.transport.backgroundTask
 
     // Managers
     _fileManager = [[SDLFileManager alloc] initWithConnectionManager:self configuration:_configuration.fileManagerConfig];
-    _permissionManager = [[SDLPermissionManager alloc] init];
-    _lockScreenManager = [[SDLLockScreenManager alloc] initWithConfiguration:_configuration.lockScreenConfig notificationDispatcher:_notificationDispatcher presenter:[[SDLLockScreenPresenter alloc] init]];
-    _systemCapabilityManager = [[SDLSystemCapabilityManager alloc] initWithConnectionManager:self];
-    _screenManager = [[SDLScreenManager alloc] initWithConnectionManager:self fileManager:_fileManager systemCapabilityManager:_systemCapabilityManager];
+    _permissionManager = [[SDLPermissionManager alloc] initWithNotificationCenter:self.notificationCenter];
+    _lockScreenManager = [[SDLLockScreenManager alloc] initWithConfiguration:_configuration.lockScreenConfig notificationDispatcher:_notificationDispatcher presenter:[SDLLockScreenPresenter presenterWithNotificationCenter:self.notificationCenter]];
+    _systemCapabilityManager = [[SDLSystemCapabilityManager alloc] initWithConnectionManager:self notificationCenter:self.notificationCenter];
+    _screenManager = [[SDLScreenManager alloc] initWithConnectionManager:self fileManager:_fileManager systemCapabilityManager:_systemCapabilityManager notificationCenter:self.notificationCenter];
     
     if ([configuration.lifecycleConfig.appType isEqualToEnum:SDLAppHMITypeNavigation] ||
         [configuration.lifecycleConfig.appType isEqualToEnum:SDLAppHMITypeProjection] ||
         [configuration.lifecycleConfig.additionalAppTypes containsObject:SDLAppHMITypeNavigation] ||
         [configuration.lifecycleConfig.additionalAppTypes containsObject:SDLAppHMITypeProjection]) {
-        _streamManager = [[SDLStreamingMediaManager alloc] initWithConnectionManager:self configuration:configuration];
+        _streamManager = [[SDLStreamingMediaManager alloc] initWithConnectionManager:self configuration:configuration notificationCenter:self.notificationCenter];
     } else {
         SDLLogV(@"Skipping StreamingMediaManager setup due to app type");
     }
     
     if (configuration.encryptionConfig.securityManagers != nil) {
-        _encryptionLifecycleManager = [[SDLEncryptionLifecycleManager alloc] initWithConnectionManager:self configuration:_configuration.encryptionConfig];
+        _encryptionLifecycleManager = [[SDLEncryptionLifecycleManager alloc] initWithConnectionManager:self configuration:_configuration.encryptionConfig notificationCenter:self.notificationCenter];
     }
 
     // Notifications
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(transportDidConnect) name:SDLTransportDidConnect object:_notificationDispatcher];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(transportDidDisconnect) name:SDLTransportDidDisconnect object:_notificationDispatcher];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(hmiStatusDidChange:) name:SDLDidChangeHMIStatusNotification object:_notificationDispatcher];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(remoteHardwareDidUnregister:) name:SDLDidReceiveAppUnregisteredNotification object:_notificationDispatcher];
+    [self.notificationCenter addObserver:self selector:@selector(transportDidConnect) name:SDLTransportDidConnect object:_notificationDispatcher];
+    [self.notificationCenter addObserver:self selector:@selector(transportDidDisconnect) name:SDLTransportDidDisconnect object:_notificationDispatcher];
+    [self.notificationCenter addObserver:self selector:@selector(hmiStatusDidChange:) name:SDLDidChangeHMIStatusNotification object:_notificationDispatcher];
+    [self.notificationCenter addObserver:self selector:@selector(remoteHardwareDidUnregister:) name:SDLDidReceiveAppUnregisteredNotification object:_notificationDispatcher];
 
     _backgroundTaskManager = [[SDLBackgroundTaskManager alloc] initWithBackgroundTaskName: BackgroundTaskTransportName];
 
     return self;
+}
+
+- (void)shutDown {
+    [self.notificationCenter removeObserver:self];
+    self.notificationCenter = nil;
+}
+
+- (void)dealloc {
+    [self shutDown];
 }
 
 - (void)startWithReadyHandler:(SDLManagerReadyBlock)readyHandler {
@@ -950,7 +962,8 @@ NS_ASSUME_NONNULL_END
                                       tcpIPAddress:self.configuration.lifecycleConfig.tcpDebugIPAddress
                                            tcpPort:port
                          secondaryTransportManager:nil
-                        encryptionLifecycleManager:self.encryptionLifecycleManager];
+                        encryptionLifecycleManager:self.encryptionLifecycleManager
+                                notificationCenter:self.notificationCenter];
     } else {
             if (SDLSecondaryTransportsNone != self.configuration.lifecycleConfig.allowedSecondaryTransports) {
                 // We reuse our queue to run secondary transport manager's state machine
@@ -958,7 +971,9 @@ NS_ASSUME_NONNULL_END
             }
             nextProxy = [[SDLProxyManager shared] iapProxyWithListener:self.notificationDispatcher
                              secondaryTransportManager:self.secondaryTransportManager
-                            encryptionLifecycleManager:self.encryptionLifecycleManager];
+                            encryptionLifecycleManager:self.encryptionLifecycleManager
+                                    notificationCenter:self.notificationCenter];
+
     }
 
 

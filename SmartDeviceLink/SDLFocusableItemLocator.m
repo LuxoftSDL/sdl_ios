@@ -30,26 +30,38 @@ NS_ASSUME_NONNULL_BEGIN
  The scale manager that scales from the display screen coordinate system to the app's viewport coordinate system
 */
 @property (strong, nonatomic) SDLStreamingVideoScaleManager *videoScaleManager;
+@property (weak, nonatomic, nullable) NSNotificationCenter *notificationCenter;
 
 @end
 
 @implementation SDLFocusableItemLocator
 
-- (instancetype)initWithViewController:(UIViewController *)viewController connectionManager:(id<SDLConnectionManagerType>)connectionManager videoScaleManager:(SDLStreamingVideoScaleManager *)videoScaleManager {
+- (instancetype)initWithViewController:(UIViewController *)viewController connectionManager:(id<SDLConnectionManagerType>)connectionManager videoScaleManager:(SDLStreamingVideoScaleManager *)videoScaleManager notificationCenter:(NSNotificationCenter *)notificationCenter {
+    assert(nil != notificationCenter);
     self = [super init];
     if(!self) {
         return nil;
     }
 
+    _notificationCenter = notificationCenter;
     _viewController = viewController;
     _connectionManager = connectionManager;
     _videoScaleManager = videoScaleManager;
     _focusableViews = [NSMutableArray array];
 
     _enableHapticDataRequests = NO;
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(sdl_projectionViewUpdated:) name:SDLDidUpdateProjectionView object:nil];
+    [self.notificationCenter addObserver:self selector:@selector(sdl_projectionViewUpdated:) name:SDLDidUpdateProjectionView object:nil];
 
     return self;
+}
+
+- (void)shutDown {
+    [self.notificationCenter removeObserver:self];
+    self.notificationCenter = nil;
+}
+
+- (void)dealloc {
+    [self shutDown];
 }
 
 - (void)updateInterfaceLayout {

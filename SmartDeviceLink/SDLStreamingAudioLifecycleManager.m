@@ -42,12 +42,17 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (copy, nonatomic) NSArray<NSString *> *secureMakes;
 @property (copy, nonatomic) NSString *connectedVehicleMake;
+@property (weak, nonatomic, nullable) NSNotificationCenter *notificationCenter;
 
 @end
 
 @implementation SDLStreamingAudioLifecycleManager
 
-- (instancetype)initWithConnectionManager:(id<SDLConnectionManagerType>)connectionManager streamingConfiguration:(SDLStreamingMediaConfiguration *)streamingConfiguration encryptionConfiguration:(SDLEncryptionConfiguration *)encryptionConfiguration {
+- (instancetype)initWithConnectionManager:(id<SDLConnectionManagerType>)connectionManager
+                   streamingConfiguration:(SDLStreamingMediaConfiguration *)streamingConfiguration
+                  encryptionConfiguration:(SDLEncryptionConfiguration *)encryptionConfiguration
+                       notificationCenter:(NSNotificationCenter *)notificationCenter {
+    assert(nil != notificationCenter);
     self = [super init];
     if (!self) {
         return nil;
@@ -55,6 +60,7 @@ NS_ASSUME_NONNULL_BEGIN
 
     SDLLogV(@"Creating AudioStreamingLifecycleManager");
 
+    _notificationCenter = notificationCenter;
     _connectionManager = connectionManager;
 
     _audioManager = [[SDLAudioStreamManager alloc] initWithManager:self];
@@ -76,10 +82,19 @@ NS_ASSUME_NONNULL_BEGIN
 
     _audioStreamStateMachine = [[SDLStateMachine alloc] initWithTarget:self initialState:SDLAudioStreamManagerStateStopped states:[self.class sdl_audioStreamingStateTransitionDictionary]];
 
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(sdl_didReceiveRegisterAppInterfaceResponse:) name:SDLDidReceiveRegisterAppInterfaceResponse object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(sdl_hmiLevelDidChange:) name:SDLDidChangeHMIStatusNotification object:nil];
+    [self.notificationCenter addObserver:self selector:@selector(sdl_didReceiveRegisterAppInterfaceResponse:) name:SDLDidReceiveRegisterAppInterfaceResponse object:nil];
+    [self.notificationCenter addObserver:self selector:@selector(sdl_hmiLevelDidChange:) name:SDLDidChangeHMIStatusNotification object:nil];
 
     return self;
+}
+
+- (void)shutDown {
+    [self.notificationCenter removeObserver:self];
+    self.notificationCenter = nil;
+}
+
+- (void)dealloc {
+    [self shutDown];
 }
 
 - (void)startWithProtocol:(SDLProtocol *)protocol {
@@ -142,7 +157,7 @@ NS_ASSUME_NONNULL_BEGIN
     SDLLogD(@"Audio stream stopped");
     _audioEncrypted = NO;
 
-    [[NSNotificationCenter defaultCenter] postNotificationName:SDLAudioStreamDidStopNotification object:nil];
+    [self.notificationCenter postNotificationName:SDLAudioStreamDidStopNotification object:nil];
 }
 
 - (void)didEnterStateAudioStreamStarting {
@@ -161,7 +176,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)didEnterStateAudioStreamReady {
     SDLLogD(@"Audio stream ready");
-    [[NSNotificationCenter defaultCenter] postNotificationName:SDLAudioStreamDidStartNotification object:nil];
+    [self.notificationCenter postNotificationName:SDLAudioStreamDidStartNotification object:nil];
 }
 
 - (void)didEnterStateAudioStreamShuttingDown {

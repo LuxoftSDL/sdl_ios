@@ -68,6 +68,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (assign, nonatomic) UInt32 lastMenuId;
 @property (copy, nonatomic) NSArray<SDLMenuCell *> *oldMenuCells;
+@property (weak, nonatomic, nullable) NSNotificationCenter *notificationCenter;
 
 @end
 
@@ -76,24 +77,27 @@ UInt32 const MenuCellIdMin = 1;
 
 @implementation SDLMenuManager
 
-- (instancetype)init {
+- (instancetype)initWithNotificationCenter:(NSNotificationCenter *)notificationCenter {
+    assert(nil != notificationCenter);
     self = [super init];
     if (!self) { return nil; }
 
+    _notificationCenter = notificationCenter;
     _lastMenuId = MenuCellIdMin;
     _menuConfiguration = [[SDLMenuConfiguration alloc] init];
     _menuCells = @[];
     _oldMenuCells = @[];
     _dynamicMenuUpdatesMode = SDLDynamicMenuUpdatesModeOnWithCompatibility;
 
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(sdl_hmiStatusNotification:) name:SDLDidChangeHMIStatusNotification object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(sdl_commandNotification:) name:SDLDidReceiveCommandNotification object:nil];
+    [self.notificationCenter addObserver:self selector:@selector(sdl_hmiStatusNotification:) name:SDLDidChangeHMIStatusNotification object:nil];
+    [self.notificationCenter addObserver:self selector:@selector(sdl_commandNotification:) name:SDLDidReceiveCommandNotification object:nil];
 
     return self;
 }
 
-- (instancetype)initWithConnectionManager:(id<SDLConnectionManagerType>)connectionManager fileManager:(SDLFileManager *)fileManager systemCapabilityManager:(nonnull SDLSystemCapabilityManager *)systemCapabilityManager {
-    self = [self init];
+- (instancetype)initWithConnectionManager:(id<SDLConnectionManagerType>)connectionManager fileManager:(SDLFileManager *)fileManager systemCapabilityManager:(nonnull SDLSystemCapabilityManager *)systemCapabilityManager notificationCenter:(NSNotificationCenter *)notificationCenter {
+    assert(nil != notificationCenter);
+    self = [self initWithNotificationCenter:notificationCenter];
     if (!self) { return nil; }
 
     _connectionManager = connectionManager;
@@ -101,6 +105,15 @@ UInt32 const MenuCellIdMin = 1;
     _systemCapabilityManager = systemCapabilityManager;
 
     return self;
+}
+
+- (void)shutDown {
+    [self.notificationCenter removeObserver:self];
+    self.notificationCenter = nil;
+}
+
+- (void)dealloc {
+    [self shutDown];
 }
 
 - (void)stop {

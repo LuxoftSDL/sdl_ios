@@ -34,13 +34,14 @@
 #import "SDLSubscribeButton.h"
 #import "SDLUnsubscribeButton.h"
 #import "SDLUnsubscribeButtonResponse.h"
-
+#import "SDLNotificationDispatcherProtocol.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
 @interface SDLResponseDispatcher ()
 
 @property (strong, nonatomic, readwrite, nullable) SDLAudioPassThruHandler audioPassThruHandler;
+@property (weak, nullable, nonatomic) NSNotificationCenter *notificationCenter;
 
 @end
 
@@ -51,11 +52,15 @@ NS_ASSUME_NONNULL_BEGIN
     return [self initWithNotificationDispatcher:nil];
 }
 
-- (instancetype)initWithNotificationDispatcher:(nullable id)dispatcher {
+//TODO: make dispatcher not nullable
+- (instancetype)initWithNotificationDispatcher:(nullable id<SDLNotificationDispatcherProtocol>)dispatcher {
     self = [super init];
     if (!self) {
         return nil;
     }
+
+    _notificationCenter = dispatcher.notificationCenter;
+    assert(nil != self.notificationCenter);
 
     _rpcResponseHandlerMap = [NSMapTable mapTableWithKeyOptions:NSMapTableCopyIn valueOptions:NSMapTableCopyIn];
     _rpcRequestDictionary = [NSMutableDictionary dictionary];
@@ -65,23 +70,30 @@ NS_ASSUME_NONNULL_BEGIN
 
     // Responses
     for (SDLNotificationName responseName in [SDLNotificationConstants allResponseNames]) {
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(sdl_runHandlersForResponse:) name:responseName object:dispatcher];
+        [self.notificationCenter addObserver:self selector:@selector(sdl_runHandlersForResponse:) name:responseName object:dispatcher];
     }
 
     // Buttons
     for (SDLNotificationName buttonNotificationName in [SDLNotificationConstants allButtonEventNotifications]) {
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(sdl_runHandlerForButton:) name:buttonNotificationName object:dispatcher];
+        [self.notificationCenter addObserver:self selector:@selector(sdl_runHandlerForButton:) name:buttonNotificationName object:dispatcher];
     }
 
     // Commands
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(sdl_runHandlerForCommand:) name:SDLDidReceiveCommandNotification object:dispatcher];
+    [self.notificationCenter addObserver:self selector:@selector(sdl_runHandlerForCommand:) name:SDLDidReceiveCommandNotification object:dispatcher];
     
     // Audio Pass Thru
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(sdl_runHandlerForAudioPassThru:) name:SDLDidReceiveAudioPassThruNotification object:dispatcher];
+    [self.notificationCenter addObserver:self selector:@selector(sdl_runHandlerForAudioPassThru:) name:SDLDidReceiveAudioPassThruNotification object:dispatcher];
 
     return self;
 }
 
+- (void)shutDown {
+    [self.notificationCenter removeObserver:self];
+}
+
+- (void)dealloc {
+    [self shutDown];
+}
 
 #pragma mark - Storage
 

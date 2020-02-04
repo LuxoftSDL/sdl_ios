@@ -55,7 +55,12 @@ extern SDLChoiceManagerState *const SDLChoiceManagerStateStartupError;
  @param systemCapabilityManager The system capability manager object for reading window capabilities
  @return The choice set manager
  */
-- (instancetype)initWithConnectionManager:(id<SDLConnectionManagerType>)connectionManager fileManager:(SDLFileManager *)fileManager systemCapabilityManager:(SDLSystemCapabilityManager *)systemCapabilityManager;
+- (instancetype)initWithConnectionManager:(id<SDLConnectionManagerType>)connectionManager
+                              fileManager:(SDLFileManager *)fileManager
+                  systemCapabilityManager:(SDLSystemCapabilityManager *)systemCapabilityManager
+                       notificationCenter:(NSNotificationCenter *)notificationCenter;
+
+- (void)shutDown;
 
 /**
  Start the manager and prepare to manage choice sets

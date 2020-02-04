@@ -6,7 +6,6 @@
 @class SDLPutFile;
 @class SDLRPCMessage;
 @class SDLSecondaryTransportManager;
-@class SDLStreamingMediaManager;
 @class SDLTimer;
 
 #import "SDLProtocolListener.h"
@@ -52,6 +51,18 @@ NS_ASSUME_NONNULL_BEGIN
 //*/
 //@property (nullable, nonatomic, readonly) NSString *appId;
 
+/**
+ *  Convenience init.
+ *
+ *  @param transport                   The type of network connection
+ *  @param delegate                    The subscriber
+ *  @param secondaryTransportManager   The secondary transport manager
+ *  @return                            A SDLProxy object
+ */
+- (instancetype)initWithTransport:(id<SDLTransportType>)transport
+                         delegate:(id<SDLProxyListener>)delegate
+        secondaryTransportManager:(nullable SDLSecondaryTransportManager *)secondaryTransportManager
+       encryptionLifecycleManager:(nullable SDLEncryptionLifecycleManager *)encryptionLifecycleManager;
 /**
  *  Adds a delegate.
  *

@@ -34,18 +34,23 @@ NS_ASSUME_NONNULL_BEGIN
 @property (strong, nonatomic, nullable) NSMutableDictionary<SDLPermissionRPCName, SDLPermissionItem *> *permissions;
 @property (assign, nonatomic) BOOL requiresEncryption;
 @property (weak, nonatomic, nullable) id<SDLServiceEncryptionDelegate> delegate;
+@property (weak, nonatomic, nullable) NSNotificationCenter *notificationCenter;
 
 @end
 
 @implementation SDLEncryptionLifecycleManager
 
-- (instancetype)initWithConnectionManager:(id<SDLConnectionManagerType>)connectionManager configuration:(SDLEncryptionConfiguration *)configuration {
+- (instancetype)initWithConnectionManager:(id<SDLConnectionManagerType>)connectionManager
+                            configuration:(SDLEncryptionConfiguration  *)configuration
+                       notificationCenter:(NSNotificationCenter *)notificationCenter {
+    assert(nil != notificationCenter);
     self = [super init];
     if (!self) {
         return nil;
     }
     
     SDLLogV(@"Creating EncryptionLifecycleManager");
+    _notificationCenter = notificationCenter;
     _connectionManager = connectionManager;
     _currentHMILevel = nil;
     _requiresEncryption = NO;
@@ -53,10 +58,19 @@ NS_ASSUME_NONNULL_BEGIN
     _permissions = [NSMutableDictionary<SDLPermissionRPCName, SDLPermissionItem *> dictionary];
     _delegate = configuration.delegate;
 
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(sdl_permissionsDidChange:) name:SDLDidChangePermissionsNotification object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(sdl_hmiLevelDidChange:) name:SDLDidChangeHMIStatusNotification object:nil];
+    [self.notificationCenter addObserver:self selector:@selector(sdl_permissionsDidChange:) name:SDLDidChangePermissionsNotification object:nil];
+    [self.notificationCenter addObserver:self selector:@selector(sdl_hmiLevelDidChange:) name:SDLDidChangeHMIStatusNotification object:nil];
 
     return self;
+}
+
+- (void)shutDown {
+    [self.notificationCenter removeObserver:self];
+    self.notificationCenter = nil;
+}
+
+- (void)dealloc {
+    [self shutDown];
 }
 
 - (void)startWithProtocol:(SDLProtocol *)protocol {

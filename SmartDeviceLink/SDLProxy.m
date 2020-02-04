@@ -30,7 +30,6 @@
 #import "SDLRegisterAppInterfaceResponse.h"
 #import "SDLRequestType.h"
 #import "SDLSecondaryTransportManager.h"
-#import "SDLStreamingMediaManager.h"
 #import "SDLSubscribeButton.h"
 #import "SDLSystemContext.h"
 #import "SDLSystemRequest.h"
@@ -66,6 +65,7 @@ static float DefaultConnectionTimeout = 45.0;
 @property (nullable, nonatomic, strong) SDLDisplayCapabilities *displayCapabilities;
 @property (nonatomic, strong) NSMutableDictionary<SDLVehicleMake *, Class> *securityManagers;
 @property (nonatomic, strong) NSURLSession* urlSession;
+@property (assign, nonatomic) BOOL registeredForNotifications;
 
 @end
 
@@ -73,11 +73,11 @@ static float DefaultConnectionTimeout = 45.0;
 @implementation SDLProxy
 
 #pragma mark - Object lifecycle
-//- (instancetype)initWithTransport:(id<SDLTransportType>)transport delegate:(id<SDLProxyListener>)delegate secondaryTransportManager:(nullable SDLSecondaryTransportManager *)secondaryTransportManager {
-//    return (self = [self initWithTransport:transport delegate:delegate secondaryTransportManager:secondaryTransportManager encryptionLifecycleManager:nil]);
-//}
 
-- (instancetype)initWithTransport:(id<SDLTransportType>)transport delegate:(id<SDLProxyListener>)delegate secondaryTransportManager:(nullable SDLSecondaryTransportManager *)secondaryTransportManager encryptionLifecycleManager:(nullable SDLEncryptionLifecycleManager *)encryptionLifecycleManager {
+- (instancetype)initWithTransport:(id<SDLTransportType>)transport
+                         delegate:(id<SDLProxyListener>)delegate
+        secondaryTransportManager:(nullable SDLSecondaryTransportManager *)secondaryTransportManager
+       encryptionLifecycleManager:(nullable SDLEncryptionLifecycleManager *)encryptionLifecycleManager {
     if (self = [super init]) {
         SDLLogD(@"Framework Version: %@", self.proxyVersion);
         _lsm = [[SDLLockScreenStatusManager alloc] init];
@@ -112,6 +112,12 @@ static float DefaultConnectionTimeout = 45.0;
 }
 
 - (void)dealloc {
+    [self shutDown];
+
+    SDLLogV(@"Proxy dealloc");
+}
+
+- (void)shutDown {
     if (self.protocol.securityManager != nil) {
         [self.protocol.securityManager stop];
     }
@@ -119,11 +125,11 @@ static float DefaultConnectionTimeout = 45.0;
     if (self.transport != nil) {
         [self.transport disconnect];
     }
-    
+
+    self.registeredForNotifications = NO;
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 
     [_urlSession invalidateAndCancel];
-    SDLLogV(@"Proxy dealloc");
 }
 
 - (void)notifyProxyClosed {
@@ -475,9 +481,13 @@ static float DefaultConnectionTimeout = 45.0;
 
     if ([SDLGlobals sharedGlobals].protocolVersion.major >= 4) {
         [self sendMobileHMIState];
-        // Send SDL updates to application state
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(sendMobileHMIState) name:UIApplicationDidBecomeActiveNotification object:nil];
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(sendMobileHMIState) name:UIApplicationDidEnterBackgroundNotification object:nil];
+        if (!self.registeredForNotifications) {
+            // make sure it subscribes for notifications once and once only
+            self.registeredForNotifications = YES;
+            // Send SDL updates to application state, defaultCenter, not the local one
+            [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(sendMobileHMIState) name:UIApplicationDidBecomeActiveNotification object:nil];
+            [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(sendMobileHMIState) name:UIApplicationDidEnterBackgroundNotification object:nil];
+        }
     }
 }
 

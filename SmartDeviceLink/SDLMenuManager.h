@@ -28,7 +28,9 @@ typedef void(^SDLMenuUpdateCompletionHandler)(NSError *__nullable error);
 
 @interface SDLMenuManager : NSObject
 
-- (instancetype)initWithConnectionManager:(id<SDLConnectionManagerType>)connectionManager fileManager:(SDLFileManager *)fileManager systemCapabilityManager:(SDLSystemCapabilityManager *)systemCapabilityManager;
+- (instancetype)initWithConnectionManager:(id<SDLConnectionManagerType>)connectionManager fileManager:(SDLFileManager *)fileManager systemCapabilityManager:(SDLSystemCapabilityManager *)systemCapabilityManager notificationCenter:(NSNotificationCenter *)notificationCenter;
+
+- (void)shutDown;
 
 /**
  *  Stops the manager. This method is used internally.

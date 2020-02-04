@@ -23,7 +23,11 @@ NS_ASSUME_NONNULL_BEGIN
  @param configuration The streaming media configuration
  @return An instance of this class
  */
-- (instancetype)initWithStreamManager:(SDLStreamingVideoLifecycleManager *)streamManager configuration:(SDLStreamingMediaConfiguration *)configuration;
+- (instancetype)initWithStreamManager:(SDLStreamingVideoLifecycleManager *)streamManager
+                        configuration:(SDLStreamingMediaConfiguration *)configuration
+                   notificationCenter:(NSNotificationCenter *)notificationCenter;
+
+- (void)shutDown;
 
 /**
  View controller that will be streamed.

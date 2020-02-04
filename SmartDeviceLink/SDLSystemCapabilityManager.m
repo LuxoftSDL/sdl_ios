@@ -76,18 +76,23 @@ typedef NSString * SDLServiceID;
 
 @property (assign, nonatomic) BOOL shouldConvertDeprecatedDisplayCapabilities;
 
+@property (weak, nonatomic, nullable) NSNotificationCenter *notificationCenter;
+@property (assign, nonatomic) BOOL registeredForNotifications;
+
 @end
 
 @implementation SDLSystemCapabilityManager
 
 #pragma mark - Lifecycle
 
-- (instancetype)initWithConnectionManager:(id<SDLConnectionManagerType>)manager {
+- (instancetype)initWithConnectionManager:(id<SDLConnectionManagerType>)manager notificationCenter:(NSNotificationCenter *)notificationCenter {
+    assert(nil != notificationCenter);
     self = [super init];
     if (!self) {
         return nil;
     }
 
+    _notificationCenter = notificationCenter;
     _connectionManager = manager;
     _isFirstHMILevelFull = NO;
     _shouldConvertDeprecatedDisplayCapabilities = YES;
@@ -101,6 +106,15 @@ typedef NSString * SDLServiceID;
     [self sdl_registerForNotifications];    
 
     return self;
+}
+
+- (void)shutDown {
+    [self.notificationCenter removeObserver:self];
+    self.notificationCenter = nil;
+}
+
+- (void)dealloc {
+    [self shutDown];
 }
 
 - (void)start {
@@ -158,11 +172,15 @@ typedef NSString * SDLServiceID;
  *  Registers for notifications and responses from Core
  */
 - (void)sdl_registerForNotifications {
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(sdl_registerResponse:) name:SDLDidReceiveRegisterAppInterfaceResponse object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(sdl_displayLayoutResponse:) name:SDLDidReceiveSetDisplayLayoutResponse object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(sdl_systemCapabilityUpdatedNotification:) name:SDLDidReceiveSystemCapabilityUpdatedNotification object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(sdl_systemCapabilityResponseNotification:) name:SDLDidReceiveGetSystemCapabilitiesResponse object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(sdl_hmiStatusNotification:) name:SDLDidChangeHMIStatusNotification object:nil];
+    // subscribe for notifications once only
+    if (!self.registeredForNotifications) {
+        self.registeredForNotifications = YES;
+        [self.notificationCenter addObserver:self selector:@selector(sdl_registerResponse:) name:SDLDidReceiveRegisterAppInterfaceResponse object:nil];
+        [self.notificationCenter addObserver:self selector:@selector(sdl_displayLayoutResponse:) name:SDLDidReceiveSetDisplayLayoutResponse object:nil];
+        [self.notificationCenter addObserver:self selector:@selector(sdl_systemCapabilityUpdatedNotification:) name:SDLDidReceiveSystemCapabilityUpdatedNotification object:nil];
+        [self.notificationCenter addObserver:self selector:@selector(sdl_systemCapabilityResponseNotification:) name:SDLDidReceiveGetSystemCapabilitiesResponse object:nil];
+        [self.notificationCenter addObserver:self selector:@selector(sdl_hmiStatusNotification:) name:SDLDidChangeHMIStatusNotification object:nil];
+    }
 }
 
 /**

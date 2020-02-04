@@ -16,6 +16,7 @@ typedef NSNumber SDLRPCCorrelationId;
 typedef NSNumber SDLAddCommandCommandId;
 typedef NSString SDLSubscribeButtonName;
 typedef NSNumber SDLSoftButtonId;
+@protocol SDLNotificationDispatcherProtocol;
 
 
 NS_ASSUME_NONNULL_BEGIN
@@ -62,7 +63,7 @@ NS_ASSUME_NONNULL_BEGIN
  *
  *  @return An instance of `SDLResponseDispatcher`.
  */
-- (instancetype)initWithNotificationDispatcher:(nullable id)dispatcher NS_DESIGNATED_INITIALIZER;
+- (instancetype)initWithNotificationDispatcher:(nullable id<SDLNotificationDispatcherProtocol>)dispatcher NS_DESIGNATED_INITIALIZER;
 
 /**
  *  Store an RPC request to later call that handler. This will also store the command or button handlers on the RPC request if they exist.
@@ -76,6 +77,11 @@ NS_ASSUME_NONNULL_BEGIN
  *  Clear all maps and dictionaries of objects.
  */
 - (void)clear;
+
+/**
+ * shut it down, after this call it will not work
+ */
+- (void)shutDown;
 
 @end
 
