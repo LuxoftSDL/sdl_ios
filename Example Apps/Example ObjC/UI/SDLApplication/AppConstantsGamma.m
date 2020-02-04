@@ -15,11 +15,15 @@
 }
 
 - (NSString *)ExampleFullAppId {
-    return [@"00066633" stringByAppendingString:[super ExampleFullAppId]];
+    return [@"gamma" stringByAppendingString:[super ExampleFullAppId]];
 }
 
 - (NSString *)ExampleAppLogoName {
     return @"sdl_logo_red";
+}
+
+- (NSString *)ExampleAppNameTTS {
+    return @"S D L Example App Gamma. Let's go shopping.";
 }
 
 @end

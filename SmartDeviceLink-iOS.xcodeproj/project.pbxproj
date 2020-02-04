@@ -1537,7 +1537,6 @@
 		B30710AB23E98FAC00320C73 /* AppConstantsAlpha.m in Sources */ = {isa = PBXBuildFile; fileRef = B30710AA23E98FAC00320C73 /* AppConstantsAlpha.m */; };
 		B30710AE23E98FC100320C73 /* AppConstantsBeta.m in Sources */ = {isa = PBXBuildFile; fileRef = B30710AD23E98FC100320C73 /* AppConstantsBeta.m */; };
 		B30710B123E98FCE00320C73 /* AppConstantsGamma.m in Sources */ = {isa = PBXBuildFile; fileRef = B30710B023E98FCE00320C73 /* AppConstantsGamma.m */; };
-		B30710B523E991C000320C73 /* ItemManager.m in Sources */ = {isa = PBXBuildFile; fileRef = B30710B423E991C000320C73 /* ItemManager.m */; };
 		B349CB2323E81D3400A31379 /* SDLVersion_ext.m in Sources */ = {isa = PBXBuildFile; fileRef = B349CB2123E81D3400A31379 /* SDLVersion_ext.m */; };
 		B349CB2423E81D3400A31379 /* SDLVersion_ext.h in Headers */ = {isa = PBXBuildFile; fileRef = B349CB2223E81D3400A31379 /* SDLVersion_ext.h */; };
 		B3E1E9AC23E343E40082863E /* SDLTransportManager.h in Headers */ = {isa = PBXBuildFile; fileRef = B3E1E9AA23E343E40082863E /* SDLTransportManager.h */; };
@@ -3304,8 +3303,6 @@
 		B30710AD23E98FC100320C73 /* AppConstantsBeta.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppConstantsBeta.m; sourceTree = "<group>"; };
 		B30710AF23E98FCE00320C73 /* AppConstantsGamma.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppConstantsGamma.h; sourceTree = "<group>"; };
 		B30710B023E98FCE00320C73 /* AppConstantsGamma.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppConstantsGamma.m; sourceTree = "<group>"; };
-		B30710B323E991C000320C73 /* ItemManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ItemManager.h; sourceTree = "<group>"; };
-		B30710B423E991C000320C73 /* ItemManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ItemManager.m; sourceTree = "<group>"; };
 		B349CB2123E81D3400A31379 /* SDLVersion_ext.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SDLVersion_ext.m; sourceTree = "<group>"; };
 		B349CB2223E81D3400A31379 /* SDLVersion_ext.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SDLVersion_ext.h; sourceTree = "<group>"; };
 		B3E1E9AA23E343E40082863E /* SDLTransportManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SDLTransportManager.h; sourceTree = "<group>"; };
@@ -6461,8 +6458,6 @@
 		B30710B223E9919A00320C73 /* SDL */ = {
 			isa = PBXGroup;
 			children = (
-				B30710B323E991C000320C73 /* ItemManager.h */,
-				B30710B423E991C000320C73 /* ItemManager.m */,
 			);
 			name = SDL;
 			path = "Example Apps/Example ObjC/SDL";
@@ -7468,7 +7463,6 @@
 				5D1FF29F21304515000EB9B4 /* ProxyManager.m in Sources */,
 				B307109F23E97DE800320C73 /* ApplicationAlpha.m in Sources */,
 				B30710A523E97E6900320C73 /* ApplicationBeta.m in Sources */,
-				B30710B523E991C000320C73 /* ItemManager.m in Sources */,
 				5D1FF2BF21304598000EB9B4 /* ConnectionAnimatedTransition.m in Sources */,
 				5D1FF2A721304531000EB9B4 /* Preferences.m in Sources */,
 				5D1FF2CC2130464E000EB9B4 /* main.m in Sources */,

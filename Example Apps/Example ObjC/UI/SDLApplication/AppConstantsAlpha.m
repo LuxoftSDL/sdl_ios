@@ -11,7 +11,11 @@
 @implementation AppConstantsAlpha
 
 - (NSString *)ExampleFullAppId {
-    return [@"12345678" stringByAppendingString:[super ExampleFullAppId]];
+    return [@"alpha" stringByAppendingString:[super ExampleFullAppId]];
+}
+
+- (NSString *)ExampleAppNameTTS {
+    return @"S D L Example App Alpha. Hi.";
 }
 
 @end
