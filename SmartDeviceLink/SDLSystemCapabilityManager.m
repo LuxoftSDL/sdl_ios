@@ -44,15 +44,6 @@
 #import "SDLWindowCapability.h"
 #import "SDLWindowTypeCapabilities.h"
 
-
-#undef SDLLogW
-#undef SDLLogD
-#define SDLLogW NSLog
-#define SDLLogD NSLog
-
-
-
-
 NS_ASSUME_NONNULL_BEGIN
 
 @interface SDLSystemCapabilityManager ()
@@ -866,7 +857,3 @@ typedef NSString * SDLServiceID;
 @end
 
 NS_ASSUME_NONNULL_END
-
-
-#undef SDLLogW
-#undef SDLLogD

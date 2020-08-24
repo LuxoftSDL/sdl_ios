@@ -50,18 +50,9 @@
 #import "SDLVideoEncoderDelegate.h"
 #import "SDLVideoStreamingCapability.h"
 
-#undef SDLLogD
-#undef SDLLogW
-#undef SDLLogE
-#define SDLLogD NSLog
-#define SDLLogW NSLog
-#define SDLLogE NSLog
-
-
 static NSUInteger const FramesToSendOnBackground = 30;
 
 NS_ASSUME_NONNULL_BEGIN
-#define WEAKIFY typeof(self) __weak weakSelf = self
 
 typedef void(^SDLVideoCapabilityResponseHandler)(SDLVideoStreamingCapability *_Nullable capability);
 
@@ -196,15 +187,7 @@ typedef void(^SDLVideoCapabilityResponseHandler)(SDLVideoStreamingCapability *_N
     _ssrc = arc4random_uniform(UINT32_MAX);
     _lastPresentationTimestamp = kCMTimeInvalid;
 
-    [self addObserver:self forKeyPath:@"preferredFormats" options:0 context:NULL];
-    [self addObserver:self forKeyPath:@"preferredResolutionIndex" options:0 context:NULL];
-    [self addObserver:self forKeyPath:@"preferredFormatIndex" options:0 context:NULL];
-
     return self;
-}
-
-- (void)didChangeValueForKey:(NSString *)key {
-    NSLog(@"***KVO: %@: %@", key, [self valueForKey:key]);
 }
 
 - (void)shutDown {
@@ -785,8 +768,7 @@ typedef void(^SDLVideoCapabilityResponseHandler)(SDLVideoStreamingCapability *_N
 }
 
 - (void)sdl_videoCapabilityDidUpdateReady:(nullable SDLVideoStreamingCapability *)videoCapability {
-    WEAKIFY;
-
+    __weak typeof(self) weakSelf = self;
     // restart video session on capability update
     dispatch_async(dispatch_get_main_queue(), ^{
         weakSelf.shouldAutoResume = YES;
@@ -1049,13 +1031,4 @@ typedef void(^SDLVideoCapabilityResponseHandler)(SDLVideoStreamingCapability *_N
 
 @end
 
-#undef WEAKIFY
 NS_ASSUME_NONNULL_END
-
-
-
-
-
-#undef SDLLogD
-#undef SDLLogW
-
