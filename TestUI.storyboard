@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17703"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--Tire Status Test-->
+        <scene sceneID="Wo5-eB-aeX">
+            <objects>
+                <viewController storyboardIdentifier="idTestRoot" title="Tire Status Test" id="lpe-eL-gX4" customClass="TestRootViewController" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="Hnx-uh-jQv">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Tire Status Test" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="XNB-tP-yv7">
+                                <rect key="frame" x="0.0" y="20" width="375" height="21"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="21" id="PcZ-nC-1sM"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillProportionally" spacing="21" translatesAutoresizingMaskIntoConstraints="NO" id="i1a-NP-Qpv">
+                                <rect key="frame" x="10" y="57" width="355" height="130"/>
+                                <subviews>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Wsd-rH-hgR">
+                                        <rect key="frame" x="0.0" y="0.0" width="355" height="29.5"/>
+                                        <state key="normal" title="Subscribe VD"/>
+                                        <connections>
+                                            <action selector="actionSubscribe:" destination="lpe-eL-gX4" eventType="touchUpInside" id="Pf7-ti-qMS"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="UEo-tW-rsO">
+                                        <rect key="frame" x="0.0" y="50.5" width="355" height="29.5"/>
+                                        <state key="normal" title="Unsubscribe VD"/>
+                                        <connections>
+                                            <action selector="actionUnsubscribe:" destination="lpe-eL-gX4" eventType="touchUpInside" id="3aI-c2-GGe"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6ri-Hl-No7">
+                                        <rect key="frame" x="0.0" y="101" width="355" height="29"/>
+                                        <state key="normal" title="Get VD"/>
+                                        <connections>
+                                            <action selector="actionGet:" destination="lpe-eL-gX4" eventType="touchUpInside" id="uqD-Ua-wcf"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="130" id="h0p-On-PZN"/>
+                                </constraints>
+                            </stackView>
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" editable="NO" text="log" translatesAutoresizingMaskIntoConstraints="NO" id="Ba4-4a-Lqa">
+                                <rect key="frame" x="8" y="192" width="359" height="470"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                <color key="textColor" systemColor="labelColor"/>
+                                <fontDescription key="fontDescription" name="Courier" family="Courier" pointSize="14"/>
+                                <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" smartDashesType="no" smartInsertDeleteType="no" smartQuotesType="no"/>
+                            </textView>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="l1u-Vv-Uci"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="Ba4-4a-Lqa" firstAttribute="leading" secondItem="l1u-Vv-Uci" secondAttribute="leading" constant="8" id="9WM-et-13l"/>
+                            <constraint firstItem="l1u-Vv-Uci" firstAttribute="trailing" secondItem="i1a-NP-Qpv" secondAttribute="trailing" constant="10" id="EIh-fi-DW9"/>
+                            <constraint firstItem="Ba4-4a-Lqa" firstAttribute="top" secondItem="i1a-NP-Qpv" secondAttribute="bottom" constant="5" id="HfN-Ng-GNr"/>
+                            <constraint firstItem="XNB-tP-yv7" firstAttribute="top" secondItem="l1u-Vv-Uci" secondAttribute="top" constant="20" id="Lkc-52-r06"/>
+                            <constraint firstItem="i1a-NP-Qpv" firstAttribute="top" secondItem="XNB-tP-yv7" secondAttribute="bottom" constant="16" id="SFt-z6-0fK"/>
+                            <constraint firstItem="XNB-tP-yv7" firstAttribute="leading" secondItem="l1u-Vv-Uci" secondAttribute="leading" id="TLZ-KT-BS6"/>
+                            <constraint firstItem="l1u-Vv-Uci" firstAttribute="trailing" secondItem="Ba4-4a-Lqa" secondAttribute="trailing" constant="8" id="WPq-hh-jCm"/>
+                            <constraint firstItem="l1u-Vv-Uci" firstAttribute="bottom" secondItem="Ba4-4a-Lqa" secondAttribute="bottom" constant="5" id="cfu-pd-b6c"/>
+                            <constraint firstItem="l1u-Vv-Uci" firstAttribute="trailing" secondItem="XNB-tP-yv7" secondAttribute="trailing" id="mfA-EH-kzl"/>
+                            <constraint firstItem="i1a-NP-Qpv" firstAttribute="leading" secondItem="l1u-Vv-Uci" secondAttribute="leading" constant="10" id="szz-C1-8by"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" title="Tire Status Test" id="ejE-BB-swp">
+                        <barButtonItem key="rightBarButtonItem" systemItem="trash" id="vc7-aV-ytD">
+                            <connections>
+                                <action selector="actionClean:" destination="lpe-eL-gX4" id="Xm0-ez-rnR"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
+                    <connections>
+                        <outlet property="btnGet" destination="6ri-Hl-No7" id="7Vj-fD-lIK"/>
+                        <outlet property="btnSubscribe" destination="Wsd-rH-hgR" id="Qlh-Hq-YnJ"/>
+                        <outlet property="btnUnsubscribe" destination="UEo-tW-rsO" id="eaA-RM-H9x"/>
+                        <outlet property="logText" destination="Ba4-4a-Lqa" id="ppF-x7-CjN"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="7Ow-su-NrI" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="88.799999999999997" y="18.440779610194905"/>
+        </scene>
+    </scenes>
+    <resources>
+        <systemColor name="labelColor">
+            <color white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+    </resources>
+</document>

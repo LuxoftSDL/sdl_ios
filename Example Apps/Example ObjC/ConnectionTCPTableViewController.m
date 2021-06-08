@@ -10,6 +10,7 @@
 #import "Preferences.h"
 #import "ProxyManager.h"
 #import "SDLStreamingMediaManager.h"
+#import "TestRootViewController.h"
 
 @interface ConnectionTCPTableViewController ()
 
@@ -18,6 +19,7 @@
 
 @property (weak, nonatomic) IBOutlet UITableViewCell *connectTableViewCell;
 @property (weak, nonatomic) IBOutlet UIButton *connectButton;
+@property (weak, nonatomic) IBOutlet UIButton *testButton;
 
 @end
 
@@ -38,6 +40,7 @@
     
     // Connect Button setup
     self.connectButton.tintColor = [UIColor whiteColor];
+    self.testButton.enabled = NO;
 }
 
 - (void)dealloc {
@@ -68,6 +71,11 @@
     }
 }
 
+- (IBAction)startTestAction:(UIButton *)sender {
+    NSLog(@"%s", __PRETTY_FUNCTION__);
+    [self showTestViewControllerAnimated:YES];
+}
+
 
 #pragma mark - Table view delegate
 
@@ -91,7 +99,10 @@
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
     if ([keyPath isEqualToString:NSStringFromSelector(@selector(state))]) {
         ProxyState newState = [change[NSKeyValueChangeNewKey] unsignedIntegerValue];
-        [self proxyManagerDidChangeState:newState];
+        __weak typeof(self) weakSelf = self;
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [weakSelf proxyManagerDidChangeState:newState];
+        });
     }
 }
 
@@ -114,13 +125,35 @@
         } break;
         default: break;
     }
-    
-    if (newColor || newTitle) {
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [self.connectTableViewCell setBackgroundColor:newColor];
-            [self.connectButton setTitle:newTitle forState:UIControlStateNormal];
-        });
+
+    const BOOL isConnected = ProxyStateConnected == newState;
+    UIButton *testButton = self.testButton;
+    const BOOL isVisible = self.parentViewController.navigationController.topViewController == self.parentViewController;
+    testButton.enabled = isConnected;
+
+
+    if (!isConnected && !isVisible) {
+        [self popToRootAnimated:YES];
     }
+
+    if (newColor || newTitle) {
+        [self.connectTableViewCell setBackgroundColor:newColor];
+        [self.connectButton setTitle:newTitle forState:UIControlStateNormal];
+    }
+}
+
+- (void)popToRootAnimated:(BOOL)animated {
+    const BOOL isVisible = self.parentViewController.navigationController.topViewController == self.parentViewController;
+    if (!isVisible) {
+        [self.parentViewController.navigationController popToViewController:self.parentViewController animated:animated];
+    }
+}
+
+- (void)showTestViewControllerAnimated:(BOOL)animated {
+    UIStoryboard *testSB = [UIStoryboard storyboardWithName:@"TestUI" bundle:nil];
+    TestRootViewController *testRootVC = (TestRootViewController *)[testSB instantiateViewControllerWithIdentifier:@"idTestRoot"];
+    testRootVC.proxyManager = [ProxyManager sharedManager];
+    [self.parentViewController.navigationController pushViewController:testRootVC animated:animated];
 }
 
 @end

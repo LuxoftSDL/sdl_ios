@@ -1735,6 +1735,8 @@
 		B3DF19F3251225AA0090D7BA /* TestSmartConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = B3DF19F1251225A90090D7BA /* TestSmartConnection.m */; };
 		B3EC9E6E2579AA010039F3AA /* SDLClimateDataSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = B3EC9E6D2579AA010039F3AA /* SDLClimateDataSpec.m */; };
 		B3F7918324E062C200DB5CAF /* SDLGetVehicleDataSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = 162E824C1A9BDE8A00906325 /* SDLGetVehicleDataSpec.m */; };
+		B3FA2010266F7F52003A0081 /* TestRootViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B3FA200F266F7F52003A0081 /* TestRootViewController.m */; };
+		B3FA2014266F7F8B003A0081 /* TestUI.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B3FA2013266F7F8B003A0081 /* TestUI.storyboard */; };
 		C9707D1825DEE786009D00F2 /* NSArray+Extensions.h in Headers */ = {isa = PBXBuildFile; fileRef = C9707D1625DEE786009D00F2 /* NSArray+Extensions.h */; };
 		C9707D1925DEE786009D00F2 /* NSArray+Extensions.m in Sources */ = {isa = PBXBuildFile; fileRef = C9707D1725DEE786009D00F2 /* NSArray+Extensions.m */; };
 		C9707D3025E0444D009D00F2 /* SDLMacros.h in Headers */ = {isa = PBXBuildFile; fileRef = C9707D2E25E0444D009D00F2 /* SDLMacros.h */; };
@@ -3646,6 +3648,9 @@
 		B3DF19F1251225A90090D7BA /* TestSmartConnection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TestSmartConnection.m; sourceTree = "<group>"; };
 		B3DF19F2251225A90090D7BA /* TestSmartConnection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TestSmartConnection.h; sourceTree = "<group>"; };
 		B3EC9E6D2579AA010039F3AA /* SDLClimateDataSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SDLClimateDataSpec.m; sourceTree = "<group>"; };
+		B3FA200E266F7F52003A0081 /* TestRootViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TestRootViewController.h; sourceTree = SOURCE_ROOT; };
+		B3FA200F266F7F52003A0081 /* TestRootViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TestRootViewController.m; sourceTree = SOURCE_ROOT; };
+		B3FA2013266F7F8B003A0081 /* TestUI.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = TestUI.storyboard; sourceTree = SOURCE_ROOT; };
 		BB3C600D221AEF37007DD4CA /* NSMutableDictionary+StoreSpec.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = "NSMutableDictionary+StoreSpec.m"; path = "DevAPISpecs/NSMutableDictionary+StoreSpec.m"; sourceTree = "<group>"; };
 		C9707D1625DEE786009D00F2 /* NSArray+Extensions.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "NSArray+Extensions.h"; path = "private/NSArray+Extensions.h"; sourceTree = "<group>"; };
 		C9707D1725DEE786009D00F2 /* NSArray+Extensions.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = "NSArray+Extensions.m"; path = "private/NSArray+Extensions.m"; sourceTree = "<group>"; };
@@ -4454,6 +4459,7 @@
 		5D0218EB1A8E795700D1BF62 /* UI */ = {
 			isa = PBXGroup;
 			children = (
+				B3FA2007266F7EE1003A0081 /* Tests */,
 				5D1FF2CF2130466D000EB9B4 /* LaunchScreen.xib */,
 				5D0218EC1A8E796100D1BF62 /* Connection */,
 			);
@@ -4793,6 +4799,7 @@
 				5D1FF2AD21304567000EB9B4 /* ConnectionIAPTableViewController.storyboard */,
 				5D1FF2A921304567000EB9B4 /* ConnectionTCPTableViewController.storyboard */,
 				5D1FF2AB21304567000EB9B4 /* Main.storyboard */,
+				B3FA2013266F7F8B003A0081 /* TestUI.storyboard */,
 			);
 			name = Storyboards;
 			sourceTree = "<group>";
@@ -7048,6 +7055,15 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		B3FA2007266F7EE1003A0081 /* Tests */ = {
+			isa = PBXGroup;
+			children = (
+				B3FA200E266F7F52003A0081 /* TestRootViewController.h */,
+				B3FA200F266F7F52003A0081 /* TestRootViewController.m */,
+			);
+			name = Tests;
+			sourceTree = "<group>";
+		};
 		DA1166D71D14601C00438CEA /* Touches */ = {
 			isa = PBXGroup;
 			children = (
@@ -7920,7 +7936,7 @@
 					};
 					5D61FA1B1A84237100846EE7 = {
 						CreatedOnToolsVersion = 6.1.1;
-						LastSwiftMigration = 1210;
+						LastSwiftMigration = 1230;
 						ProvisioningStyle = Automatic;
 					};
 					5D61FA251A84237100846EE7 = {
@@ -7969,6 +7985,7 @@
 				5D1FF2AF21304568000EB9B4 /* ConnectionTCPTableViewController.storyboard in Resources */,
 				5D1FF2C6213045F2000EB9B4 /* Images.xcassets in Resources */,
 				5D1FF2B021304568000EB9B4 /* Main.storyboard in Resources */,
+				B3FA2014266F7F8B003A0081 /* TestUI.storyboard in Resources */,
 				5D1FF2D12130466D000EB9B4 /* LaunchScreen.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -8031,6 +8048,7 @@
 			files = (
 				5D1FF2CA2130463F000EB9B4 /* AppDelegate.m in Sources */,
 				5D1FF2BA21304581000EB9B4 /* ConnectionTCPTableViewController.m in Sources */,
+				B3FA2010266F7F52003A0081 /* TestRootViewController.m in Sources */,
 				B30509052511E79B008C5401 /* ProxyManager.m in Sources */,
 				5D1FF2B921304581000EB9B4 /* ConnectionContainerViewController.m in Sources */,
 				5D1FF29D21304515000EB9B4 /* RPCPermissionsManager.m in Sources */,
