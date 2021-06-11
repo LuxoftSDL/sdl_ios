@@ -16,7 +16,6 @@ NS_ASSUME_NONNULL_BEGIN
 
 // VERSION DEPENDENT CODE
 NSString *const SDLMaxProxyProtocolVersion = @"5.4.0";
-NSString *const SDLMaxProxyRPCVersion =  @"7.1.0";
 
 NSUInteger const SDLDefaultMTUSize = UINT32_MAX;
 NSUInteger const SDLV1MTUSize = 1024;
@@ -55,6 +54,8 @@ typedef NSNumber *MTUBox;
         return nil;
     }
 
+    // set default (current) version
+    _SDLMaxProxyRPCVersion =  @"7.2.0";
     _protocolVersion = [[SDLVersion alloc] initWithString:@"1.0.0"];
     _maxHeadUnitProtocolVersion = [[SDLVersion alloc] initWithString:@"0.0.0"];
     _rpcVersion = [[SDLVersion alloc] initWithString:@"1.0.0"];

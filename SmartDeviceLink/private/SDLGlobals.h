@@ -20,7 +20,6 @@ NS_ASSUME_NONNULL_BEGIN
 #define BLOCK_RETURN return
 
 extern NSString *const SDLMaxProxyProtocolVersion;
-extern NSString *const SDLMaxProxyRPCVersion;
 
 extern NSUInteger const SDLDefaultMTUSize;
 extern NSUInteger const SDLV1MTUSize;
@@ -34,6 +33,7 @@ extern void *const SDLConcurrentQueueName;
 @property (copy, nonatomic, readonly) SDLVersion *protocolVersion;
 @property (strong, nonatomic) SDLVersion *rpcVersion;
 @property (copy, nonatomic) SDLVersion *maxHeadUnitProtocolVersion;
+@property (copy, nonatomic) NSString *SDLMaxProxyRPCVersion;
 
 @property (copy, nonatomic) dispatch_queue_t sdlProcessingQueue;
 @property (copy, nonatomic) dispatch_queue_t sdlConcurrentQueue;

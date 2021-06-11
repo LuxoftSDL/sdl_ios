@@ -165,7 +165,10 @@
 
     [message appendFormat:@"\n%@\n======================================\n", [self tireStatusString:tireStatus]];
 
-    [self writeLog:message];
+    __weak typeof(self) weakSelf = self;
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [weakSelf writeLog:message];
+    });
 }
 
 
@@ -181,7 +184,12 @@
 
     SDLOnVehicleData *onVehicleData = (SDLOnVehicleData *)notification.notification;
     SDLTireStatus *tireStatus = onVehicleData.tirePressure;
-    [self writeLog:[self tireStatusString:tireStatus]];
+
+    NSString *message = [self tireStatusString:tireStatus];
+    __weak typeof(self) weakSelf = self;
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [weakSelf writeLog:message];
+    });
 }
 
 - (NSString *)tireStatusString:(SDLTireStatus *)tireStatus {

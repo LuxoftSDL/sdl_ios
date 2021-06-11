@@ -118,6 +118,41 @@
                                     </tableViewCell>
                                 </cells>
                             </tableViewSection>
+                            <tableViewSection headerTitle="" id="abG-7F-hdS">
+                                <cells>
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" rowHeight="45" id="Qol-3e-uQi">
+                                        <rect key="frame" x="0.0" y="320.5" width="375" height="45"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" ambiguous="YES" tableViewCell="Qol-3e-uQi" id="lXX-cF-Vof">
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="45"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="h2m-yA-rHE">
+                                                    <rect key="frame" x="10" y="8" width="355" height="31"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="30" id="ggU-7s-UiV"/>
+                                                    </constraints>
+                                                    <segments>
+                                                        <segment title="5"/>
+                                                        <segment title="6"/>
+                                                        <segment title="7.1"/>
+                                                        <segment title="7.2"/>
+                                                    </segments>
+                                                    <connections>
+                                                        <action selector="setSDLVersionAction:" destination="l5Q-ZP-1BO" eventType="valueChanged" id="gba-f9-48U"/>
+                                                    </connections>
+                                                </segmentedControl>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstItem="h2m-yA-rHE" firstAttribute="top" secondItem="lXX-cF-Vof" secondAttribute="top" constant="8" id="0HU-95-Hce"/>
+                                                <constraint firstAttribute="bottom" secondItem="h2m-yA-rHE" secondAttribute="bottom" constant="8" id="WEr-cj-Jeg"/>
+                                                <constraint firstAttribute="trailing" secondItem="h2m-yA-rHE" secondAttribute="trailing" constant="10" id="opN-sD-Lrc"/>
+                                                <constraint firstItem="h2m-yA-rHE" firstAttribute="leading" secondItem="lXX-cF-Vof" secondAttribute="leading" constant="10" id="xPI-fQ-Tsc"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                </cells>
+                            </tableViewSection>
                         </sections>
                         <connections>
                             <outlet property="dataSource" destination="l5Q-ZP-1BO" id="kIY-aI-9y3"/>
@@ -141,6 +176,7 @@
                         <outlet property="ipAddressTextField" destination="xqM-s4-9RV" id="daz-uN-Rxa"/>
                         <outlet property="portTextField" destination="hsI-ld-8xY" id="5pF-XP-Xh3"/>
                         <outlet property="testButton" destination="V1B-bD-zV4" id="g6g-Hx-khI"/>
+                        <outlet property="versionSelector" destination="h2m-yA-rHE" id="Dy2-Ht-cNu"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="0fm-wO-kFd" userLabel="First Responder" sceneMemberID="firstResponder"/>

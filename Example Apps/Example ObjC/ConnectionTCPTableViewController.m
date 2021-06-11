@@ -9,6 +9,7 @@
 
 #import "Preferences.h"
 #import "ProxyManager.h"
+#import "SDLGlobals.h"
 #import "SDLStreamingMediaManager.h"
 #import "TestRootViewController.h"
 
@@ -20,9 +21,12 @@
 @property (weak, nonatomic) IBOutlet UITableViewCell *connectTableViewCell;
 @property (weak, nonatomic) IBOutlet UIButton *connectButton;
 @property (weak, nonatomic) IBOutlet UIButton *testButton;
+@property (weak, nonatomic) IBOutlet UISegmentedControl *versionSelector;
 
 @end
 
+
+NSString *TestSDLVersions[4] = {@"5.0.0", @"6.0.0", @"7.1.0", @"7.2.0"};
 
 
 @implementation ConnectionTCPTableViewController
@@ -41,6 +45,10 @@
     // Connect Button setup
     self.connectButton.tintColor = [UIColor whiteColor];
     self.testButton.enabled = NO;
+
+    for (int i=0; i < 3; ++i) {
+        [self.versionSelector setTitle:TestSDLVersions[i] forSegmentAtIndex:i];
+    }
 }
 
 - (void)dealloc {
@@ -74,6 +82,14 @@
 - (IBAction)startTestAction:(UIButton *)sender {
     NSLog(@"%s", __PRETTY_FUNCTION__);
     [self showTestViewControllerAnimated:YES];
+}
+
+- (IBAction)setSDLVersionAction:(UISegmentedControl *)sender {
+    NSLog(@"%s", __PRETTY_FUNCTION__);
+    NSInteger idx = sender.selectedSegmentIndex;
+    if (idx < 0 ) { idx = 0; }
+    if (idx > 3 ) { idx = 3; }
+    [SDLGlobals sharedGlobals].SDLMaxProxyRPCVersion = TestSDLVersions[idx];
 }
 
 
