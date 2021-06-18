@@ -26,7 +26,7 @@
 @end
 
 
-NSString *TestSDLVersions[4] = {@"5.0.0", @"6.0.0", @"7.1.0", @"7.2.0"};
+NSString *TestSDLVersions[4] = {@"5.0.0", @"6.0.0", @"7.2.0", @"8.0.0"};
 
 
 @implementation ConnectionTCPTableViewController
@@ -46,7 +46,7 @@ NSString *TestSDLVersions[4] = {@"5.0.0", @"6.0.0", @"7.1.0", @"7.2.0"};
     self.connectButton.tintColor = [UIColor whiteColor];
     self.testButton.enabled = NO;
 
-    for (int i=0; i < 3; ++i) {
+    for (int i=0; i < 4; ++i) {
         [self.versionSelector setTitle:TestSDLVersions[i] forSegmentAtIndex:i];
     }
 }

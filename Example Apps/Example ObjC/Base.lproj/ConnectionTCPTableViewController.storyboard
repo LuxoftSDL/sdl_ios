@@ -136,7 +136,7 @@
                                                         <segment title="5"/>
                                                         <segment title="6"/>
                                                         <segment title="7.1"/>
-                                                        <segment title="7.2"/>
+                                                        <segment title="8.0"/>
                                                     </segments>
                                                     <connections>
                                                         <action selector="setSDLVersionAction:" destination="l5Q-ZP-1BO" eventType="valueChanged" id="gba-f9-48U"/>
