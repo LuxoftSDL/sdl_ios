@@ -26,7 +26,7 @@
 @end
 
 
-NSString *TestSDLVersions[4] = {@"5.0.0", @"6.0.0", @"7.2.0", @"8.0.0"};
+NSString *TestSDLVersions[4] = {@"5.0.0", @"6.0.0", @"7.1.0", @"8.0.0"};
 
 
 @implementation ConnectionTCPTableViewController

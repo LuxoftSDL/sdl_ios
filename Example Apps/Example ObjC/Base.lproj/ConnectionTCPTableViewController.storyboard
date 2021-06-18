@@ -133,10 +133,10 @@
                                                         <constraint firstAttribute="height" constant="30" id="ggU-7s-UiV"/>
                                                     </constraints>
                                                     <segments>
-                                                        <segment title="5"/>
-                                                        <segment title="6"/>
-                                                        <segment title="7.1"/>
-                                                        <segment title="8.0"/>
+                                                        <segment title="v-A"/>
+                                                        <segment title="v-B"/>
+                                                        <segment title="v-C"/>
+                                                        <segment title="v-D"/>
                                                     </segments>
                                                     <connections>
                                                         <action selector="setSDLVersionAction:" destination="l5Q-ZP-1BO" eventType="valueChanged" id="gba-f9-48U"/>
