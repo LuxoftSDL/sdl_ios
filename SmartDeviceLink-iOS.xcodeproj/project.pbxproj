@@ -9423,7 +9423,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 101;
 				DEVELOPMENT_TEAM = G99VP5HXV7;
@@ -9433,7 +9433,7 @@
 				MARKETING_VERSION = 7.1.1;
 				PRODUCT_BUNDLE_IDENTIFIER = pe.lo.smartdevicelink;
 				PRODUCT_NAME = "SDL Example";
-				PROVISIONING_PROFILE_SPECIFIER = "smartdevicelink-dev";
+				PROVISIONING_PROFILE_SPECIFIER = smartdevicelink_distro;
 				SWIFT_VERSION = 5.0;
 			};
 			name = Release;
