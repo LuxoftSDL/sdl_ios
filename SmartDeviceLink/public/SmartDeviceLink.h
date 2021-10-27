@@ -250,6 +250,7 @@ FOUNDATION_EXPORT const unsigned char SmartDeviceLinkVersionString[];
 #import "SDLNavigationInstruction.h"
 #import "SDLNavigationServiceData.h"
 #import "SDLNavigationServiceManifest.h"
+#import "SDLNextFunctionInfo.h"
 #import "SDLOasisAddress.h"
 #import "SDLParameterPermissions.h"
 #import "SDLPermissionItem.h"
@@ -365,6 +366,7 @@ FOUNDATION_EXPORT const unsigned char SmartDeviceLinkVersionString[];
 #import "SDLModuleType.h"
 #import "SDLNavigationAction.h"
 #import "SDLNavigationJunction.h"
+#import "SDLNextFunction.h"
 #import "SDLPRNDL.h"
 #import "SDLPermissionStatus.h"
 #import "SDLPowerModeQualificationStatus.h"
@@ -471,6 +473,7 @@ FOUNDATION_EXPORT const unsigned char SmartDeviceLinkVersionString[];
 #import "SDLScreenManager.h"
 #import "SDLSoftButtonObject.h"
 #import "SDLSoftButtonState.h"
+#import "SDLNextFunctionObject.h"
 
 #import "SDLMenuCell.h"
 #import "SDLMenuConfiguration.h"

@@ -39,6 +39,11 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 - (instancetype)initWithText:(NSString *)text secondaryText:(nullable NSString *)secondaryText tertiaryText:(nullable NSString *)tertiaryText voiceCommands:(nullable NSArray<NSString *> *)voiceCommands artwork:(nullable SDLArtwork *)artwork secondaryArtwork:(nullable SDLArtwork *)secondaryArtwork {
+    self = [self initWithText:text secondaryText:secondaryText tertiaryText:tertiaryText voiceCommands:voiceCommands artwork:artwork secondaryArtwork:secondaryArtwork nextFunctionInfo:nil];
+    return self;
+}
+
+- (instancetype)initWithText:(NSString *)text secondaryText:(nullable NSString *)secondaryText tertiaryText:(nullable NSString *)tertiaryText voiceCommands:(nullable NSArray<NSString *> *)voiceCommands artwork:(nullable SDLArtwork *)artwork secondaryArtwork:(nullable SDLArtwork *)secondaryArtwork nextFunctionInfo:(nullable SDLNextFunctionInfo *)nextFunctionInfo {
     self = [super init];
     if (!self) { return nil; }
 
@@ -49,7 +54,8 @@ NS_ASSUME_NONNULL_BEGIN
     _artwork = artwork;
     _secondaryArtwork = secondaryArtwork;
     _uniqueTextId = 1;
-    
+    self.nextFunctionInfo = nextFunctionInfo;
+
     _choiceId = UINT16_MAX;
 
     return self;
@@ -103,9 +109,10 @@ NSUInteger NSUIntRotate(NSUInteger val, NSUInteger howMuch) {
 #pragma mark - Etc.
 
 - (id)copyWithZone:(nullable NSZone *)zone {
-    SDLChoiceCell *newCell = [[SDLChoiceCell allocWithZone:zone] initWithText:_text secondaryText:_secondaryText tertiaryText:_tertiaryText voiceCommands:_voiceCommands artwork:_artwork secondaryArtwork:_secondaryArtwork];
+    SDLChoiceCell *newCell = [[[self class] allocWithZone:zone] initWithText:_text secondaryText:_secondaryText tertiaryText:_tertiaryText voiceCommands:_voiceCommands artwork:_artwork secondaryArtwork:_secondaryArtwork];
     newCell.choiceId = _choiceId;
     newCell.uniqueTextId = _uniqueTextId;
+    newCell.nextFunctionInfo = self.nextFunctionInfo;
 
     return newCell;
 }
